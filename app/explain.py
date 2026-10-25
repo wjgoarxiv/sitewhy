@@ -385,7 +385,11 @@ def _catches(report, sensitivity):
             "actor": "critic",
             "kind": o.get("type", "objection"),
             "text": str(o.get("text", ""))[:300],
-            "outcome": "left open for your team",
+            "outcome": (
+                "resolved by code: applies under every conflicting reading"
+                if o.get("blocking", True) is False
+                else "left open for your team"
+            ),
         })
     for e in events:
         if e.get("action") != "escalated" or e.get("role") != "system":

@@ -11,7 +11,7 @@ import json
 import re
 import uuid
 from dataclasses import asdict
-from datetime import UTC, date, datetime
+from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 
 from app.agents import Adjudicator, CountyInvestigator, Critic, Planner
@@ -339,6 +339,58 @@ class Orchestrator:
             )
         return out
 
+    def _alternatives_question(self, finding: dict, entries: list[dict]) -> str:
+        from datetime import date as _date
+
+        params = finding.get("parameters") or {}
+        parts = []
+        for e in entries:
+            readings = e["readings"]
+            if e["field"] == "duration_days" and params.get("effective"):
+                try:
+                    eff = _date.fromisoformat(params["effective"])
+                except ValueError:
+                    eff = None
+                if eff is not None and all(isinstance(r["value"], int) for r in readings):
+                    alts = " or ".join(
+                        f"{eff + timedelta(days=r['value'])} ({r['value']}-day reading)"
+                        for r in readings
+                    )
+                    parts.append(f"Confirm the expiry: {alts}")
+                    continue
+            parts.append(
+                f"Confirm the {e['field']}: " + " or ".join(str(r["value"]) for r in readings)
+            )
+        return "; ".join(parts)
+
+    def _resolve_immaterial_conflicts(
+        self, project: Project, findings: list[dict], open_objections: list[dict], round_: int
+    ) -> None:
+        from app.explain import _sensitivity
+
+        by_rule = {f.get("rule_id"): f for f in findings}
+        sens = _sensitivity({"events": self.events}, findings, project)
+        for o in open_objections:
+            if o.get("type") != "source_conflict":
+                continue
+            finding = by_rule.get(o["rule_id"])
+            if finding is None or not finding.get("parameters"):
+                continue
+            entries = [s for s in sens if s["rule_id"] == o["rule_id"]]
+            if not entries or not all(e["holds"] for e in entries):
+                continue
+            o["blocking"] = False
+            o["question"] = self._alternatives_question(finding, entries)
+            self.world.resolve_objection(
+                o["id"],
+                "resolved by code: applies under every conflicting reading",
+                self._src("system", round_),
+            )
+            self._event(
+                round_, "system", "objection_resolved_by_code",
+                {"rule_id": o["rule_id"], "fields": [e["field"] for e in entries]},
+            )
+
     def _guard(self, draft: dict, findings: list[dict], open_objections: list[dict]) -> dict:
         grades = {k: v for k, v in (draft.get("grades") or {}).items() if v in GRADES}
         notes = []
@@ -357,7 +409,7 @@ class Orchestrator:
         if verdict == "no-go" and not fatal:
             verdict = "needs_confirmation"
             notes.append("no-go without a verified fatal rule")
-        blocking = {o["rule_id"] for o in open_objections}
+        blocking = {o["rule_id"] for o in open_objections if o.get("blocking", True)}
         if any(f["rule_id"] in blocking and f["grade"] == "fatal" for f in findings):
             verdict = "needs_confirmation"
             notes.append("unresolved critic objections on decisive rules")
@@ -566,13 +618,15 @@ class Orchestrator:
             self._event(round_ + 1, "planner", "targeted_tasks", tasks)
 
         open_objections = [o for o in objections if o.get("id")]
+        self._resolve_immaterial_conflicts(project, findings, open_objections, self.max_rounds)
         result = self._guard(draft, findings, open_objections)
-        if open_objections:
+        blocking_open = [o for o in open_objections if o.get("blocking", True)]
+        if blocking_open:
             self._event(
                 self.max_rounds,
                 "system",
                 "escalated",
-                [f"{o['rule_id']}: {o['text']}" for o in open_objections],
+                [f"{o['rule_id']}: {o['text']}" for o in blocking_open],
             )
         report = {
             "run_id": run_id,
@@ -589,6 +643,7 @@ class Orchestrator:
                     "type": o["type"],
                     "text": o["text"],
                     "question": o.get("question"),
+                    "blocking": o.get("blocking", True),
                 }
                 for o in open_objections
             ],

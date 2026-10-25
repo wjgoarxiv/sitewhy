@@ -172,6 +172,60 @@ def test_zero_fact_attempt_gets_format_aware_retry_feedback(orchestrator_factory
     assert retry_prompts and "JSON array of facts FIRST" in retry_prompts[0]
 
 
+def test_immaterial_source_conflict_does_not_block_no_go(orchestrator_factory):
+    from app.explain import enrich
+
+    six = {"field": "duration", "value": "six (6) months",
+           "url": RELEASE_URL, "quote": "temporary, twelve (12) month"}
+    twelve = {"field": "duration_days", "value": "twelve (12) months",
+              "url": RELEASE_URL,
+              "quote": "a temporary, twelve (12) month moratorium on the acceptance"}
+    scope = {"field": "scope", "value": "countywide",
+             "url": RELEASE_URL, "quote": "requests for data centers within Washington County"}
+    objection = {"rule_id": "md-washington-county-2026", "type": "source_conflict",
+                 "text": "6 vs 12 months", "question": "Which duration is correct?"}
+    router = ScriptedRouter(
+        planner=[PLAN, "[]"],
+        county_investigator=[facts_reply([six, twelve, scope])],
+        adjudicator=[DRAFT_NO_GO, DRAFT_NO_GO],
+        critic=[json.dumps([objection]), json.dumps([objection])],
+    )
+    report = orchestrator_factory(router).run("addr", mw=300)
+    assert report["verdict"] == "no-go"
+    assert any(e["action"] == "objection_resolved_by_code" for e in report["events"])
+    entry = next(o for o in report["needs_confirmation"]
+                 if o["rule_id"] == "md-washington-county-2026")
+    assert entry["blocking"] is False
+    assert "2026-12-29" in entry["question"] and "2027-06-30" in entry["question"]
+    catches = enrich(report)["explanation"]["catches"]
+    assert any(c["kind"] == "source_conflict" and "resolved by code" in c["outcome"]
+               for c in catches)
+
+
+def test_material_source_conflict_still_blocks(orchestrator_factory):
+    thirty = {"field": "duration", "value": "thirty (30) days",
+              "url": RELEASE_URL, "quote": "temporary, twelve (12) month"}
+    twelve = {"field": "duration_days", "value": "twelve (12) months",
+              "url": RELEASE_URL,
+              "quote": "a temporary, twelve (12) month moratorium on the acceptance"}
+    scope = {"field": "scope", "value": "countywide",
+             "url": RELEASE_URL, "quote": "requests for data centers within Washington County"}
+    objection = {"rule_id": "md-washington-county-2026", "type": "source_conflict",
+                 "text": "30 days vs 12 months", "question": "Which duration is correct?"}
+    router = ScriptedRouter(
+        planner=[PLAN, "[]"],
+        county_investigator=[facts_reply([thirty, twelve, scope])],
+        adjudicator=[DRAFT_NO_GO, DRAFT_NO_GO],
+        critic=[json.dumps([objection]), json.dumps([objection])],
+    )
+    report = orchestrator_factory(router).run("addr", mw=300)
+    assert report["verdict"] == "needs_confirmation"
+    entry = next(o for o in report["needs_confirmation"]
+                 if o["rule_id"] == "md-washington-county-2026")
+    assert entry.get("blocking", True) is True
+    assert not [e for e in report["events"] if e["action"] == "objection_resolved_by_code"]
+
+
 def test_final_attempt_after_zero_facts_uses_ultra(orchestrator_factory):
     router = ScriptedRouter(
         planner=[PLAN],
