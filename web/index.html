@@ -14,7 +14,10 @@
       <h1>SiteWhy HQ</h1>
       <p class="tagline">Can a data center be built here — and if not, why?</p>
     </div>
-    <button id="theme-toggle" type="button" aria-pressed="false">Use light theme</button>
+    <div class="rail-buttons">
+      <button id="theme-toggle" type="button" aria-pressed="false">Use light theme</button>
+      <button id="guide-open" type="button" aria-label="Open the first-visit guide">?</button>
+    </div>
     <section aria-labelledby="screen-h">
       <h2 id="screen-h">Screen</h2>
       <form id="run-form">
@@ -56,12 +59,56 @@
         <dl class="tiles" id="telemetry"></dl>
       </section>
       <p class="scroll-cue" id="scroll-cue" hidden>More below</p>
+      <details class="legend-details" id="legend-details">
+        <summary>Lamp legend</summary>
+        <ul class="legend" id="legend">
+          <li><span class="dot fatal" aria-hidden="true"></span>Fatal — stop, a decisive rule applies</li>
+          <li><span class="dot major" aria-hidden="true"></span>Major — needs a condition or waiver</li>
+          <li><span class="dot minor" aria-hidden="true"></span><span class="dot clear legend-inline" aria-hidden="true"></span>Minor or clear — no blocking rule</li>
+          <li><span class="dot unknown" aria-hidden="true"></span>Unknown — not yet evaluated</li>
+          <li><span class="dot not_modelled" aria-hidden="true"></span>Not modelled — out of scope</li>
+        </ul>
+      </details>
     </div>
   </main>
   <aside class="report" aria-label="Report">
     <h2>Report</h2>
-    <div id="report-placeholder">
-      <p>Pick a site from the portfolio. The decision-first report lands here in the next step.</p>
+    <div id="guide" hidden>
+      <p class="guide-lede">Screen a data center site in three steps.</p>
+      <ol class="guide-steps">
+        <li><strong>Pick a site</strong> — choose from the portfolio, type an address, or click the map.</li>
+        <li><strong>Read the answer</strong> — the banner gives the verdict and the decisive rule.</li>
+        <li><strong>Check why</strong> — open the tabs for the evidence chain, flips and agent catches.</li>
+      </ol>
+      <p><button type="button" class="try-btn" id="guide-try">Try: Washington County, MD (No-go)</button></p>
+      <dl class="glossary" id="guide-glossary"></dl>
+      <p><button type="button" class="ghost-btn" id="guide-back" hidden>Back to the report</button></p>
+    </div>
+    <div id="report-empty">
+      <p>Pick a site from the portfolio.</p>
+    </div>
+    <div id="report-view" hidden>
+      <div class="print-head" aria-hidden="true">
+        <p class="print-site" id="print-site"></p>
+      </div>
+      <div class="banner" id="banner">
+        <p class="verdict-line"><span class="dot" id="banner-dot" aria-hidden="true"></span><span id="banner-verdict"></span></p>
+        <p class="headline" id="banner-headline"></p>
+        <p class="project-line" id="banner-project"></p>
+        <div class="report-actions">
+          <button type="button" id="copy-link">Copy link</button>
+          <button type="button" id="download-json">Download report (JSON)</button>
+          <button type="button" id="print-brief">Print brief</button>
+        </div>
+        <p class="status" id="copy-status" aria-live="polite"></p>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Report sections" id="tablist"></div>
+      <section class="tabpage" id="page-answer" role="tabpanel" aria-labelledby="tab-answer" tabindex="0"></section>
+      <section class="tabpage" id="page-flips" role="tabpanel" aria-labelledby="tab-flips" tabindex="0" hidden></section>
+      <section class="tabpage" id="page-caught" role="tabpanel" aria-labelledby="tab-caught" tabindex="0" hidden></section>
+      <section class="tabpage" id="page-rules" role="tabpanel" aria-labelledby="tab-rules" tabindex="0" hidden></section>
+      <section class="tabpage" id="page-hood" role="tabpanel" aria-labelledby="tab-hood" tabindex="0" hidden></section>
+      <p class="print-disc" id="print-disc"></p>
     </div>
     <p class="status" id="run-status" aria-live="polite"></p>
   </aside>
