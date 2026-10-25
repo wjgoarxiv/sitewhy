@@ -1,0 +1,20 @@
+# Showcase ground truth (Todo 10). Do not tune to outputs without a cited reason.
+# Input premise: the two Maryland sites are new greenfield builds with no
+# existing permits or Certificate of Use & Occupancy (permits_submitted=False).
+md-washington-county-unincorporated:
+  verdict: no-go
+  rules:
+    md-washington-county-2026: {applies: "yes", grade: fatal}
+    federal-title-v-major-source: {applies: "yes"}
+tx-abilene-ercot:
+  verdict: [conditional, needs_confirmation]
+  rules:
+    tx-sb6-large-load: {applies: "yes"}
+    tx-ercot-data-center-audit-2026: {applies: "yes"}
+    federal-title-v-major-source: {applies: "yes"}
+  no_fatal: true
+az-tucson-pima:
+  verdict: conditional
+  rules:
+    az-pima-county-2026: {applies: "no", reason_contains: [unincorporated, city]}
+    federal-title-v-major-source: {applies: "yes"}

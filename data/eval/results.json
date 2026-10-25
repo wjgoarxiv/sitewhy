@@ -1,0 +1,49 @@
+{
+ "ground_truth": {
+  "sites": {
+   "md-washington-county-unincorporated": {
+    "passed": true,
+    "checks": {
+     "verdict": true,
+     "rules": {
+      "md-washington-county-2026": true,
+      "federal-title-v-major-source": true
+     }
+    }
+   },
+   "tx-abilene-ercot": {
+    "passed": true,
+    "checks": {
+     "verdict": true,
+     "rules": {
+      "tx-sb6-large-load": true,
+      "tx-ercot-data-center-audit-2026": true,
+      "federal-title-v-major-source": true
+     },
+     "no_fatal": true
+    }
+   },
+   "az-tucson-pima": {
+    "passed": true,
+    "checks": {
+     "verdict": true,
+     "rules": {
+      "az-pima-county-2026": true,
+      "federal-title-v-major-source": true
+     }
+    }
+   }
+  },
+  "passed": 3,
+  "total": 3
+ },
+ "critic_seeded_faults": {
+  "caught": 3,
+  "total": 3,
+  "faults": [
+   "fatal-pima",
+   "title-v-below-threshold",
+   "washington-missed-exemption"
+  ]
+ }
+}

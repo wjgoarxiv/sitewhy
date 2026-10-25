@@ -436,7 +436,7 @@ Single executor, sequential. Todos 1–3 share `app/orchestrator.py`; Todos 5–
   - Evidence `task-6/`
   Commit: Y | feat(ui): decision-first report panel with flips, agent catches and live run feed
 
-- [ ] 7. Integrated flow: one portfolio, map-click screening, deep links, guide and export
+- [x] 7. Integrated flow: one portfolio, map-click screening, deep links, guide and export
   What to do:
   - (a) Persistent portfolio. `GET /portfolio` merges:
     - showcase samples (`kind: "showcase"`)
@@ -529,7 +529,7 @@ Single executor, sequential. Todos 1–3 share `app/orchestrator.py`; Todos 5–
   QA scenarios: load each sample in the console; screenshots. Evidence `task-9.txt`
   Commit: Y | data(samples): re-record showcase runs with state layer, honest conflicts and site context
 
-- [ ] 10. Eval: showcase ground truth and critic seeded-fault catch rate (roadmap Todo 13)
+- [x] 10. Eval: showcase ground truth and critic seeded-fault catch rate (roadmap Todo 13)
   What to do:
   - (a) `data/eval/ground_truth.yaml`:
     - MD unincorporated: no-go; moratorium yes, fatal; Title V yes
@@ -552,7 +552,7 @@ Single executor, sequential. Todos 1–3 share `app/orchestrator.py`; Todos 5–
   QA scenarios: `uv run python -m scripts.eval` table; failure — an altered scratchpad copy reports a mismatch. Evidence `task-10.txt`
   Commit: Y | test(eval): showcase ground truth and critic seeded-fault catch rate
 
-- [ ] 11. SAMPLE_MODE clean clone (roadmap Todo 14)
+- [x] 11. SAMPLE_MODE clean clone (roadmap Todo 14)
   What to do:
   - `git clone` HEAD into `/private/tmp/sitewhy-clean`.
   - With `HOME` set to an empty temp dir and `HTTPS_PROXY=http://127.0.0.1:9` (so any external fetch fails), run `SAMPLE_MODE=true uv run uvicorn app.main:app --port 8010`. Run `uv sync` before setting the proxy.
@@ -593,7 +593,7 @@ Single executor, sequential. Todos 1–3 share `app/orchestrator.py`; Todos 5–
 ## Final verification wave
 > Runs in parallel after ALL todos. ALL must APPROVE. Surface the results and wait for the user's explicit okay before declaring the work complete.
 - [ ] F1. Plan compliance audit: acceptance criteria met with evidence files present (litclaude:lit-verifier).
-- [ ] F2. Code quality and security review of the diff since the plan start commit (litclaude:quality-reviewer):
+- [x] F2. Code quality and security review of the diff since the plan start commit (litclaude:quality-reviewer):
   - `explain.py` purity
   - no added LLM calls
   - no keys
