@@ -18,7 +18,7 @@ Deadline: **10/28 08:45 KST** (hard). Internal submit target: **10/27 22:00 KST*
 - [x] User: Zetaris API key from the local UI (REST verified 10/25: SELECT 1 and SHOW LIGHTNING DATABASES → NY_TAXI, TPCDS_DB; endpoint POST /api/proxy/sql-editor/sqls/run-query with Bearer + X-Org-ID + X-Request-ID) (platform installed + verify.sh 9/9 PASS on 10/25) into `~/.hackathon-keys.env` (Meterless token: the app reads Nightshift's runtime-token file directly, no copy needed)
 - [x] ~~User: open Ollama~~ skipped: Nightshift serves Lightning from the cloud
 - [x] ~~User: post the Nightshift question in HackOS "Help Meterless"~~ not needed: free edition works as provider
-- [ ] Agent: plan update (Nightshift router, Cursor optional, scope cuts above), `.gitignore`, first commit (with approval)
+- [x] Agent: plan update (Nightshift router, Cursor optional, scope cuts above), `.gitignore`, first commit (with approval)
 - Done when: preflight READY, `/v1/models` on Nightshift returns 200, a Zetaris SQL query returns rows
 
 ### M1. Walking skeleton (10/25)
