@@ -179,7 +179,7 @@ Loop: plan → investigate → verify (with retries) → adjudicate → critique
   QA scenarios: happy: load + validate all; failure: entry lacking source → test fails. Evidence .litclaude/evidence/dc-site-screener/task-5.txt
   Commit: Y | feat(layers): federal, ISO, and seed datasets
 
-- [ ] 6. Evidence fetcher + verbatim quote verifier
+- [x] 6. Evidence fetcher + verbatim quote verifier
   What to do / Must NOT do: fetch HTML→text (readability) and PDF→text (pypdf), cache by URL hash with fetched_at; `verify(quote, url)` normalizes whitespace/Unicode/ligatures/hyphenation and checks containment → {status verified|not_found|unverifiable, matched_span, fetched_at}. Respect robots.txt; skip blocked platforms. Must NOT use an LLM for the verdict; no fuzzy "verified".
   Parallelization: Wave 1 | Blocked by: — | Blocks: 9,10,17
   References: spec acceptance (≥95% verbatim)

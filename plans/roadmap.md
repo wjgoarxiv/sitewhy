@@ -30,7 +30,7 @@ Deadline: **10/28 08:45 KST** (hard). Internal submit target: **10/27 22:00 KST*
 - Done when: `curl` on one Washington County MD address returns a JSON verdict with ≥1 rule, a quoted source, and the model name that answered
 
 ### M2. Agent core (10/26)
-- [ ] Todo 6 quote verifier
+- [x] Todo 6 quote verifier
 - [ ] Todo 8 applicability engine
 - [x] Todo 16 World Model engine (shared evidence graph) + conformance test
 - [ ] Todo 10 county investigator on the Markovian loop + test

@@ -21,3 +21,6 @@ __pycache__/
 # runtime output
 data/cache/
 logs/
+
+# fetched source documents (re-fetchable cache)
+data/sources/
