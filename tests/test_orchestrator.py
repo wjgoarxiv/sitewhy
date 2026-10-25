@@ -1,4 +1,5 @@
 import json
+from dataclasses import replace
 from datetime import date
 
 import httpx
@@ -19,7 +20,8 @@ TITLE_V = next(r for r in load_rules() if r["id"] == "federal-title-v-major-sour
 RELEASE = (
     "On June 30, 2026, the Washington County Board of County Commissioners approved a "
     "temporary, twelve (12) month moratorium on the acceptance, processing, reviewing and "
-    "approval of applications, plans, or requests for data centers within Washington County."
+    "approval of applications, plans, or requests for data centers within Washington County. "
+    "A six-month review was proposed. A thirty-day pause was also discussed."
 )
 GOOD_FACTS = [
     {
@@ -83,16 +85,24 @@ DRAFT_NO_GO = json.dumps(
 PLAN = json.dumps([{"rule_id": "md-washington-county-2026", "questions": ["When effective?"]}])
 
 
+WASHINGTON_UNINCORPORATED = replace(
+    WASHINGTON,
+    place=None,
+    county_subdivision="District 27, Fountain Head",
+    matched_address="13820 PENNSYLVANIA AVE, HAGERSTOWN, MD, 21742",
+)
+
+
 @pytest.fixture
 def orchestrator_factory(tmp_path):
-    def make(router, as_of=date(2026, 10, 25)):
+    def make(router, as_of=date(2026, 10, 25), jurisdiction=WASHINGTON):
         h = FallbackHarness(DuckDbHarness(), DuckDbHarness())
         register_seed(h.primary)
         fetcher = EvidenceFetcher(
             client=httpx.Client(transport=httpx.MockTransport(serve)), cache_dir=tmp_path / "src"
         )
         return Orchestrator(
-            FakeResolver(WASHINGTON), h, router, fetcher, runs_dir=tmp_path / "runs", as_of=as_of
+            FakeResolver(jurisdiction), h, router, fetcher, runs_dir=tmp_path / "runs", as_of=as_of
         )
 
     return make
@@ -113,7 +123,9 @@ def test_happy_path_no_go_with_verified_primary_quotes(orchestrator_factory):
         adjudicator=[DRAFT_NO_GO],
         critic=["[]"],
     )
-    report = orchestrator_factory(router).run("addr", mw=300)
+    report = orchestrator_factory(router, jurisdiction=WASHINGTON_UNINCORPORATED).run(
+        "addr", mw=300
+    )
     assert report["verdict"] == "no-go" and report["needs_confirmation"] == []
     wash = next(f for f in report["findings"] if f["rule_id"] == "md-washington-county-2026")
     assert wash["applies"] == "yes" and wash["grade"] == "fatal"
@@ -141,7 +153,9 @@ def test_unverifiable_quote_triggers_retry_with_feedback(orchestrator_factory):
         adjudicator=[DRAFT_NO_GO],
         critic=["[]"],
     )
-    report = orchestrator_factory(router).run("addr", mw=300)
+    report = orchestrator_factory(router, jurisdiction=WASHINGTON_UNINCORPORATED).run(
+        "addr", mw=300
+    )
     actions = [(e["role"], e["action"]) for e in report["events"]]
     assert ("evidence_verifier", "retry_requested") in actions
     second_prompt = [c for r, c in router.calls if r == "county_investigator"][1]
@@ -176,7 +190,7 @@ def test_immaterial_source_conflict_does_not_block_no_go(orchestrator_factory):
     from app.explain import enrich
 
     six = {"field": "duration", "value": "six (6) months",
-           "url": RELEASE_URL, "quote": "temporary, twelve (12) month"}
+           "url": RELEASE_URL, "quote": "six-month review was proposed"}
     twelve = {"field": "duration_days", "value": "twelve (12) months",
               "url": RELEASE_URL,
               "quote": "a temporary, twelve (12) month moratorium on the acceptance"}
@@ -190,7 +204,9 @@ def test_immaterial_source_conflict_does_not_block_no_go(orchestrator_factory):
         adjudicator=[DRAFT_NO_GO, DRAFT_NO_GO],
         critic=[json.dumps([objection]), json.dumps([objection])],
     )
-    report = orchestrator_factory(router).run("addr", mw=300)
+    report = orchestrator_factory(router, jurisdiction=WASHINGTON_UNINCORPORATED).run(
+        "addr", mw=300
+    )
     assert report["verdict"] == "no-go"
     assert any(e["action"] == "objection_resolved_by_code" for e in report["events"])
     entry = next(o for o in report["needs_confirmation"]
@@ -204,7 +220,7 @@ def test_immaterial_source_conflict_does_not_block_no_go(orchestrator_factory):
 
 def test_material_source_conflict_still_blocks(orchestrator_factory):
     thirty = {"field": "duration", "value": "thirty (30) days",
-              "url": RELEASE_URL, "quote": "temporary, twelve (12) month"}
+              "url": RELEASE_URL, "quote": "thirty-day pause was also discussed"}
     twelve = {"field": "duration_days", "value": "twelve (12) months",
               "url": RELEASE_URL,
               "quote": "a temporary, twelve (12) month moratorium on the acceptance"}
@@ -218,7 +234,9 @@ def test_material_source_conflict_still_blocks(orchestrator_factory):
         adjudicator=[DRAFT_NO_GO, DRAFT_NO_GO],
         critic=[json.dumps([objection]), json.dumps([objection])],
     )
-    report = orchestrator_factory(router).run("addr", mw=300)
+    report = orchestrator_factory(router, jurisdiction=WASHINGTON_UNINCORPORATED).run(
+        "addr", mw=300
+    )
     assert report["verdict"] == "needs_confirmation"
     entry = next(o for o in report["needs_confirmation"]
                  if o["rule_id"] == "md-washington-county-2026")
@@ -258,7 +276,9 @@ def test_critic_objection_drives_targeted_second_round(orchestrator_factory):
         adjudicator=[DRAFT_NO_GO, DRAFT_NO_GO],
         critic=[objection, "[]"],
     )
-    report = orchestrator_factory(router).run("addr", mw=300)
+    report = orchestrator_factory(router, jurisdiction=WASHINGTON_UNINCORPORATED).run(
+        "addr", mw=300
+    )
     rounds = {e["round"] for e in report["events"] if e["role"] == "county_investigator"}
     assert rounds == {1, 2}
     assert any(e["action"] == "targeted_tasks" for e in report["events"])
@@ -304,7 +324,8 @@ def test_fatal_grade_without_verified_quote_is_downgraded(orchestrator_factory):
 
 
 def test_primary_source_disagreeing_with_dataset_creates_conflict(orchestrator_factory):
-    shifted = [{**GOOD_FACTS[1], "value": "18 months"}]
+    shifted = [{**GOOD_FACTS[1], "value": "six (6) months",
+                "quote": "six-month review was proposed"}]
     router = ScriptedRouter(
         planner=[PLAN],
         county_investigator=[facts_reply(shifted)],
@@ -335,12 +356,14 @@ def test_facts_found_even_when_state_marker_comes_first(orchestrator_factory):
         adjudicator=[DRAFT_NO_GO],
         critic=["[]"],
     )
-    report = orchestrator_factory(router).run("addr", mw=300)
+    report = orchestrator_factory(router, jurisdiction=WASHINGTON_UNINCORPORATED).run(
+        "addr", mw=300
+    )
     assert report["verdict"] == "no-go"
 
 
 def test_two_primary_sources_that_disagree_create_a_conflict(orchestrator_factory):
-    six = {**GOOD_FACTS[1], "value": "6 months", "quote": "approved a temporary, twelve (12) month"}
+    six = {**GOOD_FACTS[1], "value": "6 months", "quote": "six-month review was proposed"}
     router = ScriptedRouter(
         planner=[PLAN],
         county_investigator=[facts_reply([GOOD_FACTS[1], six])],
@@ -509,3 +532,52 @@ def test_case_only_other_differences_give_zero_conflicts(orchestrator_factory):
     )
     report = orchestrator_factory(router).run("addr", mw=300)
     assert [e for e in report["events"] if e["action"] == "conflict"] == []
+
+
+def test_quote_recompute_corrects_model_duration(orchestrator_factory):
+    """(A) RED: model writes duration '12' but the verified quote says 12 months."""
+    from app.explain import enrich
+
+    fact = {
+        "field": "duration",
+        "value": "12",
+        "url": RELEASE_URL,
+        "quote": (
+            "On June 30, 2026, the Washington County Board of County Commissioners "
+            "approved a temporary, twelve (12) month moratorium on the acceptance"
+        ),
+    }
+    router = ScriptedRouter(
+        planner=[PLAN],
+        county_investigator=[facts_reply([fact, GOOD_FACTS[2]])],
+        adjudicator=[DRAFT_NO_GO],
+        critic=["[]"],
+    )
+    report = orchestrator_factory(router).run("addr", mw=300)
+    finding = next(f for f in report["findings"] if f["rule_id"] == "md-washington-county-2026")
+    assert finding["parameters"]["duration_days"] == 365
+    assert finding["computed"]["expires"] == "2027-06-30"
+    events = [e for e in report["events"] if e["action"] == "value_corrected_from_quote"]
+    assert len(events) == 1
+    assert events[0]["detail"]["model_value"] == 12
+    assert events[0]["detail"]["quote_value"] == 365
+    catches = enrich(report)["explanation"]["catches"]
+    assert "Verifier recomputed duration from the quoted text: 12 → 365 days" in [
+        c["text"] for c in catches
+    ]
+
+
+def test_quote_recompute_leaves_matching_values_alone(orchestrator_factory):
+    """(A) companion: values that agree with their quotes emit no correction."""
+    router = ScriptedRouter(
+        planner=[PLAN],
+        county_investigator=[facts_reply(GOOD_FACTS)],
+        adjudicator=[DRAFT_NO_GO],
+        critic=["[]"],
+    )
+    report = orchestrator_factory(router, jurisdiction=WASHINGTON_UNINCORPORATED).run(
+        "addr", mw=300
+    )
+    assert report["verdict"] == "no-go"
+    assert [e for e in report["events"] if e["action"] == "value_corrected_from_quote"] == []
+

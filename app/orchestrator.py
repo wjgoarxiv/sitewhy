@@ -51,9 +51,22 @@ WORDS = {
 }
 
 
+_DURATION_FACTORS = {"day": 1, "week": 7, "month": 365 / 12, "quarter": 365 / 4, "year": 365}
+_DURATION_KEYWORDS = ("year", "quarter", "month", "week")
+
+
 def parse_days(value) -> int | None:
     text = str(value).lower()
-    m = re.search(r"(\d+(?:\.\d+)?)\s*(day|month|year)?", text)
+    # An explicit "<number> <unit>" pair always wins, even when the string names
+    # other numbers too ("6 or 12 months" is a 12-month duration; a bare "12"
+    # against "twelve (12) month ..." is 12 months, not 12 days).
+    explicit = re.findall(
+        r"(\d+(?:\.\d+)?)\s*[)\]-]?\s*-?\s*(day|week|month|quarter|year)s?", text
+    )
+    if explicit:
+        total = sum(float(n) * _DURATION_FACTORS[unit] for n, unit in explicit)
+        return round(total)
+    m = re.search(r"(\d+(?:\.\d+)?)", text)
     if m:
         n = float(m.group(1))
     else:
@@ -61,11 +74,8 @@ def parse_days(value) -> int | None:
         if not word:
             return None
         n = WORDS[word]
-        m = re.search(r"(day|month|year)", text)
-    unit = (m.group(2) if m and m.lastindex and m.lastindex >= 2 else None) or (
-        "month" if "month" in text else "year" if "year" in text else "day"
-    )
-    return round(n * {"day": 1, "month": 365 / 12, "year": 365}[unit])
+    unit = next((u for u in _DURATION_KEYWORDS if u in text), "day")
+    return round(n * _DURATION_FACTORS[unit])
 
 
 def parse_date(value) -> str | None:
@@ -237,6 +247,18 @@ class Orchestrator:
         )
         field = canonical_field(fact["field"])
         value = parse_fact(field, fact.get("value"))
+        # (A) The model value is a guess; the VERIFIED quote is evidence. Re-parse
+        # the quote for decision fields and trust it when it yields a value.
+        model_value = value
+        quote_value = (
+            parse_fact(field, fact.get("quote"))
+            if check["status"] == "verified"
+            and field in ("effective", "duration_days", "scope")
+            else None
+        )
+        corrected = quote_value is not None and quote_value != value
+        if corrected:
+            value = quote_value
         claim = wm.add_claim(
             layer=rule["layer"],
             text=f"{field} = {value}",
@@ -250,8 +272,23 @@ class Orchestrator:
                 "verification": check["status"],
                 "provenance": "primary",
                 "rule": rule["id"],
+                **({"model_value": model_value} if corrected else {}),
             },
         )
+        if corrected:
+            self._event(
+                round_,
+                "evidence_verifier",
+                "value_corrected_from_quote",
+                {
+                    "rule": rule["id"],
+                    "field": field,
+                    "model_value": model_value,
+                    "quote_value": quote_value,
+                    "quote": fact["quote"],
+                    "url": fact["url"],
+                },
+            )
         if check["status"] != "verified" or value is None:
             return
         prior = rule["facts"].setdefault(field, [])

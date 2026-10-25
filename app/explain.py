@@ -345,6 +345,22 @@ def _catches(report, sensitivity):
             "text": str(detail)[:300] if detail else "verifier asked for another attempt",
             "outcome": outcome,
         })
+    for e in events:
+        if e.get("action") != "value_corrected_from_quote":
+            continue
+        detail = e.get("detail") or {}
+        label = "duration" if detail.get("field") == "duration_days" else detail.get("field", "")
+        suffix = " days" if detail.get("field") == "duration_days" else ""
+        catches.append({
+            "round": e.get("round", 0),
+            "actor": "evidence_verifier",
+            "kind": "correction",
+            "text": (
+                f"Verifier recomputed {label} from the quoted text: "
+                f"{detail.get('model_value')} → {detail.get('quote_value')}{suffix}"
+            ),
+            "outcome": "kept the quoted value",
+        })
     for s in sensitivity:
         readings = " vs ".join(str(r["value"]) for r in s["readings"])
         catches.append({
