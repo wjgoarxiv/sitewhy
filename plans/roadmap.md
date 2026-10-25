@@ -26,7 +26,7 @@ Deadline: **10/28 08:45 KST** (hard). Internal submit target: **10/27 22:00 KST*
 - [x] Todo 2 model client through Nightshift (+ Ollama fallback, per-request model trace)
 - [x] Todo 3 Zetaris adapter (+ DuckDB/sample fallback)
 - [x] Todo 4 resolver (address → state, county)
-- [ ] Todo 5 minimal seed: federal + 3 states + 3 counties
+- [x] Todo 5 minimal seed (moratoria only; federal/state layers move to M2): federal + 3 states + 3 counties
 - Done when: `curl` on one Washington County MD address returns a JSON verdict with ≥1 rule, a quoted source, and the model name that answered
 
 ### M2. Agent core (10/26)

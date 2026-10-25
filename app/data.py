@@ -114,7 +114,8 @@ class ZetarisHarness:
         self._run_ignoring(f"DROP LIGHTNING DATABASE TABLE {SCHEMA}.{table}", "")
         self._run(
             f"CREATE LIGHTNING FILESTORE TABLE {table} FROM {SCHEMA} FORMAT CSV OPTIONS ("
-            f'path "file://{container_path}", header "true", inferSchema "false")'
+            f'path "file://{container_path}", header "true", inferSchema "false", '
+            'multiLine "true", escape \'"\')'
         )
 
 
