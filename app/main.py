@@ -12,6 +12,7 @@ from app.config import Settings, load_settings
 from app.geo import Resolver, UnresolvedAddressError
 from app.orchestrator import Orchestrator, new_run_id
 from app.screen import Screener
+from app.sitecontext import SiteContext
 
 ROOT = Path(__file__).resolve().parent.parent
 SAMPLES_DIR = ROOT / "samples"
@@ -133,6 +134,44 @@ def create_app(
         if not name.replace("-", "").replace("_", "").isalnum() or not path.is_file():
             raise HTTPException(404, "unknown sample")
         return json.loads(path.read_text())
+
+    def site_context() -> SiteContext:
+        override = getattr(app.state, "site_context", None)
+        return override if override is not None else SiteContext()
+
+    def context_for(lat, lon, county_fips) -> dict:
+        try:
+            return site_context().context(lat, lon, county_fips)
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+    @app.get("/context")
+    def get_context(lat: float, lon: float, county_fips: str) -> dict:
+        return context_for(lat, lon, county_fips)
+
+    @app.get("/samples/{name}/context")
+    def get_sample_context(name: str) -> dict:
+        path = samples_dir / f"{name}.json"
+        if not name.replace("-", "").replace("_", "").isalnum() or not path.is_file():
+            raise HTTPException(404, "unknown sample")
+        jurisdiction = json.loads(path.read_text()).get("jurisdiction") or {}
+        try:
+            lat = float(jurisdiction["lat"])
+            lon = float(jurisdiction["lon"])
+            county_fips = str(jurisdiction["county_fips"])
+        except (KeyError, TypeError, ValueError) as exc:
+            raise HTTPException(404, "sample has no jurisdiction") from exc
+        return context_for(lat, lon, county_fips)
+
+    @app.get("/runs/{run_id}/context")
+    def get_run_context(run_id: str) -> dict:
+        if run_id not in runs:
+            raise HTTPException(404, "unknown run")
+        report = runs[run_id].get("report") or {}
+        jurisdiction = report.get("jurisdiction") or {}
+        if "lat" not in jurisdiction or "county_fips" not in jurisdiction:
+            raise HTTPException(409, "run not ready")
+        return context_for(jurisdiction["lat"], jurisdiction["lon"], jurisdiction["county_fips"])
 
     if WEB_DIR.is_dir():
         app.mount("/", StaticFiles(directory=WEB_DIR, html=True), name="web")
