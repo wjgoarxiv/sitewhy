@@ -22,7 +22,7 @@ Deadline: **10/28 08:45 KST** (hard). Internal submit target: **10/27 22:00 KST*
 - Done when: preflight READY, `/v1/models` on Nightshift returns 200, a Zetaris SQL query returns rows
 
 ### M1. Walking skeleton (10/25)
-- [ ] Todo 1 skeleton (uv, FastAPI, pytest, ruff, config, `SAMPLE_MODE`)
+- [x] Todo 1 skeleton (uv, FastAPI, pytest, ruff, config, `SAMPLE_MODE`)
 - [ ] Todo 2 model client through Nightshift (+ Ollama fallback, per-request model trace)
 - [ ] Todo 3 Zetaris adapter (+ DuckDB/sample fallback)
 - [ ] Todo 4 resolver (address → state, county)

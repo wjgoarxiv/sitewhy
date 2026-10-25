@@ -139,7 +139,7 @@ Loop: plan → investigate → verify (with retries) → adjudicate → critique
 > Implementation + Test = ONE todo. Never separate them.
 > Rows start at column zero as `- [ ] N. <title>`; start-work cannot see an indented row.
 <!-- APPEND TASK BATCHES BELOW THIS LINE — never rewrite the headers above. -->
-- [ ] 1. Project skeleton (uv, FastAPI, pytest, ruff, config)
+- [x] 1. Project skeleton (uv, FastAPI, pytest, ruff, config)
   What to do / Must NOT do: `app/` (FastAPI), `tests/`, `data/`, `eval/`, `pyproject.toml` via uv (Python 3.12+), `.env.example` (NVIDIA_API_KEY, OLLAMA_BASE_URL, ZETARIS_REST_URL, ZETARIS_API_KEY, ZETARIS_ORG_ID, ZETARIS_PREFIX, SEARCH_API_KEY), `/health`. `git init` only with user approval. Must NOT commit secrets.
   Parallelization: Wave 1 | Blocked by: — | Blocks: 2,3,7,12,16
   References (the executor has NO interview context — be exhaustive): spec `.litclaude/deep-interview/open-agent-hackathon-2026-spec.md`; draft `.litclaude/drafts/dc-site-screener.md`; env: macOS M5 Pro 48GB, uv, Node 22, Ollama, LM Studio, no Docker
