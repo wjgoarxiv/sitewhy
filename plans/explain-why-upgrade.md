@@ -350,7 +350,7 @@ Single executor, sequential. Todos 1–3 share `app/orchestrator.py`; Todos 5–
   QA scenarios: curl Tucson context (Pima + Tucson city) and Washington context (place null); record sizes. Evidence `task-4.txt`
   Commit: Y | feat(map): cached site context with county, city limits and transmission lines from public services
 
-- [ ] 5. Console shell: satellite map, status lamps, telemetry and portfolio (frontend-ui-ux build lane, redesign)
+- [x] 5. Console shell: satellite map, status lamps, telemetry and portfolio (frontend-ui-ux build lane, redesign)
   What to do:
   - Restructure `web/` into `index.html`, `app.css` and `app.js` (vanilla).
   - Vendor Leaflet 1.9.4 into `web/vendor/leaflet/` (`leaflet.js`, `leaflet.css`, `images/`, `LICENSE` from `https://unpkg.com/leaflet@1.9.4/dist/`) and record the sha256.
@@ -395,7 +395,7 @@ Single executor, sequential. Todos 1–3 share `app/orchestrator.py`; Todos 5–
   QA scenarios: claude-in-chrome — click each portfolio row and map dot; screenshots at 1440×900 and 390×844. Evidence `task-5/`
   Commit: Y | feat(ui): HQ console shell with satellite map, layer status lamps, telemetry and portfolio
 
-- [ ] 6. Report panel and live run feed
+- [x] 6. Report panel and live run feed
   What to do: fill the right zone with tabs (keyboard arrows, `role=tablist`, `aria-selected`).
   1. "Answer & why":
      - verdict banner with `headline`; project line (MW, address, county, ISO, as-of)
@@ -497,7 +497,7 @@ Single executor, sequential. Todos 1–3 share `app/orchestrator.py`; Todos 5–
   QA scenarios: curl `/resolve` for "1 Harrison St SE, Leesburg, VA 20175" (record 200 or 422); optional live run (cut item 5). Evidence `task-8.txt`
   Commit: Y | fix(orchestrator): report coverage and run cleanly outside modelled states
 
-- [ ] 9. Re-record the four showcase runs live
+- [x] 9. Re-record the four showcase runs live
   What to do: add `scripts/record_samples.py` with the fixed inputs (300 MW, permits unknown):
   - `md-washington-county-unincorporated`: "13820 Pennsylvania Ave, Hagerstown MD 21742"
   - `tx-abilene-ercot`: "555 Walnut St, Abilene TX 79601"

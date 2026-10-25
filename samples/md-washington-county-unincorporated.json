@@ -1,7 +1,7 @@
 {
- "run_id": "20261025T083241Z-bf1285",
+ "run_id": "20261025T181812Z-dc4ee5",
  "project": {
-  "address": "13820 Pennsylvania Ave, Hagerstown, MD 21742",
+  "address": "13820 Pennsylvania Ave, Hagerstown MD 21742",
   "mw": 300.0,
   "permits_submitted": null
  },
@@ -50,96 +50,49 @@
   ],
   "multiple_utilities": true
  },
- "verdict": "no-go",
- "why": "The Washington County moratorium (ORD-2026-12) is in effect from June 30, 2026 through June 30, 2027 and pauses acceptance, processing, reviewing, and approval of all data center applications countywide, which the findings confirm applies to the site. Because the moratorium blocks all local data center permitting activity during this period, the project cannot secure necessary county approvals as of the as-of date 2026-10-25. Separately, the project's assumed 121 diesel generators (2,500 kW each, total 302.5 MW) yield an estimated NOx potential-to-emit of 1,067 tpy, exceeding the 100 tpy major-source threshold under 40 CFR 70.2, triggering a federal Title V operating permit requirement. The Title V permit adds a major federal air-permitting obligation that compounds the local moratorium barrier. With the county moratorium actively blocking local approvals and a major federal air permit required, the project cannot proceed now.",
- "guard_notes": [],
+ "verdict": "needs_confirmation",
+ "why": "The project's 300 MW load assumes 121 diesel generators (2,500 kW each, total 302.5 MW) yielding an estimated NOx potential-to-emit of 1,067 tpy, exceeding the 100 tpy major-source threshold under 40 CFR 70.2 and triggering a federal Title V operating permit requirement. Washington County's moratorium (ORD-2026-12) is in effect as of 2026-10-26 with a computed expiration of 2026-12-27 (180 days from June 30, 2026) and pauses acceptance, processing, reviewing, and approval of all data center applications countywide. The moratorium's exemption for uses with a current Certificate of Use & Occupancy as of the effective date is noted in the ordinance, but the computed applicability indicates the moratorium applies to this site. The combination of an active local permitting block and a definite major federal air permit requirement means the project cannot proceed under current conditions.",
+ "guard_notes": [
+  "unresolved critic objections on decisive rules"
+ ],
  "findings": [
   {
    "rule_id": "md-washington-county-2026",
    "layer": "county",
    "title": "Washington County data center moratorium",
    "applies": "yes",
-   "reason": "in effect on 2026-10-25 and the site is within its scope",
+   "reason": "in effect on 2026-10-26 and the site is within its scope",
    "computed": {
     "effective": "2026-06-30",
-    "expires": "2027-06-30"
+    "expires": "2026-12-27"
    },
    "parameters": {
     "effective": "2026-06-30",
-    "duration_days": 365,
+    "duration_days": 180,
     "scope": "countywide",
     "exempt_if_permits_submitted": false
    },
    "evidence": [
     {
-     "field": "purpose_draft",
-     "quote": "The Board desires to study data centers in light of changing consumer demand, and changes to existing infrastructure in the County to evaluate their suitability and economic, social and environmental risks.",
-     "verification": "unverifiable",
+     "field": "duration_days",
+     "quote": "There shall be a temporary deferral on the acceptance, processing, reviewing, and approval of all applications, plans, or requests for Data Centers in Washington County as defined in herein for a period of six (6) months starting with the effective date of this Ordinance.",
+     "verification": "verified",
      "provenance": "primary",
-     "url": "https://www.washco-md.net/wp-content/uploads/Draft-Ordinance-Data-Center-Memorandum.pdf"
+     "url": "https://www.washco-md.net/wp-content/uploads/Draft-Ordinance-Data-Center-Memoratorium.pdf"
     },
     {
-     "field": "effective_date",
+     "field": "other",
+     "quote": "There shall be a temporary deferral on the acceptance, processing, reviewing, and approval of all applications, plans, or requests for Data Centers in Washington County as defined in herein for a period of six (6) months starting with the effective date of this Ordinance.",
+     "verification": "verified",
+     "provenance": "primary",
+     "url": "https://www.washco-md.net/wp-content/uploads/Draft-Ordinance-Data-Center-Memoratorium.pdf"
+    },
+    {
+     "field": "duration_days",
      "quote": "On June 30, 2026, the Washington County Board of County Commissioners approved a temporary, twelve (12) month moratorium on the acceptance, processing, reviewing and approval of applications, plans, or requests for data centers within Washington County.",
      "verification": "verified",
      "provenance": "primary",
      "url": "https://www.washco-md.net/washington-county-board-of-county-commissioners-approves-temporary-moratorium-on-data-center-applications/"
-    },
-    {
-     "field": "duration_ordinance",
-     "quote": "There shall be a temporary deferral on the acceptance, processing, reviewing, and approval of all applications, plans, or requests for Data Centers in Washington County as defined in herein for a period of six (6) months starting with the effective date of this Ordinance.",
-     "verification": "verified",
-     "provenance": "primary",
-     "url": "https://www.washco-md.net/wp-content/uploads/Draft-Ordinance-Data-Center-Memoratorium.pdf"
-    },
-    {
-     "field": "duration",
-     "quote": "The moratorium became effective immediately upon adoption and will remain in effect for twelve (12) months unless modified or extended by a majority vote of the Washington County Board of County Commissioners.",
-     "verification": "verified",
-     "provenance": "primary",
-     "url": "https://www.washco-md.net/washington-county-board-of-county-commissioners-approves-temporary-moratorium-on-data-center-applications/"
-    },
-    {
-     "field": "exemptions",
-     "quote": "The definition of \u201cData Center\u201d and the deferral does not apply to any use currently permitted under the Zoning Ordinance and for which a current Certificate of Use & Occupancy was disseminated as of the effective date of this Ordinance.",
-     "verification": "verified",
-     "provenance": "primary",
-     "url": "https://www.washco-md.net/wp-content/uploads/Draft-Ordinance-Data-Center-Memoratorium.pdf"
-    },
-    {
-     "field": "paused_activities",
-     "quote": "There shall be a temporary deferral on the acceptance, processing, reviewing, and approval of all applications, plans, or requests for Data Centers in Washington County as defined in herein for a period of six (6) months starting with the effective date of this Ordinance.",
-     "verification": "verified",
-     "provenance": "primary",
-     "url": "https://www.washco-md.net/wp-content/uploads/Draft-Ordinance-Data-Center-Memoratorium.pdf"
-    },
-    {
-     "field": "exemptions_grandfathering",
-     "quote": "The definition of \u201cData Center\u201d and the deferral does not apply to any use currently permitted under the Zoning Ordinance and for which a current Certificate of Use & Occupancy was disseminated as of the effective date of this Ordinance.",
-     "verification": "verified",
-     "provenance": "primary",
-     "url": "https://www.washco-md.net/wp-content/uploads/Draft-Ordinance-Data-Center-Memoratorium.pdf"
-    },
-    {
-     "field": "legislative_finding",
-     "quote": "The County\u2019s Zoning Ordinance does not currently address \u201cdata centers\u201d; and the Board desires to study data centers in light of changing consumer demand, and changes to existing infrastructure in the County to evaluate their suitability and economic, social and environmental risks.",
-     "verification": "unverifiable",
-     "provenance": "primary",
-     "url": "https://www.washco-md.net/wp-content/uploads/Draft-Ordinance-Data-Center-Memorandum.pdf"
-    },
-    {
-     "field": "paused_activities",
-     "quote": "There shall be a temporary deferral on the acceptance, processing, reviewing, and approval of all applications, plans, or requests for Data Centers in Washington County as defined in herein for a period of six (6) months starting with the effective date of this Ordinance.",
-     "verification": "verified",
-     "provenance": "primary",
-     "url": "https://www.washco-md.net/wp-content/uploads/Draft-Ordinance-Data-Center-Memoratorium.pdf"
-    },
-    {
-     "field": "effective_date",
-     "quote": "Adopted and effective this 30th day of June, 2026.",
-     "verification": "verified",
-     "provenance": "primary",
-     "url": "https://www.washco-md.net/wp-content/uploads/Draft-Ordinance-Data-Center-Memoratorium.pdf"
     },
     {
      "field": "scope",
@@ -163,44 +116,16 @@
      "url": "Moratorium Nation dataset, refreshed 2026-09-23 (github.com/mjbommar/moratorium-data-2026, CC-BY-4.0)"
     },
     {
-     "field": "duration_months",
-     "quote": "There shall be a temporary deferral on the acceptance, processing, reviewing, and approval of all applications, plans, or requests for Data Centers in Washington County as defined in herein for a period of six (6) months starting with the effective date of this Ordinance.",
-     "verification": "verified",
+     "field": "other",
+     "quote": "The Board desires to study data centers in light of changing consumer demand, and changes to existing infrastructure in the County to evaluate their suitability and economic, social and environmental risks.",
+     "verification": "unverifiable",
      "provenance": "primary",
-     "url": "https://www.washco-md.net/wp-content/uploads/Draft-Ordinance-Data-Center-Memoratorium.pdf"
+     "url": "https://www.washco-md.net/wp-content/uploads/Draft-Ordinance-Data-Center-Memorandum.pdf"
     },
     {
-     "field": "scope",
-     "quote": "On June 30, 2026, the Washington County Board of County Commissioners approved a temporary, twelve (12) month moratorium on the acceptance, processing, reviewing and approval of applications, plans, or requests for data centers within Washington County.",
-     "verification": "verified",
-     "provenance": "primary",
-     "url": "https://www.washco-md.net/washington-county-board-of-county-commissioners-approves-temporary-moratorium-on-data-center-applications/"
-    },
-    {
-     "field": "exemptions_press_release",
-     "quote": "The moratorium is not intended to permanently prohibit data center development.",
-     "verification": "verified",
-     "provenance": "primary",
-     "url": "https://www.washco-md.net/washington-county-board-of-county-commissioners-approves-temporary-moratorium-on-data-center-applications/"
-    },
-    {
-     "field": "duration_draft_ordinance",
-     "quote": "There shall be a temporary deferral on the acceptance, processing, reviewing, and approval of all applications, plans, or requests for Data Centers in Washington County as defined in herein for a period of six (6) months starting with the effective date of this Ordinance.",
-     "verification": "verified",
-     "provenance": "primary",
-     "url": "https://www.washco-md.net/wp-content/uploads/Draft-Ordinance-Data-Center-Memoratorium.pdf"
-    },
-    {
-     "field": "expiration_date",
-     "quote": "There shall be a temporary deferral on the acceptance, processing, reviewing, and approval of all applications, plans, or requests for Data Centers in Washington County as defined in herein for a period of six (6) months starting with the effective date of this Ordinance.",
-     "verification": "verified",
-     "provenance": "primary",
-     "url": "https://www.washco-md.net/wp-content/uploads/Draft-Ordinance-Data-Center-Memoratorium.pdf"
-    },
-    {
-     "field": "exempt_if_certificate_of_use_occupancy",
-     "quote": "The definition of \u201cData Center\u201d and the deferral does not apply to any use currently permitted under the Zoning Ordinance and for which a current Certificate of Use & Occupancy was disseminated as of the effective date of this Ordinance.",
-     "verification": "verified",
+     "field": "other",
+     "quote": "The County\u2019s Zoning Ordinance does not currently address \u201cdata centers\u201d; and the Board desires to study data centers in light of changing consumer demand, and changes to existing infrastructure in the County to evaluate their suitability and economic, social and environmental risks.",
+     "verification": "not_found",
      "provenance": "primary",
      "url": "https://www.washco-md.net/wp-content/uploads/Draft-Ordinance-Data-Center-Memoratorium.pdf"
     },
@@ -212,25 +137,25 @@
      "url": "https://www.washco-md.net/wp-content/uploads/Draft-Ordinance-Data-Center-Memoratorium.pdf"
     },
     {
-     "field": "paused_activities",
-     "quote": "There shall be a temporary deferral on the acceptance, processing, reviewing, and approval of all applications, plans, or requests for Data Centers in Washington County as defined in herein for a period of six (6) months starting with the effective date of this Ordinance.",
+     "field": "other",
+     "quote": "The moratorium was approved to provide the County with adequate time to thoroughly study this emerging technology and land use potential.",
+     "verification": "verified",
+     "provenance": "primary",
+     "url": "https://www.washco-md.net/washington-county-board-of-county-commissioners-approves-temporary-moratorium-on-data-center-applications/"
+    },
+    {
+     "field": "effective",
+     "quote": "Adopted and effective this 30th day of June, 2026.",
      "verification": "verified",
      "provenance": "primary",
      "url": "https://www.washco-md.net/wp-content/uploads/Draft-Ordinance-Data-Center-Memoratorium.pdf"
     },
     {
-     "field": "purpose",
-     "quote": "The moratorium was approved to provide the County with adequate time to thoroughly study this emerging technology and land use potential.",
+     "field": "scope",
+     "quote": "on the acceptance, processing, reviewing, and approval of all applications, plans, or requests for Data Centers in Washington County as defined in herein for a period of six (6) months starting with the effective date of this Ordinance.",
      "verification": "verified",
      "provenance": "primary",
-     "url": "https://www.washco-md.net/washington-county-board-of-county-commissioners-approves-temporary-moratorium-on-data-center-applications/"
-    },
-    {
-     "field": "purpose",
-     "quote": "The moratorium was approved to provide the County with adequate time to thoroughly study this emerging technology and land use potential.",
-     "verification": "verified",
-     "provenance": "primary",
-     "url": "https://www.washco-md.net/washington-county-board-of-county-commissioners-approves-temporary-moratorium-on-data-center-applications/"
+     "url": "https://www.washco-md.net/wp-content/uploads/Draft-Ordinance-Data-Center-Memoratorium.pdf"
     }
    ],
    "grade": "fatal"
@@ -262,23 +187,88 @@
    "grade": "major"
   }
  ],
- "needs_confirmation": [],
+ "state_watch": [
+  {
+   "policy_action_id": "md-hb1532-sb0841-2026",
+   "bill": "HB1532 / SB0841 (2026)",
+   "status": "Conference report adopted both chambers 2026-04-13; Approved by Governor, Chapter 353, 2026-05-12",
+   "key_provisions": "Utility RELIEF Act. Establishes large load customer registry, voluntary clean capacity rating program, interconnection process, and Baltimore City data center limits in certain development districts.",
+   "policy_mechanism": "utility_large_load_restriction",
+   "scope_of_action": "utility_grid",
+   "legal_effect_status": "unknown",
+   "bill_status_category": "enacted",
+   "last_action_date_iso": "2026-05-12",
+   "primary_source_url": null,
+   "provenance": "dataset",
+   "source": "Moratorium Nation state_legislation.csv"
+  },
+  {
+   "policy_action_id": "md-hb0293-sb0056-2026",
+   "bill": "HB0293 / SB0056 (2026)",
+   "status": "Approved by Governor, Chapter 100 (HB0293), effective 2026-07-01",
+   "key_provisions": "Authorizes Maryland Longitudinal Data System Center external data sharing with third-party data centers for multistate reporting; not a siting moratorium.",
+   "policy_mechanism": "statewide_moratorium",
+   "scope_of_action": "statewide",
+   "legal_effect_status": "unknown",
+   "bill_status_category": "enacted",
+   "last_action_date_iso": "2026-04-14",
+   "primary_source_url": null,
+   "provenance": "dataset",
+   "source": "Moratorium Nation state_legislation.csv"
+  }
+ ],
+ "site": {
+  "address": "13820 PENNSYLVANIA AVE, HAGERSTOWN, MD, 21742",
+  "state": "MD",
+  "county": "Washington County",
+  "place": null,
+  "iso": "PJM",
+  "mw": 300.0,
+  "as_of": "2026-10-26",
+  "incorporated": false,
+  "permits_submitted": null,
+  "utilities": [
+   "Hagerstown Light Department",
+   "The Potomac Edison Company",
+   "Town of Williamsport - (MD)"
+  ],
+  "lat": 39.692932589545,
+  "lon": -77.721557970202
+ },
+ "coverage": {
+  "state_rules": [],
+  "county_sources": [
+   "md-washington-county-2026"
+  ]
+ },
+ "needs_confirmation": [
+  {
+   "rule_id": "md-washington-county-2026",
+   "type": "source_conflict",
+   "text": "The evidence contains a direct conflict on the moratorium duration: the draft ordinance text specifies 'six (6) months' while the Board's press release and the Moratorium Nation dataset both state 'twelve (12) month'. The computed expiration (2026-12-27) uses the 6-month figure, but the source conflicts list confirms two contradictory claims. The draft verdict presents the 6-month expiration as settled fact without acknowledging the discrepancy.",
+   "question": "Which duration is correct for the adopted Ordinance ORD-2026-12\u20146 months or 12 months\u2014and what is the authoritative source?"
+  },
+  {
+   "rule_id": "md-washington-county-2026",
+   "type": "missed_exemption",
+   "text": "The ordinance exempts 'any use currently permitted under the Zoning Ordinance and for which a current Certificate of Use & Occupancy was disseminated as of the effective date of this Ordinance.' The finding's parameter 'exempt_if_permits_submitted: false' does not capture this exemption; it appears to conflate permit submission with an existing Certificate of Use & Occupancy. The draft verdict dismisses the exemption based on 'computed applicability' that likely did not evaluate the actual exemption criterion.",
+   "question": "Does the site at 13820 Pennsylvania Ave have a current Certificate of Use & Occupancy for a permitted use as of June 30, 2026?"
+  },
+  {
+   "rule_id": "md-washington-county-2026",
+   "type": "unknown_input",
+   "text": "The draft verdict concludes the moratorium applies to this site, but the exemption hinges on whether the site already holds a Certificate of Use & Occupancy as of the effective date. The project data shows 'permits_submitted: null', which is not the same as the exemption criterion. The existence of such a certificate is an unknown project fact that the decision depends on.",
+   "question": "What is the current zoning status and Certificate of Use & Occupancy for the parcel as of June 30, 2026?"
+  }
+ ],
  "conflicts": [
   [
-   "claim:rule-md-washington-county-2026-2712f33e4-5de9ce8d987b",
-   "claim:rule-md-washington-county-2026-2712f33e4-2d39d767803e"
+   "claim:rule-md-washington-county-2026-2712f33e4-1c9251b79bbf",
+   "claim:rule-md-washington-county-2026-2712f33e4-4b3680af83e5"
   ],
   [
-   "claim:rule-md-washington-county-2026-2712f33e4-e6f0e37f1ebd",
-   "claim:rule-md-washington-county-2026-2712f33e4-2d39d767803e"
-  ],
-  [
-   "claim:rule-md-washington-county-2026-2712f33e4-e6f0e37f1ebd",
-   "claim:rule-md-washington-county-2026-2712f33e4-5de9ce8d987b"
-  ],
-  [
-   "claim:rule-md-washington-county-2026-2712f33e4-f143632198d0",
-   "claim:rule-md-washington-county-2026-2712f33e4-e84a5cb8ff2a"
+   "claim:rule-md-washington-county-2026-2712f33e4-1c9251b79bbf",
+   "claim:rule-md-washington-county-2026-2712f33e4-6cb96d619adc"
   ]
  ],
  "events": [
@@ -293,16 +283,18 @@
     "place": null,
     "iso": "PJM",
     "mw": 300.0,
-    "as_of": "2026-10-25",
+    "as_of": "2026-10-26",
     "incorporated": false,
     "permits_submitted": null,
     "utilities": [
      "Hagerstown Light Department",
      "The Potomac Edison Company",
      "Town of Williamsport - (MD)"
-    ]
+    ],
+    "lat": 39.692932589545,
+    "lon": -77.721557970202
    },
-   "at": "2026-10-25T08:32:41.652999+00:00"
+   "at": "2026-10-25T18:18:12.462367+00:00"
   },
   {
    "round": 0,
@@ -316,7 +308,17 @@
      "federal-title-v-major-source"
     ]
    },
-   "at": "2026-10-25T08:32:41.911123+00:00"
+   "at": "2026-10-25T18:18:12.851798+00:00"
+  },
+  {
+   "round": 0,
+   "role": "system",
+   "action": "state_watch",
+   "detail": [
+    "md-hb1532-sb0841-2026",
+    "md-hb0293-sb0056-2026"
+   ],
+   "at": "2026-10-25T18:18:13.012633+00:00"
   },
   {
    "round": 1,
@@ -335,7 +337,7 @@
      ]
     }
    ],
-   "at": "2026-10-25T08:32:45.842740+00:00"
+   "at": "2026-10-25T18:18:19.715670+00:00"
   },
   {
    "round": 1,
@@ -344,13 +346,13 @@
    "detail": {
     "rule": "md-washington-county-2026",
     "attempt": 1,
-    "chunks": 2,
+    "chunks": 1,
     "status": "completed",
     "tokens_saved": 0,
     "token_label": "estimated",
-    "facts": 8
+    "facts": 0
    },
-   "at": "2026-10-25T08:33:04.341260+00:00"
+   "at": "2026-10-25T18:18:22.814149+00:00"
   },
   {
    "round": 1,
@@ -359,17 +361,17 @@
    "detail": {
     "rule": "md-washington-county-2026",
     "attempt": 1,
-    "checked": 8,
-    "failed": 1
+    "checked": 0,
+    "failed": 0
    },
-   "at": "2026-10-25T08:33:23.316586+00:00"
+   "at": "2026-10-25T18:18:22.814157+00:00"
   },
   {
    "round": 1,
    "role": "evidence_verifier",
    "action": "retry_requested",
-   "detail": "These quotes were not found verbatim, copy exact sentences: The County\u2019s Zoning Ordinance does not currently address \u201cdata centers\u201d; and the Board desires to study data centers in ",
-   "at": "2026-10-25T08:33:23.316620+00:00"
+   "detail": "Your reply contained no JSON array. Reply with the JSON array of facts FIRST, then the [STATE_CHECKPOINT] block.",
+   "at": "2026-10-25T18:18:22.814158+00:00"
   },
   {
    "round": 1,
@@ -382,21 +384,9 @@
     "status": "completed",
     "tokens_saved": 0,
     "token_label": "estimated",
-    "facts": 8
+    "facts": 6
    },
-   "at": "2026-10-25T08:33:41.317019+00:00"
-  },
-  {
-   "round": 1,
-   "role": "evidence_verifier",
-   "action": "conflict",
-   "detail": {
-    "rule": "md-washington-county-2026",
-    "field": "paused_activities",
-    "value": "None",
-    "other_primary": "acceptance, processing, reviewing, and approval of all applications, plans, or requests for Data Centers"
-   },
-   "at": "2026-10-25T08:33:45.973040+00:00"
+   "at": "2026-10-25T18:18:28.451786+00:00"
   },
   {
    "round": 1,
@@ -405,17 +395,24 @@
    "detail": {
     "rule": "md-washington-county-2026",
     "attempt": 2,
-    "checked": 8,
+    "checked": 6,
     "failed": 1
    },
-   "at": "2026-10-25T08:33:50.583183+00:00"
+   "at": "2026-10-25T18:18:36.250798+00:00"
   },
   {
    "round": 1,
    "role": "evidence_verifier",
    "action": "retry_requested",
    "detail": "These quotes were not found verbatim, copy exact sentences: The Board desires to study data centers in light of changing consumer demand, and changes to existing infrastructure in ",
-   "at": "2026-10-25T08:33:50.583188+00:00"
+   "at": "2026-10-25T18:18:36.250803+00:00"
+  },
+  {
+   "round": 1,
+   "role": "county_investigator",
+   "action": "ultra_reextract",
+   "detail": "md-washington-county-2026: Lightning returned no facts; Ultra re-extracting",
+   "at": "2026-10-25T18:18:36.250806+00:00"
   },
   {
    "round": 1,
@@ -428,9 +425,9 @@
     "status": "completed",
     "tokens_saved": 0,
     "token_label": "estimated",
-    "facts": 8
+    "facts": 6
    },
-   "at": "2026-10-25T08:34:06.726501+00:00"
+   "at": "2026-10-25T18:18:52.926566+00:00"
   },
   {
    "round": 1,
@@ -438,11 +435,15 @@
    "action": "conflict",
    "detail": {
     "rule": "md-washington-county-2026",
-    "field": "paused_activities",
-    "value": "acceptance, processing, reviewing, and approval of applications, plans, or requests for data centers",
-    "other_primary": "acceptance, processing, reviewing, and approval of all applications, plans, or requests for Data Centers"
+    "field": "duration_days",
+    "value": 180,
+    "other_primary": 365,
+    "quote": "There shall be a temporary deferral on the acceptance, processing, reviewing, and approval of all applications, plans, or requests for Data Centers in Washington County as defined in herein for a period of six (6) months starting with the effective date of this Ordinance.",
+    "url": "https://www.washco-md.net/wp-content/uploads/Draft-Ordinance-Data-Center-Memoratorium.pdf",
+    "other_quote": "On June 30, 2026, the Washington County Board of County Commissioners approved a temporary, twelve (12) month moratorium on the acceptance, processing, reviewing and approval of applications, plans, or requests for data centers within Washington County.",
+    "other_url": "https://www.washco-md.net/washington-county-board-of-county-commissioners-approves-temporary-moratorium-on-data-center-applications/"
    },
-   "at": "2026-10-25T08:34:12.442186+00:00"
+   "at": "2026-10-25T18:18:52.928898+00:00"
   },
   {
    "round": 1,
@@ -450,23 +451,15 @@
    "action": "conflict",
    "detail": {
     "rule": "md-washington-county-2026",
-    "field": "paused_activities",
-    "value": "acceptance, processing, reviewing, and approval of applications, plans, or requests for data centers",
-    "other_primary": "None"
+    "field": "duration_days",
+    "value": 180,
+    "other_dataset": 365,
+    "quote": "There shall be a temporary deferral on the acceptance, processing, reviewing, and approval of all applications, plans, or requests for Data Centers in Washington County as defined in herein for a period of six (6) months starting with the effective date of this Ordinance.",
+    "url": "https://www.washco-md.net/wp-content/uploads/Draft-Ordinance-Data-Center-Memoratorium.pdf",
+    "other_quote": "Board of County Commissioners approved Ordinance ORD-2026-12, a 12-month moratorium",
+    "other_url": "Moratorium Nation dataset, refreshed 2026-09-23 (github.com/mjbommar/moratorium-data-2026, CC-BY-4.0)"
    },
-   "at": "2026-10-25T08:34:12.442228+00:00"
-  },
-  {
-   "round": 1,
-   "role": "evidence_verifier",
-   "action": "conflict",
-   "detail": {
-    "rule": "md-washington-county-2026",
-    "field": "purpose",
-    "value": "to study emerging technology and land use potential",
-    "other_primary": "None"
-   },
-   "at": "2026-10-25T08:34:12.442764+00:00"
+   "at": "2026-10-25T18:18:52.928991+00:00"
   },
   {
    "round": 1,
@@ -475,10 +468,10 @@
    "detail": {
     "rule": "md-washington-county-2026",
     "attempt": 3,
-    "checked": 8,
-    "failed": 0
+    "checked": 6,
+    "failed": 1
    },
-   "at": "2026-10-25T08:34:14.714856+00:00"
+   "at": "2026-10-25T18:18:52.933158+00:00"
   },
   {
    "round": 1,
@@ -488,7 +481,7 @@
     {
      "rule_id": "md-washington-county-2026",
      "applies": "yes",
-     "reason": "in effect on 2026-10-25 and the site is within its scope"
+     "reason": "in effect on 2026-10-26 and the site is within its scope"
     },
     {
      "rule_id": "federal-title-v-major-source",
@@ -496,7 +489,7 @@
      "reason": "estimated NOx potential to emit 1,067 tpy meets the 100 tpy major-source threshold"
     }
    ],
-   "at": "2026-10-25T08:34:14.714999+00:00"
+   "at": "2026-10-25T18:18:52.933315+00:00"
   },
   {
    "round": 1,
@@ -509,14 +502,215 @@
      "federal-title-v-major-source": "major"
     }
    },
-   "at": "2026-10-25T08:34:36.909569+00:00"
+   "at": "2026-10-25T18:19:38.281297+00:00"
   },
   {
    "round": 1,
    "role": "critic",
    "action": "objections",
-   "detail": [],
-   "at": "2026-10-25T08:35:22.344882+00:00"
+   "detail": [
+    {
+     "rule_id": "md-washington-county-2026",
+     "type": "source_conflict",
+     "text": "The draft verdict states the moratorium expires December 27, 2026 (6 months), but verified sources include a press release and dataset stating a 12-month duration. The evidence graph shows two source conflicts on duration. The verdict does not acknowledge this discrepancy.",
+     "question": "What is the actual duration of the adopted ordinance ORD-2026-12: 6 months or 12 months?",
+     "id": "objection:rule-md-washington-county-2026-2712f33e4-2ca64684548f"
+    },
+    {
+     "rule_id": "md-washington-county-2026",
+     "type": "missed_exemption",
+     "text": "The moratorium ordinance includes an exemption for uses currently permitted with a Certificate of Use & Occupancy as of the effective date. The draft verdict claims the moratorium 'blocks all local data center permitting activity' without addressing this exemption.",
+     "question": "Does the project site have a current Certificate of Use & Occupancy for a data center use as of June 30, 2026?",
+     "id": "objection:rule-md-washington-county-2026-2712f33e4-c091962f6ca2"
+    },
+    {
+     "rule_id": "md-washington-county-2026",
+     "type": "unknown_input",
+     "text": "The applicability of the moratorium exemption depends on whether the project already holds a Certificate of Use & Occupancy. The project data shows permits_submitted: null, but this does not confirm the absence of an existing Certificate of Use & Occupancy. The draft verdict assumes the moratorium applies without verifying this.",
+     "question": "What is the current zoning status and Certificate of Use & Occupancy for the site at 13820 PENNSYLVANIA AVE, HAGERSTOWN, MD?",
+     "id": "objection:rule-md-washington-county-2026-2712f33e4-aaa54767bd5c"
+    }
+   ],
+   "at": "2026-10-25T18:20:33.493570+00:00"
+  },
+  {
+   "round": 2,
+   "role": "planner",
+   "action": "targeted_tasks",
+   "detail": [
+    {
+     "rule_id": "md-washington-county-2026",
+     "questions": [
+      "What is the actual duration of the adopted ordinance ORD-2026-12: 6 months or 12 months?",
+      "Does the project site have a current Certificate of Use & Occupancy for a data center use as of June 30, 2026?"
+     ]
+    }
+   ],
+   "at": "2026-10-25T18:20:36.201443+00:00"
+  },
+  {
+   "round": 2,
+   "role": "county_investigator",
+   "action": "markovian_run",
+   "detail": {
+    "rule": "md-washington-county-2026",
+    "attempt": 1,
+    "chunks": 1,
+    "status": "completed",
+    "tokens_saved": 0,
+    "token_label": "estimated",
+    "facts": 0
+   },
+   "at": "2026-10-25T18:20:47.790847+00:00"
+  },
+  {
+   "round": 2,
+   "role": "evidence_verifier",
+   "action": "verified",
+   "detail": {
+    "rule": "md-washington-county-2026",
+    "attempt": 1,
+    "checked": 0,
+    "failed": 0
+   },
+   "at": "2026-10-25T18:20:47.790854+00:00"
+  },
+  {
+   "round": 2,
+   "role": "evidence_verifier",
+   "action": "retry_requested",
+   "detail": "Your reply contained no JSON array. Reply with the JSON array of facts FIRST, then the [STATE_CHECKPOINT] block.",
+   "at": "2026-10-25T18:20:47.790856+00:00"
+  },
+  {
+   "round": 2,
+   "role": "county_investigator",
+   "action": "markovian_run",
+   "detail": {
+    "rule": "md-washington-county-2026",
+    "attempt": 2,
+    "chunks": 2,
+    "status": "completed",
+    "tokens_saved": 0,
+    "token_label": "estimated",
+    "facts": 5
+   },
+   "at": "2026-10-25T18:21:06.981393+00:00"
+  },
+  {
+   "round": 2,
+   "role": "evidence_verifier",
+   "action": "conflict",
+   "detail": {
+    "rule": "md-washington-county-2026",
+    "field": "duration_days",
+    "value": 180,
+    "other_primary": 365,
+    "quote": "There shall be a temporary deferral on the acceptance, processing, reviewing, and approval of all applications, plans, or requests for Data Centers in Washington County as defined in herein for a period of six (6) months starting with the effective date of this Ordinance.",
+    "url": "https://www.washco-md.net/wp-content/uploads/Draft-Ordinance-Data-Center-Memoratorium.pdf",
+    "other_quote": "On June 30, 2026, the Washington County Board of County Commissioners approved a temporary, twelve (12) month moratorium on the acceptance, processing, reviewing and approval of applications, plans, or requests for data centers within Washington County.",
+    "other_url": "https://www.washco-md.net/washington-county-board-of-county-commissioners-approves-temporary-moratorium-on-data-center-applications/"
+   },
+   "at": "2026-10-25T18:21:06.982419+00:00"
+  },
+  {
+   "round": 2,
+   "role": "evidence_verifier",
+   "action": "conflict",
+   "detail": {
+    "rule": "md-washington-county-2026",
+    "field": "duration_days",
+    "value": 180,
+    "other_dataset": 365,
+    "quote": "There shall be a temporary deferral on the acceptance, processing, reviewing, and approval of all applications, plans, or requests for Data Centers in Washington County as defined in herein for a period of six (6) months starting with the effective date of this Ordinance.",
+    "url": "https://www.washco-md.net/wp-content/uploads/Draft-Ordinance-Data-Center-Memoratorium.pdf",
+    "other_quote": "Board of County Commissioners approved Ordinance ORD-2026-12, a 12-month moratorium",
+    "other_url": "Moratorium Nation dataset, refreshed 2026-09-23 (github.com/mjbommar/moratorium-data-2026, CC-BY-4.0)"
+   },
+   "at": "2026-10-25T18:21:06.982422+00:00"
+  },
+  {
+   "round": 2,
+   "role": "evidence_verifier",
+   "action": "verified",
+   "detail": {
+    "rule": "md-washington-county-2026",
+    "attempt": 2,
+    "checked": 5,
+    "failed": 0
+   },
+   "at": "2026-10-25T18:21:06.983643+00:00"
+  },
+  {
+   "round": 2,
+   "role": "applicability",
+   "action": "computed",
+   "detail": [
+    {
+     "rule_id": "md-washington-county-2026",
+     "applies": "yes",
+     "reason": "in effect on 2026-10-26 and the site is within its scope"
+    },
+    {
+     "rule_id": "federal-title-v-major-source",
+     "applies": "yes",
+     "reason": "estimated NOx potential to emit 1,067 tpy meets the 100 tpy major-source threshold"
+    }
+   ],
+   "at": "2026-10-25T18:21:06.983723+00:00"
+  },
+  {
+   "round": 2,
+   "role": "adjudicator",
+   "action": "draft",
+   "detail": {
+    "verdict": "no-go",
+    "grades": {
+     "md-washington-county-2026": "fatal",
+     "federal-title-v-major-source": "major"
+    }
+   },
+   "at": "2026-10-25T18:22:03.218758+00:00"
+  },
+  {
+   "round": 2,
+   "role": "critic",
+   "action": "objections",
+   "detail": [
+    {
+     "rule_id": "md-washington-county-2026",
+     "type": "source_conflict",
+     "text": "The evidence contains a direct conflict on the moratorium duration: the draft ordinance text specifies 'six (6) months' while the Board's press release and the Moratorium Nation dataset both state 'twelve (12) month'. The computed expiration (2026-12-27) uses the 6-month figure, but the source conflicts list confirms two contradictory claims. The draft verdict presents the 6-month expiration as settled fact without acknowledging the discrepancy.",
+     "question": "Which duration is correct for the adopted Ordinance ORD-2026-12\u20146 months or 12 months\u2014and what is the authoritative source?",
+     "id": "objection:rule-md-washington-county-2026-2712f33e4-ecb3eb9bd2f3"
+    },
+    {
+     "rule_id": "md-washington-county-2026",
+     "type": "missed_exemption",
+     "text": "The ordinance exempts 'any use currently permitted under the Zoning Ordinance and for which a current Certificate of Use & Occupancy was disseminated as of the effective date of this Ordinance.' The finding's parameter 'exempt_if_permits_submitted: false' does not capture this exemption; it appears to conflate permit submission with an existing Certificate of Use & Occupancy. The draft verdict dismisses the exemption based on 'computed applicability' that likely did not evaluate the actual exemption criterion.",
+     "question": "Does the site at 13820 Pennsylvania Ave have a current Certificate of Use & Occupancy for a permitted use as of June 30, 2026?",
+     "id": "objection:rule-md-washington-county-2026-2712f33e4-4011c85ae0ea"
+    },
+    {
+     "rule_id": "md-washington-county-2026",
+     "type": "unknown_input",
+     "text": "The draft verdict concludes the moratorium applies to this site, but the exemption hinges on whether the site already holds a Certificate of Use & Occupancy as of the effective date. The project data shows 'permits_submitted: null', which is not the same as the exemption criterion. The existence of such a certificate is an unknown project fact that the decision depends on.",
+     "question": "What is the current zoning status and Certificate of Use & Occupancy for the parcel as of June 30, 2026?",
+     "id": "objection:rule-md-washington-county-2026-2712f33e4-fadb6777e7ee"
+    }
+   ],
+   "at": "2026-10-25T18:22:50.665820+00:00"
+  },
+  {
+   "round": 2,
+   "role": "system",
+   "action": "escalated",
+   "detail": [
+    "md-washington-county-2026: The evidence contains a direct conflict on the moratorium duration: the draft ordinance text specifies 'six (6) months' while the Board's press release and the Moratorium Nation dataset both state 'twelve (12) month'. The computed expiration (2026-12-27) uses the 6-month figure, but the source conflicts list confirms two contradictory claims. The draft verdict presents the 6-month expiration as settled fact without acknowledging the discrepancy.",
+    "md-washington-county-2026: The ordinance exempts 'any use currently permitted under the Zoning Ordinance and for which a current Certificate of Use & Occupancy was disseminated as of the effective date of this Ordinance.' The finding's parameter 'exempt_if_permits_submitted: false' does not capture this exemption; it appears to conflate permit submission with an existing Certificate of Use & Occupancy. The draft verdict dismisses the exemption based on 'computed applicability' that likely did not evaluate the actual exemption criterion.",
+    "md-washington-county-2026: The draft verdict concludes the moratorium applies to this site, but the exemption hinges on whether the site already holds a Certificate of Use & Occupancy as of the effective date. The project data shows 'permits_submitted: null', which is not the same as the exemption criterion. The existence of such a certificate is an unknown project fact that the decision depends on."
+   ],
+   "at": "2026-10-25T18:22:50.665838+00:00"
   }
  ],
  "model_trace": [
@@ -525,9 +719,9 @@
    "role": "planner",
    "model": "nvidia/nemotron-3-ultra-550b-a55b",
    "provider": "nvidia",
-   "receipt_id": "rcpt_req_fkxzvfd9",
-   "total_tokens": 1315,
-   "latency_ms": 3931,
+   "receipt_id": "rcpt_req_hfle07a0",
+   "total_tokens": 1320,
+   "latency_ms": 6703,
    "cached": false,
    "escalated_from": null
   },
@@ -536,9 +730,9 @@
    "role": "county_investigator",
    "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
    "provider": "nvidia",
-   "receipt_id": "rcpt_req_oykmp33b",
-   "total_tokens": 6945,
-   "latency_ms": 14430,
+   "receipt_id": "rcpt_req_n5jjjki9",
+   "total_tokens": 6197,
+   "latency_ms": 3098,
    "cached": false,
    "escalated_from": null
   },
@@ -547,31 +741,20 @@
    "role": "county_investigator",
    "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
    "provider": "nvidia",
-   "receipt_id": "rcpt_req_15by0hv7",
-   "total_tokens": 1521,
-   "latency_ms": 4065,
+   "receipt_id": "rcpt_req_74aqomel",
+   "total_tokens": 6483,
+   "latency_ms": 5637,
    "cached": false,
    "escalated_from": null
   },
   {
-   "step": "extract",
+   "step": "plan",
    "role": "county_investigator",
-   "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
+   "model": "nvidia/nemotron-3-ultra-550b-a55b",
    "provider": "nvidia",
-   "receipt_id": "rcpt_req_cfe5qcha",
-   "total_tokens": 6901,
-   "latency_ms": 18000,
-   "cached": false,
-   "escalated_from": null
-  },
-  {
-   "step": "extract",
-   "role": "county_investigator",
-   "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
-   "provider": "nvidia",
-   "receipt_id": "rcpt_req_wqlgyhyy",
-   "total_tokens": 6917,
-   "latency_ms": 16143,
+   "receipt_id": "rcpt_req_wemv6nhu",
+   "total_tokens": 6477,
+   "latency_ms": 16675,
    "cached": false,
    "escalated_from": null
   },
@@ -580,9 +763,9 @@
    "role": "adjudicator",
    "model": "nvidia/nemotron-3-ultra-550b-a55b",
    "provider": "nvidia",
-   "receipt_id": "rcpt_req_o07ryt4v",
-   "total_tokens": 8034,
-   "latency_ms": 22194,
+   "receipt_id": "rcpt_req_cj1a2car",
+   "total_tokens": 6895,
+   "latency_ms": 45347,
    "cached": false,
    "escalated_from": null
   },
@@ -591,9 +774,75 @@
    "role": "critic",
    "model": "nvidia/nemotron-3-ultra-550b-a55b",
    "provider": "nvidia",
-   "receipt_id": "rcpt_req_u99vuyig",
-   "total_tokens": 10745,
-   "latency_ms": 45435,
+   "receipt_id": "rcpt_req_5w1uo6w0",
+   "total_tokens": 9353,
+   "latency_ms": 55208,
+   "cached": false,
+   "escalated_from": null
+  },
+  {
+   "step": "plan",
+   "role": "planner",
+   "model": "nvidia/nemotron-3-ultra-550b-a55b",
+   "provider": "nvidia",
+   "receipt_id": "rcpt_req_27g6ie1r",
+   "total_tokens": 1066,
+   "latency_ms": 2708,
+   "cached": false,
+   "escalated_from": null
+  },
+  {
+   "step": "extract",
+   "role": "county_investigator",
+   "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
+   "provider": "nvidia",
+   "receipt_id": "rcpt_req_q64eqn30",
+   "total_tokens": 6046,
+   "latency_ms": 11585,
+   "cached": false,
+   "escalated_from": null
+  },
+  {
+   "step": "extract",
+   "role": "county_investigator",
+   "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
+   "provider": "nvidia",
+   "receipt_id": "rcpt_req_1h3ymvij",
+   "total_tokens": 6196,
+   "latency_ms": 6024,
+   "cached": false,
+   "escalated_from": null
+  },
+  {
+   "step": "extract",
+   "role": "county_investigator",
+   "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
+   "provider": "nvidia",
+   "receipt_id": "rcpt_req_rh7l8w41",
+   "total_tokens": 4064,
+   "latency_ms": 13166,
+   "cached": false,
+   "escalated_from": null
+  },
+  {
+   "step": "synthesize",
+   "role": "adjudicator",
+   "model": "nvidia/nemotron-3-ultra-550b-a55b",
+   "provider": "nvidia",
+   "receipt_id": "rcpt_req_itq6u9m2",
+   "total_tokens": 8509,
+   "latency_ms": 56235,
+   "cached": false,
+   "escalated_from": null
+  },
+  {
+   "step": "critique",
+   "role": "critic",
+   "model": "nvidia/nemotron-3-ultra-550b-a55b",
+   "provider": "nvidia",
+   "receipt_id": "rcpt_req_yhwziwaw",
+   "total_tokens": 8901,
+   "latency_ms": 47446,
    "cached": false,
    "escalated_from": null
   }
@@ -608,12 +857,17 @@
    "backend": "zetaris",
    "status": "ok",
    "rows": 1
+  },
+  {
+   "backend": "zetaris",
+   "status": "ok",
+   "rows": 2
   }
  ],
  "markovian_runs": [
   {
-   "id": "8cd08444-0b26-4832-932b-420287399980",
-   "timestamp": 1792917165845.4348,
+   "id": "fbbdd273-064e-4654-883d-2c06262a5861",
+   "timestamp": 1792952299716.143,
    "prompt": "Rule: Washington County data center moratorium.\nQuestions:\n- What is the exact effective date of Ordinance ORD-2026-12?\n- What is the duration of the moratorium (e.g., 12 months, specific expiration date)?\n- Does ORD-2026-12 explicitly apply to data center projects within incorporated municipalities such as Hagerstown, or does it only cover unincorporated areas of Washington County?\n- What specific activities does ORD-2026-12 pause (e.g., accepting, processing, reviewing, approving data center a",
    "mode": "RESEARCH",
    "chunk_config": {
@@ -630,11 +884,11 @@
    "total_tokens_used": 0,
    "total_tokens_saved": 0,
    "efficiency_percent": 0.0,
-   "duration_ms": 18495.791259765625
+   "duration_ms": 3097.975830078125
   },
   {
-   "id": "89f982dd-fe16-4855-b8a2-83f71b6e0f15",
-   "timestamp": 1792917203316.6677,
+   "id": "9482f732-79f1-44d4-b3fd-065233ef907a",
+   "timestamp": 1792952302814.1921,
    "prompt": "Rule: Washington County data center moratorium.\nQuestions:\n- What is the exact effective date of Ordinance ORD-2026-12?\n- What is the duration of the moratorium (e.g., 12 months, specific expiration date)?\n- Does ORD-2026-12 explicitly apply to data center projects within incorporated municipalities such as Hagerstown, or does it only cover unincorporated areas of Washington County?\n- What specific activities does ORD-2026-12 pause (e.g., accepting, processing, reviewing, approving data center a",
    "mode": "RESEARCH",
    "chunk_config": {
@@ -648,15 +902,36 @@
    "reflection": null,
    "error": null,
    "token_label": "estimated",
-   "total_tokens_used": 0,
+   "total_tokens_used": 572,
    "total_tokens_saved": 0,
    "efficiency_percent": 0.0,
-   "duration_ms": 18000.322265625
+   "duration_ms": 5637.57080078125
   },
   {
-   "id": "2347b318-743c-4c1b-9b11-e1ec647ab5b5",
-   "timestamp": 1792917230583.2268,
+   "id": "f7e22307-188a-4e70-b069-f9e05b4e404f",
+   "timestamp": 1792952316250.8398,
    "prompt": "Rule: Washington County data center moratorium.\nQuestions:\n- What is the exact effective date of Ordinance ORD-2026-12?\n- What is the duration of the moratorium (e.g., 12 months, specific expiration date)?\n- Does ORD-2026-12 explicitly apply to data center projects within incorporated municipalities such as Hagerstown, or does it only cover unincorporated areas of Washington County?\n- What specific activities does ORD-2026-12 pause (e.g., accepting, processing, reviewing, approving data center a",
+   "mode": "RESEARCH",
+   "chunk_config": {
+    "chunkSize": 8000,
+    "maxChunks": 4,
+    "carryoverTokens": 768,
+    "overlapTokens": 0
+   },
+   "status": "completed",
+   "final_state": "",
+   "reflection": null,
+   "error": null,
+   "token_label": "estimated",
+   "total_tokens_used": 660,
+   "total_tokens_saved": 0,
+   "efficiency_percent": 0.0,
+   "duration_ms": 16675.6552734375
+  },
+  {
+   "id": "71360c66-fcda-495c-908e-0fa933bbc8af",
+   "timestamp": 1792952436205.677,
+   "prompt": "Rule: Washington County data center moratorium.\nQuestions:\n- What is the actual duration of the adopted ordinance ORD-2026-12: 6 months or 12 months?\n- Does the project site have a current Certificate of Use & Occupancy for a data center use as of June 30, 2026?\n\nIf the sources are short enough, answer in this first reply. Otherwise note the relevant sentences first and answer in a later chunk. The answer is a JSON list of facts, one per answered question: [{\"field\": \"effective|duration_days|sco",
    "mode": "RESEARCH",
    "chunk_config": {
     "chunkSize": 8000,
@@ -672,9 +947,269 @@
    "total_tokens_used": 0,
    "total_tokens_saved": 0,
    "efficiency_percent": 0.0,
-   "duration_ms": 16143.230224609375
+   "duration_ms": 11585.155029296875
+  },
+  {
+   "id": "59bcc3b9-8bee-4977-bdd4-8c8adad8558d",
+   "timestamp": 1792952447790.883,
+   "prompt": "Rule: Washington County data center moratorium.\nQuestions:\n- What is the actual duration of the adopted ordinance ORD-2026-12: 6 months or 12 months?\n- Does the project site have a current Certificate of Use & Occupancy for a data center use as of June 30, 2026?\n\nIf the sources are short enough, answer in this first reply. Otherwise note the relevant sentences first and answer in a later chunk. The answer is a JSON list of facts, one per answered question: [{\"field\": \"effective|duration_days|sco",
+   "mode": "RESEARCH",
+   "chunk_config": {
+    "chunkSize": 8000,
+    "maxChunks": 4,
+    "carryoverTokens": 768,
+    "overlapTokens": 0
+   },
+   "status": "completed",
+   "final_state": "",
+   "reflection": null,
+   "error": null,
+   "token_label": "estimated",
+   "total_tokens_used": 500,
+   "total_tokens_saved": 0,
+   "efficiency_percent": 0.0,
+   "duration_ms": 19190.4609375
   }
  ],
  "worldmodel_log": "samples/md-washington-county-unincorporated/worldmodel.jsonl",
- "disclaimer": "Screening aid, not legal advice. Confirm every finding with the cited source."
+ "disclaimer": "Screening aid, not legal advice. Confirm every finding with the cited source.",
+ "explanation": {
+  "site": {
+   "as_of": "2026-10-26",
+   "incorporated": false,
+   "mw": 300.0,
+   "permits_submitted": null,
+   "lat": 39.692932589545,
+   "lon": -77.721557970202
+  },
+  "headline": "Needs confirmation: Washington County data center moratorium",
+  "coverage_note": "State and grid rules are not modelled for MD; federal rule and county dataset only.",
+  "decisive": [
+   {
+    "rule_id": "md-washington-county-2026",
+    "title": "Washington County data center moratorium",
+    "layer": "county",
+    "grade": "fatal",
+    "fact": {
+     "field": "duration_days",
+     "quote": "There shall be a temporary deferral on the acceptance, processing, reviewing, and approval of all applications, plans, or requests for Data Centers in Washington County as defined in herein for a period of six (6) months starting with the effective date of this Ordinance.",
+     "url": "https://www.washco-md.net/wp-content/uploads/Draft-Ordinance-Data-Center-Memoratorium.pdf",
+     "verification": "verified",
+     "provenance": "primary"
+    },
+    "more_sources": 11,
+    "computation": "in effect 2026-06-30 \u2192 2026-12-27; as of 2026-10-26",
+    "result": "Applies to this site"
+   },
+   {
+    "rule_id": "federal-title-v-major-source",
+    "title": "Clean Air Act Title V operating permit (major source)",
+    "layer": "federal",
+    "grade": "major",
+    "fact": {
+     "field": null,
+     "quote": "directly emits, or has the potential to emit, 100 tpy or more of any air pollutant subject to regulation",
+     "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-40.xml?part=70&section=70.2",
+     "verification": "verified",
+     "provenance": "curated"
+    },
+    "more_sources": 0,
+    "computation": "estimated NOx 1,067 tpy \u2265 100 tpy (500 h/yr emergency-engine PTE, 6.4 g/kWh NOx (Tier 2 diesel))",
+    "result": "Applies to this site"
+   }
+  ],
+  "flips": [
+   {
+    "rule_id": "md-washington-county-2026",
+    "change": "after the moratorium expires (2026-12-27)",
+    "effect": "applies yes \u2192 no",
+    "estimated_verdict": "conditional"
+   },
+   {
+    "rule_id": "federal-title-v-major-source",
+    "change": "at 25 MW instead of 300 MW (26 MW would trigger it)",
+    "effect": "applies yes \u2192 no",
+    "estimated_verdict": "no-go"
+   }
+  ],
+  "sensitivity": [
+   {
+    "rule_id": "md-washington-county-2026",
+    "field": "duration_days",
+    "readings": [
+     {
+      "value": 180,
+      "quote": "There shall be a temporary deferral on the acceptance, processing, reviewing, and approval of all applications, plans, or requests for Data Centers in Washington County as defined in herein for a period of six (6) months starting with the effective date of this Ordinance.",
+      "url": "https://www.washco-md.net/wp-content/uploads/Draft-Ordinance-Data-Center-Memoratorium.pdf",
+      "applies": "yes"
+     },
+     {
+      "value": 365,
+      "quote": "On June 30, 2026, the Washington County Board of County Commissioners approved a temporary, twelve (12) month moratorium on the acceptance, processing, reviewing and approval of applications, plans, or requests for data centers within Washington County.",
+      "url": "https://www.washco-md.net/washington-county-board-of-county-commissioners-approves-temporary-moratorium-on-data-center-applications/",
+      "applies": "yes"
+     }
+    ],
+    "holds": true
+   }
+  ],
+  "catches": [
+   {
+    "round": 1,
+    "actor": "evidence_verifier",
+    "kind": "retry",
+    "text": "Your reply contained no JSON array. Reply with the JSON array of facts FIRST, then the [STATE_CHECKPOINT] block.",
+    "outcome": "1 of 6 still failing"
+   },
+   {
+    "round": 1,
+    "actor": "evidence_verifier",
+    "kind": "retry",
+    "text": "These quotes were not found verbatim, copy exact sentences: The Board desires to study data centers in light of changing consumer demand, and changes to existing infrastructure in ",
+    "outcome": "1 of 6 still failing"
+   },
+   {
+    "round": 2,
+    "actor": "evidence_verifier",
+    "kind": "retry",
+    "text": "Your reply contained no JSON array. Reply with the JSON array of facts FIRST, then the [STATE_CHECKPOINT] block.",
+    "outcome": "all quotes verified"
+   },
+   {
+    "round": 1,
+    "actor": "evidence_verifier",
+    "kind": "conflict",
+    "text": "Sources disagree on duration_days: 180 vs 365",
+    "outcome": "verdict holds under both readings"
+   },
+   {
+    "round": 1,
+    "actor": "critic",
+    "kind": "source_conflict",
+    "text": "The draft verdict states the moratorium expires December 27, 2026 (6 months), but verified sources include a press release and dataset stating a 12-month duration. The evidence graph shows two source conflicts on duration. The verdict does not acknowledge this discrepancy.",
+    "outcome": "re-investigated in round 2"
+   },
+   {
+    "round": 1,
+    "actor": "critic",
+    "kind": "missed_exemption",
+    "text": "The moratorium ordinance includes an exemption for uses currently permitted with a Certificate of Use & Occupancy as of the effective date. The draft verdict claims the moratorium 'blocks all local data center permitting activity' without addressing this exemption.",
+    "outcome": "re-investigated in round 2"
+   },
+   {
+    "round": 1,
+    "actor": "critic",
+    "kind": "unknown_input",
+    "text": "The applicability of the moratorium exemption depends on whether the project already holds a Certificate of Use & Occupancy. The project data shows permits_submitted: null, but this does not confirm the absence of an existing Certificate of Use & Occupancy. The draft verdict assumes the moratorium a",
+    "outcome": "re-investigated in round 2"
+   },
+   {
+    "round": 1,
+    "actor": "critic",
+    "kind": "source_conflict",
+    "text": "The evidence contains a direct conflict on the moratorium duration: the draft ordinance text specifies 'six (6) months' while the Board's press release and the Moratorium Nation dataset both state 'twelve (12) month'. The computed expiration (2026-12-27) uses the 6-month figure, but the source confl",
+    "outcome": "left open for your team"
+   },
+   {
+    "round": 1,
+    "actor": "critic",
+    "kind": "missed_exemption",
+    "text": "The ordinance exempts 'any use currently permitted under the Zoning Ordinance and for which a current Certificate of Use & Occupancy was disseminated as of the effective date of this Ordinance.' The finding's parameter 'exempt_if_permits_submitted: false' does not capture this exemption; it appears ",
+    "outcome": "left open for your team"
+   },
+   {
+    "round": 1,
+    "actor": "critic",
+    "kind": "unknown_input",
+    "text": "The draft verdict concludes the moratorium applies to this site, but the exemption hinges on whether the site already holds a Certificate of Use & Occupancy as of the effective date. The project data shows 'permits_submitted: null', which is not the same as the exemption criterion. The existence of ",
+    "outcome": "left open for your team"
+   },
+   {
+    "round": 2,
+    "actor": "system",
+    "kind": "escalation",
+    "text": "md-washington-county-2026: The evidence contains a direct conflict on the moratorium duration: the draft ordinance text specifies 'six (6) months' while the Board's press release and the Moratorium Nation dataset both state 'twelve (12) month'. The computed expiration (2026-12-27) uses the 6-month f",
+    "outcome": "left open for your team"
+   },
+   {
+    "round": 2,
+    "actor": "system",
+    "kind": "escalation",
+    "text": "md-washington-county-2026: The ordinance exempts 'any use currently permitted under the Zoning Ordinance and for which a current Certificate of Use & Occupancy was disseminated as of the effective date of this Ordinance.' The finding's parameter 'exempt_if_permits_submitted: false' does not capture ",
+    "outcome": "left open for your team"
+   },
+   {
+    "round": 2,
+    "actor": "system",
+    "kind": "escalation",
+    "text": "md-washington-county-2026: The draft verdict concludes the moratorium applies to this site, but the exemption hinges on whether the site already holds a Certificate of Use & Occupancy as of the effective date. The project data shows 'permits_submitted: null', which is not the same as the exemption c",
+    "outcome": "left open for your team"
+   },
+   {
+    "round": 2,
+    "actor": "guard",
+    "kind": "guard",
+    "text": "unresolved critic objections on decisive rules",
+    "outcome": "applied to the verdict"
+   },
+   {
+    "round": 2,
+    "actor": "county_investigator",
+    "kind": "ultra_reextract",
+    "text": "Lightning returned no facts; Ultra re-extracted",
+    "outcome": "completed"
+   }
+  ],
+  "layer_status": {
+   "federal": {
+    "lamp": "major",
+    "summary": "Clean Air Act Title V operating permit (major source) applies (major)"
+   },
+   "iso_rto": {
+    "lamp": "not_modelled",
+    "summary": "No grid/iso rules modelled"
+   },
+   "state": {
+    "lamp": "not_modelled",
+    "summary": "No state rule applies; 2 watch-list items (dataset, not verified)"
+   },
+   "county": {
+    "lamp": "fatal",
+    "summary": "Washington County data center moratorium applies (fatal)"
+   },
+   "city": {
+    "lamp": "not_modelled",
+    "summary": "No city rules modelled"
+   }
+  },
+  "stats": {
+   "models": {
+    "nvidia/nemotron-3-ultra-550b-a55b": 7,
+    "nvidia/nemotron-3.5-lightning-30b-a3b": 5
+   },
+   "receipts": [
+    "rcpt_req_1h3ymvij",
+    "rcpt_req_27g6ie1r",
+    "rcpt_req_5w1uo6w0",
+    "rcpt_req_74aqomel",
+    "rcpt_req_cj1a2car",
+    "rcpt_req_hfle07a0",
+    "rcpt_req_itq6u9m2",
+    "rcpt_req_n5jjjki9",
+    "rcpt_req_q64eqn30",
+    "rcpt_req_rh7l8w41",
+    "rcpt_req_wemv6nhu",
+    "rcpt_req_yhwziwaw"
+   ],
+   "data_queries": {
+    "zetaris": 3
+   },
+   "data_blocked": 0,
+   "quotes_verified": 9,
+   "quotes_checked": 13,
+   "markovian_chunks": 6,
+   "markovian_tokens_saved": 0,
+   "run_duration_s": 278.2
+  }
+ }
 }

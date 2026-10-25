@@ -1,7 +1,7 @@
 {
- "run_id": "20261025T083523Z-92d793",
+ "run_id": "20261025T153534Z-6f7f99",
  "project": {
-  "address": "555 Walnut St, Abilene, TX 79601",
+  "address": "555 Walnut St, Abilene TX 79601",
   "mw": 300.0,
   "permits_submitted": null
  },
@@ -51,7 +51,7 @@
   "multiple_utilities": true
  },
  "verdict": "conditional",
- "why": "The federal Title V rule applies because the computed NOx potential to emit of 1,067 tpy meets the 100 tpy major-source threshold per 40 CFR 70.2. The Texas SB 6 rule applies because the 300 MW load exceeds the 75 MW threshold stated in the bill text, with a computed margin of 225 MW. Both rules are graded major, indicating they impose significant permitting and interconnection requirements but do not block the project. No other applicable rules were found for this site, so the verdict is conditional.",
+ "why": "The 300 MW project triggers a federal Title V major-source operating permit because the computed NOx potential to emit of 1,067 tpy (based on the assumption of 121 N+1 diesel generators of 2,500 kW each operating 500 hours per year at 6.4 g/kWh NOx) exceeds the 100 tpy threshold per 40 CFR 70.2. The same 300 MW load exceeds the 75 MW threshold in Texas SB 6, invoking large-load interconnection standards with a computed margin of 225 MW per the bill text. Additionally, the Governor's data center interconnection audit applies because the 300 MW load exceeds the 75 MW ERCOT large-load threshold, and the directive states the audit must be completed before any data center project moves forward. All three rules are graded major, indicating significant permitting, interconnection, and audit requirements that do not outright block the project but impose substantial process steps. Therefore, the verdict is conditional on satisfying these federal and state requirements.",
  "guard_notes": [],
  "findings": [
   {
@@ -98,20 +98,115 @@
     }
    ],
    "grade": "major"
+  },
+  {
+   "rule_id": "tx-ercot-data-center-audit-2026",
+   "layer": "state",
+   "title": "Texas Governor's data center interconnection audit (ERCOT)",
+   "applies": "yes",
+   "reason": "300 MW meets the ERCOT large load threshold (> 75 MW)",
+   "computed": {
+    "margin_mw": 225.0
+   },
+   "evidence": [
+    {
+     "quote": "The PUCT and ERCOT must complete this audit before any data center project moves forward.",
+     "url": "https://gov.texas.gov/news/post/governor-abbott-directs-comprehensive-data-center-audit",
+     "verification": "verified",
+     "provenance": "curated"
+    }
+   ],
+   "grade": "major"
   }
  ],
+ "state_watch": [
+  {
+   "policy_action_id": "tx-abbott-2026-08-03-data-center-audit-directive",
+   "bill": "Governor Abbott August 3, 2026 Data Center Audit Directive",
+   "status": "Governor directive issued 2026-08-03; ERCOT implementation notice issued 2026-08-03.",
+   "key_provisions": "Directs PUCT and ERCOT to verify and audit every data center advancing through ERCOT interconnection before it may move forward, pausing the Batch Zero process pending the required review.",
+   "policy_mechanism": "utility_large_load_restriction",
+   "scope_of_action": "utility_grid",
+   "legal_effect_status": "in_force",
+   "bill_status_category": "unknown",
+   "last_action_date_iso": "2026-08-03",
+   "primary_source_url": "https://gov.texas.gov/news/post/governor-abbott-directs-comprehensive-data-center-audit",
+   "provenance": "dataset",
+   "source": "Moratorium Nation state_legislation.csv",
+   "covered_by_rule": true
+  },
+  {
+   "policy_action_id": "tx-sb-6-89r-2025",
+   "bill": "SB 6 (89R, 2025)",
+   "status": "Passed Senate 2025-03-19 (with amendments); passed House 2025-05-27 (RV#3643); Senate concurred in House amendments 2025-05-29; signed by Governor 2025-06-20, effective immediately.",
+   "key_provisions": "Requires PUCT/ERCOT large-load planning and interconnection standards; applies to large loads at a default 75 MW single-site threshold; addresses interconnection studies, cost allocation, co-location, and emergency curtailment",
+   "policy_mechanism": "utility_large_load_restriction",
+   "scope_of_action": "utility_grid",
+   "legal_effect_status": "in_force",
+   "bill_status_category": "enacted",
+   "last_action_date_iso": "2025-06-20",
+   "primary_source_url": "https://capitol.texas.gov/tlodocs/89R/billtext/html/SB00006F.htm",
+   "provenance": "dataset",
+   "source": "Moratorium Nation state_legislation.csv",
+   "covered_by_rule": true
+  },
+  {
+   "policy_action_id": "tx-sb-1929-88r-2023",
+   "bill": "SB 1929 (88R, 2023)",
+   "status": "Signed by Governor 2023-06-09; effective 2023-09-01.",
+   "key_provisions": "Requires registration and ERCOT-related oversight for large interruptible virtual currency mining facilities",
+   "policy_mechanism": "utility_large_load_restriction",
+   "scope_of_action": "utility_grid",
+   "legal_effect_status": "unknown",
+   "bill_status_category": "enacted",
+   "last_action_date_iso": "2023-06-09",
+   "primary_source_url": null,
+   "provenance": "dataset",
+   "source": "Moratorium Nation state_legislation.csv"
+  }
+ ],
+ "site": {
+  "address": "555 WALNUT ST, ABILENE, TX, 79601",
+  "state": "TX",
+  "county": "Taylor County",
+  "place": "Abilene city",
+  "iso": "ERCOT",
+  "mw": 300.0,
+  "as_of": "2026-10-26",
+  "incorporated": true,
+  "permits_submitted": null,
+  "utilities": [
+   "AEP Texas North Company",
+   "Coleman County Elec Coop, Inc",
+   "Taylor Electric Coop Inc - (TX)"
+  ],
+  "lat": 32.454063114005,
+  "lon": -99.731199274255
+ },
+ "coverage": {
+  "state_rules": [
+   "tx-ercot-data-center-audit-2026"
+  ],
+  "county_sources": []
+ },
  "needs_confirmation": [
   {
    "rule_id": "federal-title-v-major-source",
-   "type": "unsupported_link",
-   "text": "The why-chain cites a computed NOx potential to emit of 1,067 tpy as the basis for the Title V major-source determination, but the only verified evidence is the regulatory threshold (100 tpy). The computation depends on unverified assumptions: 121 diesel generators of 2500 kW each, 500 hours/year operation, and a Tier 2 NOx emission factor of 6.4 g/kWh. No quote or source verifies these assumptions.",
-   "question": "What is the actual generator configuration (number, size, fuel type, emission tier, and annual operating hours) for this project, and is there a source confirming it?"
+   "type": "unknown_input",
+   "text": "The Title V major-source finding assumes the project will use 121 N+1 diesel generators of 2,500 kW each operating 500 hours/year at 6.4 g/kWh NOx. The project's actual backup generation configuration (number, size, fuel type, annual operating hours) is not known and could differ materially, potentially reducing NOx PTE below the 100 tpy threshold.",
+   "question": "What is the project's actual backup generation plan (number, size, fuel type, and expected annual operating hours)?"
   },
   {
    "rule_id": "federal-title-v-major-source",
-   "type": "unknown_input",
-   "text": "The finding's applicability hinges on the assumed generator fleet. If the project uses cleaner generators (e.g., Tier 4 diesel at ~0.5 g/kWh NOx, or natural gas), the NOx PTE could fall below 100 tpy, changing the rule from 'applies: yes' to 'applies: no'. The project's actual generator specifications are not known.",
-   "question": "What are the project's actual backup generator specifications (engine model, fuel, emission certification, and planned annual runtime)?"
+   "type": "unsupported_link",
+   "text": "The why-chain presents the computed NOx PTE of 1,067 tpy and the specific generator assumptions (121 units, 2,500 kW, 6.4 g/kWh, 500 h/yr) as established facts, but the only verified evidence is the 100 tpy regulatory threshold. The generator assumptions are not supported by any verified quote or project-specific data.",
+   "question": "Can the generator assumptions be verified with project-specific engineering documents or a verified source?"
+  },
+  {
+   "rule_id": "tx-ercot-data-center-audit-2026",
+   "type": "unsupported_link",
+   "text": "The why-chain states the audit requirement 'does not outright block the project,' but the evidence quote explicitly says 'The PUCT and ERCOT must complete this audit before any data center project moves forward,' indicating the project cannot proceed until the audit is complete. This claim lacks a verified quote supporting the assertion that it is not a block.",
+   "question": "What is the current status of the Governor's data center interconnection audit, and does the directive allow projects to proceed concurrently?"
   }
  ],
  "conflicts": [],
@@ -127,16 +222,18 @@
     "place": "Abilene city",
     "iso": "ERCOT",
     "mw": 300.0,
-    "as_of": "2026-10-25",
+    "as_of": "2026-10-26",
     "incorporated": true,
     "permits_submitted": null,
     "utilities": [
      "AEP Texas North Company",
      "Coleman County Elec Coop, Inc",
      "Taylor Electric Coop Inc - (TX)"
-    ]
+    ],
+    "lat": 32.454063114005,
+    "lon": -99.731199274255
    },
-   "at": "2026-10-25T08:35:23.129729+00:00"
+   "at": "2026-10-25T15:35:36.060780+00:00"
   },
   {
    "round": 0,
@@ -146,17 +243,29 @@
     "local": [],
     "curated": [
      "federal-title-v-major-source",
-     "tx-sb6-large-load"
+     "tx-sb6-large-load",
+     "tx-ercot-data-center-audit-2026"
     ]
    },
-   "at": "2026-10-25T08:35:23.297826+00:00"
+   "at": "2026-10-25T15:35:36.605028+00:00"
+  },
+  {
+   "round": 0,
+   "role": "system",
+   "action": "state_watch",
+   "detail": [
+    "tx-abbott-2026-08-03-data-center-audit-directive",
+    "tx-sb-6-89r-2025",
+    "tx-sb-1929-88r-2023"
+   ],
+   "at": "2026-10-25T15:35:37.441298+00:00"
   },
   {
    "round": 1,
    "role": "planner",
    "action": "tasks",
    "detail": [],
-   "at": "2026-10-25T08:35:23.297841+00:00"
+   "at": "2026-10-25T15:35:37.441310+00:00"
   },
   {
    "round": 1,
@@ -172,9 +281,14 @@
      "rule_id": "tx-sb6-large-load",
      "applies": "yes",
      "reason": "300 MW meets the Texas SB 6 large load threshold (> 75 MW)"
+    },
+    {
+     "rule_id": "tx-ercot-data-center-audit-2026",
+     "applies": "yes",
+     "reason": "300 MW meets the ERCOT large load threshold (> 75 MW)"
     }
    ],
-   "at": "2026-10-25T08:35:23.297875+00:00"
+   "at": "2026-10-25T15:35:37.441358+00:00"
   },
   {
    "round": 1,
@@ -184,10 +298,11 @@
     "verdict": "conditional",
     "grades": {
      "federal-title-v-major-source": "major",
-     "tx-sb6-large-load": "major"
+     "tx-sb6-large-load": "major",
+     "tx-ercot-data-center-audit-2026": "major"
     }
    },
-   "at": "2026-10-25T08:35:50.314180+00:00"
+   "at": "2026-10-25T15:36:20.265298+00:00"
   },
   {
    "round": 1,
@@ -196,30 +311,38 @@
    "detail": [
     {
      "rule_id": "federal-title-v-major-source",
-     "type": "unsupported_link",
-     "text": "The why-chain cites a computed NOx potential to emit of 1,067 tpy as the basis for the Title V major-source determination, but the only verified evidence is the regulatory threshold (100 tpy). The computation depends on unverified assumptions: 121 diesel generators of 2500 kW each, 500 hours/year operation, and a Tier 2 NOx emission factor of 6.4 g/kWh. No quote or source verifies these assumptions.",
-     "question": "What is the actual generator configuration (number, size, fuel type, emission tier, and annual operating hours) for this project, and is there a source confirming it?",
-     "id": "objection:rule-federal-title-v-major-source-ef550a-516bd33958c8"
+     "type": "unknown_input",
+     "text": "The Title V major-source finding assumes the project will use 121 N+1 diesel generators of 2,500 kW each operating 500 hours/year at 6.4 g/kWh NOx. The project's actual backup generation configuration (number, size, fuel type, annual operating hours) is not known and could differ materially, potentially reducing NOx PTE below the 100 tpy threshold.",
+     "question": "What is the project's actual backup generation plan (number, size, fuel type, and expected annual operating hours)?",
+     "id": "objection:rule-federal-title-v-major-source-ef550a-44f386de3e7c"
     },
     {
      "rule_id": "federal-title-v-major-source",
-     "type": "unknown_input",
-     "text": "The finding's applicability hinges on the assumed generator fleet. If the project uses cleaner generators (e.g., Tier 4 diesel at ~0.5 g/kWh NOx, or natural gas), the NOx PTE could fall below 100 tpy, changing the rule from 'applies: yes' to 'applies: no'. The project's actual generator specifications are not known.",
-     "question": "What are the project's actual backup generator specifications (engine model, fuel, emission certification, and planned annual runtime)?",
-     "id": "objection:rule-federal-title-v-major-source-ef550a-1d8e93ddf450"
+     "type": "unsupported_link",
+     "text": "The why-chain presents the computed NOx PTE of 1,067 tpy and the specific generator assumptions (121 units, 2,500 kW, 6.4 g/kWh, 500 h/yr) as established facts, but the only verified evidence is the 100 tpy regulatory threshold. The generator assumptions are not supported by any verified quote or project-specific data.",
+     "question": "Can the generator assumptions be verified with project-specific engineering documents or a verified source?",
+     "id": "objection:rule-federal-title-v-major-source-ef550a-812007cd4833"
+    },
+    {
+     "rule_id": "tx-ercot-data-center-audit-2026",
+     "type": "unsupported_link",
+     "text": "The why-chain states the audit requirement 'does not outright block the project,' but the evidence quote explicitly says 'The PUCT and ERCOT must complete this audit before any data center project moves forward,' indicating the project cannot proceed until the audit is complete. This claim lacks a verified quote supporting the assertion that it is not a block.",
+     "question": "What is the current status of the Governor's data center interconnection audit, and does the directive allow projects to proceed concurrently?",
+     "id": "objection:rule-tx-ercot-data-center-audit-2026-aad-dfe08ee6fa33"
     }
    ],
-   "at": "2026-10-25T08:36:54.508706+00:00"
+   "at": "2026-10-25T15:38:32.669563+00:00"
   },
   {
    "round": 2,
    "role": "system",
    "action": "escalated",
    "detail": [
-    "federal-title-v-major-source: The why-chain cites a computed NOx potential to emit of 1,067 tpy as the basis for the Title V major-source determination, but the only verified evidence is the regulatory threshold (100 tpy). The computation depends on unverified assumptions: 121 diesel generators of 2500 kW each, 500 hours/year operation, and a Tier 2 NOx emission factor of 6.4 g/kWh. No quote or source verifies these assumptions.",
-    "federal-title-v-major-source: The finding's applicability hinges on the assumed generator fleet. If the project uses cleaner generators (e.g., Tier 4 diesel at ~0.5 g/kWh NOx, or natural gas), the NOx PTE could fall below 100 tpy, changing the rule from 'applies: yes' to 'applies: no'. The project's actual generator specifications are not known."
+    "federal-title-v-major-source: The Title V major-source finding assumes the project will use 121 N+1 diesel generators of 2,500 kW each operating 500 hours/year at 6.4 g/kWh NOx. The project's actual backup generation configuration (number, size, fuel type, annual operating hours) is not known and could differ materially, potentially reducing NOx PTE below the 100 tpy threshold.",
+    "federal-title-v-major-source: The why-chain presents the computed NOx PTE of 1,067 tpy and the specific generator assumptions (121 units, 2,500 kW, 6.4 g/kWh, 500 h/yr) as established facts, but the only verified evidence is the 100 tpy regulatory threshold. The generator assumptions are not supported by any verified quote or project-specific data.",
+    "tx-ercot-data-center-audit-2026: The why-chain states the audit requirement 'does not outright block the project,' but the evidence quote explicitly says 'The PUCT and ERCOT must complete this audit before any data center project moves forward,' indicating the project cannot proceed until the audit is complete. This claim lacks a verified quote supporting the assertion that it is not a block."
    ],
-   "at": "2026-10-25T08:36:54.508720+00:00"
+   "at": "2026-10-25T15:38:32.669586+00:00"
   }
  ],
  "model_trace": [
@@ -228,9 +351,9 @@
    "role": "adjudicator",
    "model": "nvidia/nemotron-3-ultra-550b-a55b",
    "provider": "nvidia",
-   "receipt_id": "rcpt_req_a2tnjtg6",
-   "total_tokens": 5856,
-   "latency_ms": 27016,
+   "receipt_id": "rcpt_req_zjqn0blt",
+   "total_tokens": 5676,
+   "latency_ms": 42823,
    "cached": false,
    "escalated_from": null
   },
@@ -239,9 +362,9 @@
    "role": "critic",
    "model": "nvidia/nemotron-3-ultra-550b-a55b",
    "provider": "nvidia",
-   "receipt_id": "rcpt_req_st8lvf8d",
-   "total_tokens": 6838,
-   "latency_ms": 64193,
+   "receipt_id": "rcpt_req_4ksdtmvo",
+   "total_tokens": 7784,
+   "latency_ms": 132402,
    "cached": false,
    "escalated_from": null
   }
@@ -251,9 +374,181 @@
    "backend": "zetaris",
    "status": "ok",
    "rows": 0
+  },
+  {
+   "backend": "zetaris",
+   "status": "ok",
+   "rows": 3
   }
  ],
  "markovian_runs": [],
  "worldmodel_log": "samples/tx-abilene-ercot/worldmodel.jsonl",
- "disclaimer": "Screening aid, not legal advice. Confirm every finding with the cited source."
+ "disclaimer": "Screening aid, not legal advice. Confirm every finding with the cited source.",
+ "explanation": {
+  "site": {
+   "as_of": "2026-10-26",
+   "incorporated": true,
+   "mw": 300.0,
+   "permits_submitted": null,
+   "lat": 32.454063114005,
+   "lon": -99.731199274255
+  },
+  "headline": "Conditional: Clean Air Act Title V operating permit (major source)",
+  "coverage_note": null,
+  "decisive": [
+   {
+    "rule_id": "federal-title-v-major-source",
+    "title": "Clean Air Act Title V operating permit (major source)",
+    "layer": "federal",
+    "grade": "major",
+    "fact": {
+     "field": null,
+     "quote": "directly emits, or has the potential to emit, 100 tpy or more of any air pollutant subject to regulation",
+     "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-40.xml?part=70&section=70.2",
+     "verification": "verified",
+     "provenance": "curated"
+    },
+    "more_sources": 0,
+    "computation": "estimated NOx 1,067 tpy \u2265 100 tpy (500 h/yr emergency-engine PTE, 6.4 g/kWh NOx (Tier 2 diesel))",
+    "result": "Applies to this site"
+   },
+   {
+    "rule_id": "tx-sb6-large-load",
+    "title": "Texas SB 6 large load interconnection standards (ERCOT)",
+    "layer": "iso_rto",
+    "grade": "major",
+    "fact": {
+     "field": null,
+     "quote": "The commission shall establish a demand threshold of 75 megawatts unless the commission determines that a lower threshold is necessary",
+     "url": "https://capitol.texas.gov/tlodocs/89R/billtext/html/SB00006F.htm",
+     "verification": "verified",
+     "provenance": "curated"
+    },
+    "more_sources": 0,
+    "computation": "300 MW meets the Texas SB 6 large load threshold (> 75 MW)",
+    "result": "Applies to this site"
+   },
+   {
+    "rule_id": "tx-ercot-data-center-audit-2026",
+    "title": "Texas Governor's data center interconnection audit (ERCOT)",
+    "layer": "state",
+    "grade": "major",
+    "fact": {
+     "field": null,
+     "quote": "The PUCT and ERCOT must complete this audit before any data center project moves forward.",
+     "url": "https://gov.texas.gov/news/post/governor-abbott-directs-comprehensive-data-center-audit",
+     "verification": "verified",
+     "provenance": "curated"
+    },
+    "more_sources": 0,
+    "computation": "300 MW meets the ERCOT large load threshold (> 75 MW)",
+    "result": "Applies to this site"
+   }
+  ],
+  "flips": [
+   {
+    "rule_id": "federal-title-v-major-source",
+    "change": "at 25 MW instead of 300 MW (26 MW would trigger it)",
+    "effect": "applies yes \u2192 no",
+    "estimated_verdict": "conditional"
+   },
+   {
+    "rule_id": "tx-sb6-large-load",
+    "change": "at 75 MW instead of 300 MW",
+    "effect": "applies yes \u2192 no",
+    "estimated_verdict": "conditional"
+   },
+   {
+    "rule_id": "tx-ercot-data-center-audit-2026",
+    "change": "at 75 MW instead of 300 MW",
+    "effect": "applies yes \u2192 no",
+    "estimated_verdict": "conditional"
+   }
+  ],
+  "sensitivity": [],
+  "catches": [
+   {
+    "round": 1,
+    "actor": "critic",
+    "kind": "unknown_input",
+    "text": "The Title V major-source finding assumes the project will use 121 N+1 diesel generators of 2,500 kW each operating 500 hours/year at 6.4 g/kWh NOx. The project's actual backup generation configuration (number, size, fuel type, annual operating hours) is not known and could differ materially, potenti",
+    "outcome": "left open for your team"
+   },
+   {
+    "round": 1,
+    "actor": "critic",
+    "kind": "unsupported_link",
+    "text": "The why-chain presents the computed NOx PTE of 1,067 tpy and the specific generator assumptions (121 units, 2,500 kW, 6.4 g/kWh, 500 h/yr) as established facts, but the only verified evidence is the 100 tpy regulatory threshold. The generator assumptions are not supported by any verified quote or pr",
+    "outcome": "left open for your team"
+   },
+   {
+    "round": 1,
+    "actor": "critic",
+    "kind": "unsupported_link",
+    "text": "The why-chain states the audit requirement 'does not outright block the project,' but the evidence quote explicitly says 'The PUCT and ERCOT must complete this audit before any data center project moves forward,' indicating the project cannot proceed until the audit is complete. This claim lacks a v",
+    "outcome": "left open for your team"
+   },
+   {
+    "round": 2,
+    "actor": "system",
+    "kind": "escalation",
+    "text": "federal-title-v-major-source: The Title V major-source finding assumes the project will use 121 N+1 diesel generators of 2,500 kW each operating 500 hours/year at 6.4 g/kWh NOx. The project's actual backup generation configuration (number, size, fuel type, annual operating hours) is not known and co",
+    "outcome": "left open for your team"
+   },
+   {
+    "round": 2,
+    "actor": "system",
+    "kind": "escalation",
+    "text": "federal-title-v-major-source: The why-chain presents the computed NOx PTE of 1,067 tpy and the specific generator assumptions (121 units, 2,500 kW, 6.4 g/kWh, 500 h/yr) as established facts, but the only verified evidence is the 100 tpy regulatory threshold. The generator assumptions are not support",
+    "outcome": "left open for your team"
+   },
+   {
+    "round": 2,
+    "actor": "system",
+    "kind": "escalation",
+    "text": "tx-ercot-data-center-audit-2026: The why-chain states the audit requirement 'does not outright block the project,' but the evidence quote explicitly says 'The PUCT and ERCOT must complete this audit before any data center project moves forward,' indicating the project cannot proceed until the audit ",
+    "outcome": "left open for your team"
+   }
+  ],
+  "layer_status": {
+   "federal": {
+    "lamp": "major",
+    "summary": "Clean Air Act Title V operating permit (major source) applies (major)"
+   },
+   "iso_rto": {
+    "lamp": "major",
+    "summary": "Texas SB 6 large load interconnection standards (ERCOT) applies (major)"
+   },
+   "state": {
+    "lamp": "major",
+    "summary": "Texas Governor's data center interconnection audit (ERCOT) applies (major)"
+   },
+   "county": {
+    "lamp": "not_modelled",
+    "summary": "No county rules modelled"
+   },
+   "city": {
+    "lamp": "not_modelled",
+    "summary": "No city rules modelled"
+   }
+  },
+  "stats": {
+   "models": {
+    "nvidia/nemotron-3-ultra-550b-a55b": 2
+   },
+   "receipts": [
+    "rcpt_req_4ksdtmvo",
+    "rcpt_req_zjqn0blt"
+   ],
+   "data_queries": {
+    "zetaris": 2
+   },
+   "data_blocked": 0,
+   "quotes_verified": 3,
+   "quotes_checked": 3,
+   "markovian_chunks": 0,
+   "markovian_tokens_saved": 0,
+   "run_duration_s": 176.6
+  }
+ }
 }
