@@ -1,0 +1,22 @@
+# Curated rules with verbatim quotes. Every quote is re-verified against its
+# source_url by tests/test_layers.py (live) using app/evidence.py.
+- id: federal-title-v-major-source
+  layer: federal
+  title: Clean Air Act Title V operating permit (major source)
+  scope: {}
+  check: title_v_major_source
+  quote: "directly emits, or has the potential to emit, 100 tpy or more of any air pollutant subject to regulation"
+  source_url: "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-40.xml?part=70&section=70.2"
+  source_title: "40 CFR 70.2, definition of major source (eCFR)"
+  as_of: "2026-10-01"
+  status: final
+- id: tx-sb6-large-load
+  layer: iso_rto
+  title: Texas SB 6 large load interconnection standards (ERCOT)
+  scope: {iso: ERCOT}
+  check: {mw_threshold: 75, inclusive: false, label: "Texas SB 6 large load"}
+  quote: "The commission shall establish a demand threshold of 75 megawatts unless the commission determines that a lower threshold is necessary"
+  source_url: "https://capitol.texas.gov/tlodocs/89R/billtext/html/SB00006F.htm"
+  source_title: "Texas SB 6 (89R), enrolled text, Utilities Code Sec. 37.0561(c)"
+  as_of: "2025-06-20"
+  status: final

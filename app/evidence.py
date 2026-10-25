@@ -10,14 +10,17 @@ import io
 import json
 import re
 import unicodedata
+import warnings
 from datetime import UTC, datetime
 from pathlib import Path
 from urllib.parse import urlparse
 from urllib.robotparser import RobotFileParser
 
 import httpx
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, XMLParsedAsHTMLWarning
 from pypdf import PdfReader
+
+warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
 
 ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_CACHE_DIR = ROOT / "data/sources"
