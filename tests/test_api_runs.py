@@ -39,7 +39,16 @@ def test_run_lifecycle_streams_events_then_report(tmp_path):
 def test_samples_list_and_fetch(tmp_path):
     c = client(tmp_path)
     assert c.get("/samples").json() == [
-        {"name": "md-showcase", "address": "A", "mw": 300, "verdict": "no-go"}
+        {
+            "name": "md-showcase",
+            "address": "A",
+            "mw": 300,
+            "verdict": "no-go",
+            "lat": None,
+            "lon": None,
+            "headline": "Go: no fatal or major rule applies to this site.",
+            "county": None,
+        }
     ]
     assert c.get("/samples/md-showcase").json()["verdict"] == "no-go"
     assert c.get("/samples/..%2Fsecrets").status_code == 404

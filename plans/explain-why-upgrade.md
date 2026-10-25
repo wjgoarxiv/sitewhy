@@ -260,7 +260,7 @@ Single executor, sequential. Todos 1–3 share `app/orchestrator.py`; Todos 5–
   QA scenarios: failure — a Zetaris harness with a wrong URL falls back to DuckDB and traces `BLOCKED`. Evidence `task-2.txt`
   Commit: Y | feat(layers): Texas ERCOT audit directive rule and state watch list from Zetaris
 
-- [ ] 3. Explanation layer (`app/explain.py`), attached to runs and served samples
+- [x] 3. Explanation layer (`app/explain.py`), attached to runs and served samples
   What to do: create `enrich(report)`, pure and idempotent: deep-copy, no model calls, never change `verdict`. It adds `explanation` with the parts below.
   - `site` inputs: `as_of` from the `system/resolved` event or `report["site"]`; `incorporated` from `jurisdiction.place`; `mw` and `permits_submitted` from `project`. `Orchestrator.run` also stores `report["site"]` with lat/lon.
   - `decisive`: fatal or major with applies yes, fatal first, then layer order. Each entry has:

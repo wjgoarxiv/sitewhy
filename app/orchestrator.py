@@ -391,6 +391,8 @@ class Orchestrator:
             "incorporated": project.incorporated,
             "permits_submitted": permits_submitted,
             "utilities": [u["name"] for u in j.utilities],
+            "lat": j.lat,
+            "lon": j.lon,
         }
         sys_src = self._src("system", 0)
         self.world.upsert_entity(
@@ -558,6 +560,7 @@ class Orchestrator:
             **result,
             "findings": findings,
             "state_watch": state_watch,
+            "site": site,
             "needs_confirmation": [
                 {
                     "rule_id": o["rule_id"],
@@ -578,5 +581,8 @@ class Orchestrator:
             "worldmodel_log": str(run_dir / "worldmodel.jsonl"),
             "disclaimer": DISCLAIMER,
         }
+        from app.explain import enrich
+
+        report = enrich(report)
         (run_dir / "report.json").write_text(json.dumps(report, indent=1, default=str))
         return report

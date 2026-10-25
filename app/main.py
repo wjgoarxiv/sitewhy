@@ -9,6 +9,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from app.config import Settings, load_settings
+from app.explain import enrich
 from app.geo import Resolver, UnresolvedAddressError
 from app.orchestrator import Orchestrator, new_run_id
 from app.screen import Screener
@@ -123,9 +124,18 @@ def create_app(
     def list_samples() -> list[dict]:
         out = []
         for path in sorted(samples_dir.glob("*.json")):
-            r = json.loads(path.read_text())
-            out.append({"name": path.stem, "address": r["project"]["address"],
-                        "mw": r["project"]["mw"], "verdict": r["verdict"]})  # fmt: skip
+            r = enrich(json.loads(path.read_text()))
+            jurisdiction = r.get("jurisdiction") or {}
+            out.append({
+                "name": path.stem,
+                "address": r["project"]["address"],
+                "mw": r["project"]["mw"],
+                "verdict": r["verdict"],
+                "lat": jurisdiction.get("lat"),
+                "lon": jurisdiction.get("lon"),
+                "headline": r["explanation"]["headline"],
+                "county": jurisdiction.get("county_name"),
+            })
         return out
 
     @app.get("/samples/{name}")
@@ -133,7 +143,7 @@ def create_app(
         path = samples_dir / f"{name}.json"
         if not name.replace("-", "").replace("_", "").isalnum() or not path.is_file():
             raise HTTPException(404, "unknown sample")
-        return json.loads(path.read_text())
+        return enrich(json.loads(path.read_text()))
 
     def site_context() -> SiteContext:
         override = getattr(app.state, "site_context", None)
