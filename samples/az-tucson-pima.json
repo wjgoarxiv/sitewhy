@@ -1,0 +1,576 @@
+{
+ "run_id": "20261025T083731Z-69f48b",
+ "project": {
+  "address": "255 W Alameda St, Tucson, AZ 85701",
+  "mw": 300.0,
+  "permits_submitted": null
+ },
+ "jurisdiction": {
+  "matched_address": "255 W ALAMEDA ST, TUCSON, AZ, 85701",
+  "lat": 32.223036925689,
+  "lon": -110.975000602086,
+  "state": "AZ",
+  "state_fips": "04",
+  "county_name": "Pima County",
+  "county_fips": "04019",
+  "place": "Tucson city",
+  "county_subdivision": null,
+  "utilities": [
+   {
+    "name": "Ajo Improvement Co",
+    "eia_id": "176",
+    "ownership": "Investor Owned",
+    "nerc_region": "WECC",
+    "rtos": "",
+    "state": "AZ"
+   },
+   {
+    "name": "Arizona Public Service Co",
+    "eia_id": "803",
+    "ownership": "Investor Owned",
+    "nerc_region": "WECC",
+    "rtos": "",
+    "state": "AZ"
+   },
+   {
+    "name": "Sulphur Springs Valley E C Inc",
+    "eia_id": "18280",
+    "ownership": "Cooperative",
+    "nerc_region": "WECC",
+    "rtos": "",
+    "state": "AZ"
+   },
+   {
+    "name": "Tohono O'Odham Utility Authority",
+    "eia_id": "14543",
+    "ownership": "",
+    "nerc_region": "",
+    "rtos": "",
+    "state": "AZ"
+   },
+   {
+    "name": "Trico Electric Cooperative Inc",
+    "eia_id": "19189",
+    "ownership": "Cooperative",
+    "nerc_region": "WECC",
+    "rtos": "ERCOT",
+    "state": "AZ"
+   },
+   {
+    "name": "Tucson Electric Power Co",
+    "eia_id": "24211",
+    "ownership": "Investor Owned",
+    "nerc_region": "WECC",
+    "rtos": "CAISO",
+    "state": "AZ"
+   },
+   {
+    "name": "USBIA-San Carlos Project",
+    "eia_id": "19604",
+    "ownership": "Federal",
+    "nerc_region": "WECC",
+    "rtos": "",
+    "state": "AZ"
+   },
+   {
+    "name": "WAPA-- Western Area Power Administration",
+    "eia_id": "27000",
+    "ownership": "Federal",
+    "nerc_region": "",
+    "rtos": "CAISO;SPP;MISO",
+    "state": "AZ"
+   }
+  ],
+  "nerc_regions": [
+   "WECC"
+  ],
+  "iso": "non-ISO (WECC)",
+  "iso_candidates": [
+   "non-ISO (WECC)"
+  ],
+  "multiple_utilities": true
+ },
+ "verdict": "conditional",
+ "why": "The Pima County moratorium applies only to unincorporated areas, and the site is inside Tucson city, so the moratorium does not apply. The 300 MW project assumes N+1 diesel generators of 2500 kW each, totaling 302,500 kW, with an estimated NOx potential to emit of 1,067 tpy based on 500 hours per year and 6.4 g/kWh NOx (Tier 2 diesel). This NOx estimate exceeds the 100 tpy major-source threshold under 40 CFR 70.2, triggering a federal Title V operating permit requirement. The Title V permit is a major permitting constraint that adds cost and time but does not block the project outright. Therefore, the project can proceed conditionally upon obtaining the Title V permit.",
+ "guard_notes": [],
+ "findings": [
+  {
+   "rule_id": "az-pima-county-2026",
+   "layer": "county",
+   "title": "Pima County data center moratorium",
+   "applies": "no",
+   "reason": "applies only to unincorporated areas; site is inside a city",
+   "computed": {
+    "effective": "2026-08-11",
+    "expires": "2026-12-09"
+   },
+   "parameters": {
+    "effective": "2026-08-11",
+    "duration_days": 120,
+    "scope": "unincorporated"
+   },
+   "evidence": [
+    {
+     "field": "duration_days",
+     "quote": "Board of Supervisors adopted a 120-day moratorium on new data center permit applications in unincorporated Pima County while the county finalizes a data-center zoning code amendment.",
+     "verification": "dataset",
+     "provenance": "dataset",
+     "url": "Moratorium Nation dataset, refreshed 2026-09-23 (github.com/mjbommar/moratorium-data-2026, CC-BY-4.0)"
+    },
+    {
+     "field": "scope",
+     "quote": "Active as of 2026-09-23. 120-day moratorium on the acceptance/issuance of new data center permits in unincorporated Pima County, adopted 3-2 (Supervisors Christy and Scott dissenting) on 2026-08-11 and running to approximately 2026-12-09, while Development Services finalizes a zoning code text amendment. The department is seeking public comment (online survey; a September 28, 2026 open house; proposed rules going to the Planning and Zoning Commission on October 28, 2026) on a related, permanent zoning code amendment that would define data centers (facilities using more than 20 MW), require closed-loop cooling, and set review/design standards; that permanent amendment is expected in December 2026, around when the moratorium runs out.",
+     "verification": "dataset",
+     "provenance": "dataset",
+     "url": "Moratorium Nation dataset, refreshed 2026-09-23 (github.com/mjbommar/moratorium-data-2026, CC-BY-4.0)"
+    },
+    {
+     "field": "effective",
+     "quote": "Board of Supervisors adopted a 120-day moratorium on new data center permit applications in unincorporated Pima County while the county finalizes a data-center zoning code amendment.",
+     "verification": "dataset",
+     "provenance": "dataset",
+     "url": "Moratorium Nation dataset, refreshed 2026-09-23 (github.com/mjbommar/moratorium-data-2026, CC-BY-4.0)"
+    }
+   ],
+   "grade": "info"
+  },
+  {
+   "rule_id": "federal-title-v-major-source",
+   "layer": "federal",
+   "title": "Clean Air Act Title V operating permit (major source)",
+   "applies": "yes",
+   "reason": "estimated NOx potential to emit 1,067 tpy meets the 100 tpy major-source threshold",
+   "computed": {
+    "nox_tpy": 1067.0373489748074,
+    "generators": {
+     "units": 121,
+     "unit_kw": 2500,
+     "total_kw": 302500,
+     "assumption": "N+1 diesel gensets of 2500 kW sized to the full IT load"
+    },
+    "assumptions": "500 h/yr emergency-engine PTE, 6.4 g/kWh NOx (Tier 2 diesel)"
+   },
+   "evidence": [
+    {
+     "quote": "directly emits, or has the potential to emit, 100 tpy or more of any air pollutant subject to regulation",
+     "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-40.xml?part=70&section=70.2",
+     "verification": "verified",
+     "provenance": "curated"
+    }
+   ],
+   "grade": "major"
+  }
+ ],
+ "needs_confirmation": [
+  {
+   "rule_id": "federal-title-v-major-source",
+   "type": "unsupported_link",
+   "text": "The why-chain states the Title V permit 'adds cost and time' but the findings only show the NOx threshold trigger; no evidence in the findings supports claims about permitting cost or timeline.",
+   "question": "What evidence in the findings supports the claim that the Title V permit adds cost and time?"
+  }
+ ],
+ "conflicts": [],
+ "events": [
+  {
+   "round": 0,
+   "role": "system",
+   "action": "resolved",
+   "detail": {
+    "address": "255 W ALAMEDA ST, TUCSON, AZ, 85701",
+    "state": "AZ",
+    "county": "Pima County",
+    "place": "Tucson city",
+    "iso": "non-ISO (WECC)",
+    "mw": 300.0,
+    "as_of": "2026-10-25",
+    "incorporated": true,
+    "permits_submitted": null,
+    "utilities": [
+     "Ajo Improvement Co",
+     "Arizona Public Service Co",
+     "Sulphur Springs Valley E C Inc",
+     "Tohono O'Odham Utility Authority",
+     "Trico Electric Cooperative Inc",
+     "Tucson Electric Power Co",
+     "USBIA-San Carlos Project",
+     "WAPA-- Western Area Power Administration"
+    ]
+   },
+   "at": "2026-10-25T08:37:31.980950+00:00"
+  },
+  {
+   "round": 0,
+   "role": "system",
+   "action": "seeded",
+   "detail": {
+    "local": [
+     "az-pima-county-2026"
+    ],
+    "curated": [
+     "federal-title-v-major-source"
+    ]
+   },
+   "at": "2026-10-25T08:37:32.318031+00:00"
+  },
+  {
+   "round": 1,
+   "role": "planner",
+   "action": "tasks",
+   "detail": [
+    {
+     "rule_id": "az-pima-county-2026",
+     "questions": [
+      "What is the exact effective date of the Pima County data center moratorium?",
+      "What is the duration of the moratorium (e.g., 120 days, specific expiration date)?",
+      "Does the moratorium apply countywide, including incorporated municipalities such as Tucson, or only to unincorporated areas of Pima County?",
+      "What specific activities does the moratorium pause (e.g., accepting, processing, reviewing, approving data center applications, site plans, conditional use permits, building permits, or other approvals)?",
+      "Does the moratorium include any exemptions or grandfathering provisions (e.g., for projects with pending applications, approved permits, or projects already in the pipeline)?",
+      "Which county authority enacted the moratorium and under what legal instrument (ordinance number, resolution)?"
+     ]
+    }
+   ],
+   "at": "2026-10-25T08:37:41.520750+00:00"
+  },
+  {
+   "round": 1,
+   "role": "county_investigator",
+   "action": "markovian_run",
+   "detail": {
+    "rule": "az-pima-county-2026",
+    "attempt": 1,
+    "chunks": 1,
+    "status": "completed",
+    "tokens_saved": 0,
+    "token_label": "estimated",
+    "facts": 0
+   },
+   "at": "2026-10-25T08:38:16.778068+00:00"
+  },
+  {
+   "round": 1,
+   "role": "evidence_verifier",
+   "action": "verified",
+   "detail": {
+    "rule": "az-pima-county-2026",
+    "attempt": 1,
+    "checked": 0,
+    "failed": 0
+   },
+   "at": "2026-10-25T08:38:16.778077+00:00"
+  },
+  {
+   "round": 1,
+   "role": "evidence_verifier",
+   "action": "retry_requested",
+   "detail": "No facts returned; answer every question you can from the sources.",
+   "at": "2026-10-25T08:38:16.778079+00:00"
+  },
+  {
+   "round": 1,
+   "role": "county_investigator",
+   "action": "markovian_run",
+   "detail": {
+    "rule": "az-pima-county-2026",
+    "attempt": 2,
+    "chunks": 4,
+    "status": "max-chunks",
+    "tokens_saved": 0,
+    "token_label": "estimated",
+    "facts": 0
+   },
+   "at": "2026-10-25T08:38:24.525453+00:00"
+  },
+  {
+   "round": 1,
+   "role": "evidence_verifier",
+   "action": "verified",
+   "detail": {
+    "rule": "az-pima-county-2026",
+    "attempt": 2,
+    "checked": 0,
+    "failed": 0
+   },
+   "at": "2026-10-25T08:38:24.525462+00:00"
+  },
+  {
+   "round": 1,
+   "role": "evidence_verifier",
+   "action": "retry_requested",
+   "detail": "No facts returned; answer every question you can from the sources.",
+   "at": "2026-10-25T08:38:24.525463+00:00"
+  },
+  {
+   "round": 1,
+   "role": "county_investigator",
+   "action": "markovian_run",
+   "detail": {
+    "rule": "az-pima-county-2026",
+    "attempt": 3,
+    "chunks": 2,
+    "status": "completed",
+    "tokens_saved": 0,
+    "token_label": "estimated",
+    "facts": 0
+   },
+   "at": "2026-10-25T08:38:44.796589+00:00"
+  },
+  {
+   "round": 1,
+   "role": "evidence_verifier",
+   "action": "verified",
+   "detail": {
+    "rule": "az-pima-county-2026",
+    "attempt": 3,
+    "checked": 0,
+    "failed": 0
+   },
+   "at": "2026-10-25T08:38:44.796598+00:00"
+  },
+  {
+   "round": 1,
+   "role": "applicability",
+   "action": "computed",
+   "detail": [
+    {
+     "rule_id": "az-pima-county-2026",
+     "applies": "no",
+     "reason": "applies only to unincorporated areas; site is inside a city"
+    },
+    {
+     "rule_id": "federal-title-v-major-source",
+     "applies": "yes",
+     "reason": "estimated NOx potential to emit 1,067 tpy meets the 100 tpy major-source threshold"
+    }
+   ],
+   "at": "2026-10-25T08:38:44.796670+00:00"
+  },
+  {
+   "round": 1,
+   "role": "adjudicator",
+   "action": "draft",
+   "detail": {
+    "verdict": "conditional",
+    "grades": {
+     "az-pima-county-2026": "info",
+     "federal-title-v-major-source": "major"
+    }
+   },
+   "at": "2026-10-25T08:39:02.414111+00:00"
+  },
+  {
+   "round": 1,
+   "role": "critic",
+   "action": "objections",
+   "detail": [
+    {
+     "rule_id": "federal-title-v-major-source",
+     "type": "unsupported_link",
+     "text": "The why-chain states the Title V permit 'adds cost and time' but the findings only show the NOx threshold trigger; no evidence in the findings supports claims about permitting cost or timeline.",
+     "question": "What evidence in the findings supports the claim that the Title V permit adds cost and time?",
+     "id": "objection:rule-federal-title-v-major-source-ef550a-b3e8254b80bf"
+    }
+   ],
+   "at": "2026-10-25T08:40:19.419676+00:00"
+  },
+  {
+   "round": 2,
+   "role": "system",
+   "action": "escalated",
+   "detail": [
+    "federal-title-v-major-source: The why-chain states the Title V permit 'adds cost and time' but the findings only show the NOx threshold trigger; no evidence in the findings supports claims about permitting cost or timeline."
+   ],
+   "at": "2026-10-25T08:40:19.419694+00:00"
+  }
+ ],
+ "model_trace": [
+  {
+   "step": "plan",
+   "role": "planner",
+   "model": "nvidia/nemotron-3-ultra-550b-a55b",
+   "provider": "nvidia",
+   "receipt_id": "rcpt_req_0q86658n",
+   "total_tokens": 2000,
+   "latency_ms": 9202,
+   "cached": false,
+   "escalated_from": null
+  },
+  {
+   "step": "extract",
+   "role": "county_investigator",
+   "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
+   "provider": "nvidia",
+   "receipt_id": "rcpt_req_a8hdl39a",
+   "total_tokens": 8238,
+   "latency_ms": 35255,
+   "cached": false,
+   "escalated_from": null
+  },
+  {
+   "step": "extract",
+   "role": "county_investigator",
+   "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
+   "provider": "nvidia",
+   "receipt_id": "rcpt_req_tux1glps",
+   "total_tokens": 4342,
+   "latency_ms": 1767,
+   "cached": false,
+   "escalated_from": null
+  },
+  {
+   "step": "extract",
+   "role": "county_investigator",
+   "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
+   "provider": "nvidia",
+   "receipt_id": "rcpt_req_aiumasd5",
+   "total_tokens": 3679,
+   "latency_ms": 2081,
+   "cached": false,
+   "escalated_from": null
+  },
+  {
+   "step": "extract",
+   "role": "county_investigator",
+   "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
+   "provider": "nvidia",
+   "receipt_id": "rcpt_req_tqapkmtr",
+   "total_tokens": 3677,
+   "latency_ms": 1687,
+   "cached": false,
+   "escalated_from": null
+  },
+  {
+   "step": "extract",
+   "role": "county_investigator",
+   "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
+   "provider": "nvidia",
+   "receipt_id": "rcpt_req_oumfh4hd",
+   "total_tokens": 3677,
+   "latency_ms": 1647,
+   "cached": false,
+   "escalated_from": null
+  },
+  {
+   "step": "extract",
+   "role": "county_investigator",
+   "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
+   "provider": "nvidia",
+   "receipt_id": "rcpt_req_sypascz4",
+   "total_tokens": 4472,
+   "latency_ms": 13861,
+   "cached": false,
+   "escalated_from": null
+  },
+  {
+   "step": "extract",
+   "role": "county_investigator",
+   "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
+   "provider": "nvidia",
+   "receipt_id": "rcpt_req_1e9vwrz9",
+   "total_tokens": 3963,
+   "latency_ms": 6061,
+   "cached": false,
+   "escalated_from": null
+  },
+  {
+   "step": "synthesize",
+   "role": "adjudicator",
+   "model": "nvidia/nemotron-3-ultra-550b-a55b",
+   "provider": "nvidia",
+   "receipt_id": "rcpt_req_qyq5yuo9",
+   "total_tokens": 6010,
+   "latency_ms": 17617,
+   "cached": false,
+   "escalated_from": null
+  },
+  {
+   "step": "critique",
+   "role": "critic",
+   "model": "nvidia/nemotron-3-ultra-550b-a55b",
+   "provider": "nvidia",
+   "receipt_id": "rcpt_req_w2m3occa",
+   "total_tokens": 8545,
+   "latency_ms": 77004,
+   "cached": false,
+   "escalated_from": null
+  }
+ ],
+ "data_trace": [
+  {
+   "backend": "zetaris",
+   "status": "ok",
+   "rows": 1
+  },
+  {
+   "backend": "zetaris",
+   "status": "ok",
+   "rows": 1
+  }
+ ],
+ "markovian_runs": [
+  {
+   "id": "a6328f7e-be50-4b63-968a-ecbe48f4b893",
+   "timestamp": 1792917461523.1611,
+   "prompt": "Rule: Pima County data center moratorium.\nQuestions:\n- What is the exact effective date of the Pima County data center moratorium?\n- What is the duration of the moratorium (e.g., 120 days, specific expiration date)?\n- Does the moratorium apply countywide, including incorporated municipalities such as Tucson, or only to unincorporated areas of Pima County?\n- What specific activities does the moratorium pause (e.g., accepting, processing, reviewing, approving data center applications, site plans, ",
+   "mode": "RESEARCH",
+   "chunk_config": {
+    "chunkSize": 8000,
+    "maxChunks": 4,
+    "carryoverTokens": 768,
+    "overlapTokens": 0
+   },
+   "status": "completed",
+   "final_state": "",
+   "reflection": null,
+   "error": null,
+   "token_label": "estimated",
+   "total_tokens_used": 0,
+   "total_tokens_saved": 0,
+   "efficiency_percent": 0.0,
+   "duration_ms": 35254.885986328125
+  },
+  {
+   "id": "4bd203c2-7f77-403a-9e45-83c692dcfe19",
+   "timestamp": 1792917496778.109,
+   "prompt": "Rule: Pima County data center moratorium.\nQuestions:\n- What is the exact effective date of the Pima County data center moratorium?\n- What is the duration of the moratorium (e.g., 120 days, specific expiration date)?\n- Does the moratorium apply countywide, including incorporated municipalities such as Tucson, or only to unincorporated areas of Pima County?\n- What specific activities does the moratorium pause (e.g., accepting, processing, reviewing, approving data center applications, site plans, ",
+   "mode": "RESEARCH",
+   "chunk_config": {
+    "chunkSize": 8000,
+    "maxChunks": 4,
+    "carryoverTokens": 768,
+    "overlapTokens": 0
+   },
+   "status": "max-chunks",
+   "final_state": "COMPLETED: Extracted verbatim sentences from Source 1 for all six questions. Noted that Source 1 does not contain information about Pima County; it is about Washington County. No facts can be returned for Pima County from this source. REMAINING: Need to locate actual Pima County source or clarify if user intended Washington County data. If Pima County source is separate, must find it. DECISIONS: Proceeding under assumption that Source 1 provided is incorrect or mislabeled; no Pima County data found. CONTEXT: User asked about Pima County but Source 1 is Washington County (kjzz.org article about Pima County passes 120-day moratorium, but content is about Washington County). Need to verify source content or request correct source.",
+   "reflection": null,
+   "error": null,
+   "token_label": "estimated",
+   "total_tokens_used": 555,
+   "total_tokens_saved": 0,
+   "efficiency_percent": 0.0,
+   "duration_ms": 7747.316162109375
+  },
+  {
+   "id": "6489155e-2afb-435b-a986-25bca91942bc",
+   "timestamp": 1792917504525.4941,
+   "prompt": "Rule: Pima County data center moratorium.\nQuestions:\n- What is the exact effective date of the Pima County data center moratorium?\n- What is the duration of the moratorium (e.g., 120 days, specific expiration date)?\n- Does the moratorium apply countywide, including incorporated municipalities such as Tucson, or only to unincorporated areas of Pima County?\n- What specific activities does the moratorium pause (e.g., accepting, processing, reviewing, approving data center applications, site plans, ",
+   "mode": "RESEARCH",
+   "chunk_config": {
+    "chunkSize": 8000,
+    "maxChunks": 4,
+    "carryoverTokens": 768,
+    "overlapTokens": 0
+   },
+   "status": "completed",
+   "final_state": "",
+   "reflection": null,
+   "error": null,
+   "token_label": "estimated",
+   "total_tokens_used": 0,
+   "total_tokens_saved": 0,
+   "efficiency_percent": 0.0,
+   "duration_ms": 20271.07275390625
+  }
+ ],
+ "worldmodel_log": "samples/az-tucson-pima/worldmodel.jsonl",
+ "disclaimer": "Screening aid, not legal advice. Confirm every finding with the cited source."
+}

@@ -276,3 +276,11 @@ def test_quote_attributed_to_wrong_source_is_verified_against_the_rule_sources(
         e for e in wash["evidence"] if e["field"] == "effective" and e["provenance"] == "primary"
     ]
     assert eff and eff[0]["verification"] == "verified"
+
+
+def test_scope_parsing_is_explicit():
+    from app.orchestrator import parse_fact
+
+    assert parse_fact("scope", "unincorporated Pima County") == "unincorporated"
+    assert parse_fact("scope", "countywide") == "countywide"
+    assert parse_fact("scope", "Pima County") is None

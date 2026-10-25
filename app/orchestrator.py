@@ -69,7 +69,14 @@ def parse_fact(field: str, value):
     if field == "duration_days":
         return parse_days(value)
     if field == "scope":
-        return "unincorporated" if "unincorporated" in str(value).lower() else "countywide"
+        text = str(value).lower()
+        if "unincorporated" in text:
+            return "unincorporated"
+        if any(
+            k in text for k in ("countywide", "county-wide", "entire county", "all of the county")
+        ):
+            return "countywide"
+        return None
     if field == "exempt_if_permits_submitted":
         return str(value).strip().lower() in {"true", "yes", "1"}
     return str(value)
@@ -240,7 +247,12 @@ class Orchestrator:
         params = {}
         for field in ("effective", "duration_days", "scope", "exempt_if_permits_submitted"):
             live = rule["facts"].get(field)
-            if live:
+            seeded = rule["seed"].get(field)
+            values = [f["value"] for f in live or []] + ([seeded["value"]] if seeded else [])
+            if field == "scope" and "unincorporated" in values:
+                # A verified narrower scope beats a broader reading of the same rule.
+                params[field] = "unincorporated"
+            elif live:
                 params[field] = live[-1]["value"]
             elif field in rule["seed"]:
                 params[field] = rule["seed"][field]["value"]

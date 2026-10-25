@@ -1,0 +1,259 @@
+{
+ "run_id": "20261025T083523Z-92d793",
+ "project": {
+  "address": "555 Walnut St, Abilene, TX 79601",
+  "mw": 300.0,
+  "permits_submitted": null
+ },
+ "jurisdiction": {
+  "matched_address": "555 WALNUT ST, ABILENE, TX, 79601",
+  "lat": 32.454063114005,
+  "lon": -99.731199274255,
+  "state": "TX",
+  "state_fips": "48",
+  "county_name": "Taylor County",
+  "county_fips": "48441",
+  "place": "Abilene city",
+  "county_subdivision": null,
+  "utilities": [
+   {
+    "name": "AEP Texas North Company",
+    "eia_id": "20404",
+    "ownership": "Investor Owned",
+    "nerc_region": "TRE",
+    "rtos": "ERCOT",
+    "state": "TX"
+   },
+   {
+    "name": "Coleman County Elec Coop, Inc",
+    "eia_id": "3938",
+    "ownership": "",
+    "nerc_region": "",
+    "rtos": "",
+    "state": "TX"
+   },
+   {
+    "name": "Taylor Electric Coop Inc - (TX)",
+    "eia_id": "27369",
+    "ownership": "Cooperative",
+    "nerc_region": "TRE",
+    "rtos": "",
+    "state": "TX"
+   }
+  ],
+  "nerc_regions": [
+   "TRE"
+  ],
+  "iso": "ERCOT",
+  "iso_candidates": [
+   "ERCOT"
+  ],
+  "multiple_utilities": true
+ },
+ "verdict": "conditional",
+ "why": "The federal Title V rule applies because the computed NOx potential to emit of 1,067 tpy meets the 100 tpy major-source threshold per 40 CFR 70.2. The Texas SB 6 rule applies because the 300 MW load exceeds the 75 MW threshold stated in the bill text, with a computed margin of 225 MW. Both rules are graded major, indicating they impose significant permitting and interconnection requirements but do not block the project. No other applicable rules were found for this site, so the verdict is conditional.",
+ "guard_notes": [],
+ "findings": [
+  {
+   "rule_id": "federal-title-v-major-source",
+   "layer": "federal",
+   "title": "Clean Air Act Title V operating permit (major source)",
+   "applies": "yes",
+   "reason": "estimated NOx potential to emit 1,067 tpy meets the 100 tpy major-source threshold",
+   "computed": {
+    "nox_tpy": 1067.0373489748074,
+    "generators": {
+     "units": 121,
+     "unit_kw": 2500,
+     "total_kw": 302500,
+     "assumption": "N+1 diesel gensets of 2500 kW sized to the full IT load"
+    },
+    "assumptions": "500 h/yr emergency-engine PTE, 6.4 g/kWh NOx (Tier 2 diesel)"
+   },
+   "evidence": [
+    {
+     "quote": "directly emits, or has the potential to emit, 100 tpy or more of any air pollutant subject to regulation",
+     "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-01/title-40.xml?part=70&section=70.2",
+     "verification": "verified",
+     "provenance": "curated"
+    }
+   ],
+   "grade": "major"
+  },
+  {
+   "rule_id": "tx-sb6-large-load",
+   "layer": "iso_rto",
+   "title": "Texas SB 6 large load interconnection standards (ERCOT)",
+   "applies": "yes",
+   "reason": "300 MW meets the Texas SB 6 large load threshold (> 75 MW)",
+   "computed": {
+    "margin_mw": 225.0
+   },
+   "evidence": [
+    {
+     "quote": "The commission shall establish a demand threshold of 75 megawatts unless the commission determines that a lower threshold is necessary",
+     "url": "https://capitol.texas.gov/tlodocs/89R/billtext/html/SB00006F.htm",
+     "verification": "verified",
+     "provenance": "curated"
+    }
+   ],
+   "grade": "major"
+  }
+ ],
+ "needs_confirmation": [
+  {
+   "rule_id": "federal-title-v-major-source",
+   "type": "unsupported_link",
+   "text": "The why-chain cites a computed NOx potential to emit of 1,067 tpy as the basis for the Title V major-source determination, but the only verified evidence is the regulatory threshold (100 tpy). The computation depends on unverified assumptions: 121 diesel generators of 2500 kW each, 500 hours/year operation, and a Tier 2 NOx emission factor of 6.4 g/kWh. No quote or source verifies these assumptions.",
+   "question": "What is the actual generator configuration (number, size, fuel type, emission tier, and annual operating hours) for this project, and is there a source confirming it?"
+  },
+  {
+   "rule_id": "federal-title-v-major-source",
+   "type": "unknown_input",
+   "text": "The finding's applicability hinges on the assumed generator fleet. If the project uses cleaner generators (e.g., Tier 4 diesel at ~0.5 g/kWh NOx, or natural gas), the NOx PTE could fall below 100 tpy, changing the rule from 'applies: yes' to 'applies: no'. The project's actual generator specifications are not known.",
+   "question": "What are the project's actual backup generator specifications (engine model, fuel, emission certification, and planned annual runtime)?"
+  }
+ ],
+ "conflicts": [],
+ "events": [
+  {
+   "round": 0,
+   "role": "system",
+   "action": "resolved",
+   "detail": {
+    "address": "555 WALNUT ST, ABILENE, TX, 79601",
+    "state": "TX",
+    "county": "Taylor County",
+    "place": "Abilene city",
+    "iso": "ERCOT",
+    "mw": 300.0,
+    "as_of": "2026-10-25",
+    "incorporated": true,
+    "permits_submitted": null,
+    "utilities": [
+     "AEP Texas North Company",
+     "Coleman County Elec Coop, Inc",
+     "Taylor Electric Coop Inc - (TX)"
+    ]
+   },
+   "at": "2026-10-25T08:35:23.129729+00:00"
+  },
+  {
+   "round": 0,
+   "role": "system",
+   "action": "seeded",
+   "detail": {
+    "local": [],
+    "curated": [
+     "federal-title-v-major-source",
+     "tx-sb6-large-load"
+    ]
+   },
+   "at": "2026-10-25T08:35:23.297826+00:00"
+  },
+  {
+   "round": 1,
+   "role": "planner",
+   "action": "tasks",
+   "detail": [],
+   "at": "2026-10-25T08:35:23.297841+00:00"
+  },
+  {
+   "round": 1,
+   "role": "applicability",
+   "action": "computed",
+   "detail": [
+    {
+     "rule_id": "federal-title-v-major-source",
+     "applies": "yes",
+     "reason": "estimated NOx potential to emit 1,067 tpy meets the 100 tpy major-source threshold"
+    },
+    {
+     "rule_id": "tx-sb6-large-load",
+     "applies": "yes",
+     "reason": "300 MW meets the Texas SB 6 large load threshold (> 75 MW)"
+    }
+   ],
+   "at": "2026-10-25T08:35:23.297875+00:00"
+  },
+  {
+   "round": 1,
+   "role": "adjudicator",
+   "action": "draft",
+   "detail": {
+    "verdict": "conditional",
+    "grades": {
+     "federal-title-v-major-source": "major",
+     "tx-sb6-large-load": "major"
+    }
+   },
+   "at": "2026-10-25T08:35:50.314180+00:00"
+  },
+  {
+   "round": 1,
+   "role": "critic",
+   "action": "objections",
+   "detail": [
+    {
+     "rule_id": "federal-title-v-major-source",
+     "type": "unsupported_link",
+     "text": "The why-chain cites a computed NOx potential to emit of 1,067 tpy as the basis for the Title V major-source determination, but the only verified evidence is the regulatory threshold (100 tpy). The computation depends on unverified assumptions: 121 diesel generators of 2500 kW each, 500 hours/year operation, and a Tier 2 NOx emission factor of 6.4 g/kWh. No quote or source verifies these assumptions.",
+     "question": "What is the actual generator configuration (number, size, fuel type, emission tier, and annual operating hours) for this project, and is there a source confirming it?",
+     "id": "objection:rule-federal-title-v-major-source-ef550a-516bd33958c8"
+    },
+    {
+     "rule_id": "federal-title-v-major-source",
+     "type": "unknown_input",
+     "text": "The finding's applicability hinges on the assumed generator fleet. If the project uses cleaner generators (e.g., Tier 4 diesel at ~0.5 g/kWh NOx, or natural gas), the NOx PTE could fall below 100 tpy, changing the rule from 'applies: yes' to 'applies: no'. The project's actual generator specifications are not known.",
+     "question": "What are the project's actual backup generator specifications (engine model, fuel, emission certification, and planned annual runtime)?",
+     "id": "objection:rule-federal-title-v-major-source-ef550a-1d8e93ddf450"
+    }
+   ],
+   "at": "2026-10-25T08:36:54.508706+00:00"
+  },
+  {
+   "round": 2,
+   "role": "system",
+   "action": "escalated",
+   "detail": [
+    "federal-title-v-major-source: The why-chain cites a computed NOx potential to emit of 1,067 tpy as the basis for the Title V major-source determination, but the only verified evidence is the regulatory threshold (100 tpy). The computation depends on unverified assumptions: 121 diesel generators of 2500 kW each, 500 hours/year operation, and a Tier 2 NOx emission factor of 6.4 g/kWh. No quote or source verifies these assumptions.",
+    "federal-title-v-major-source: The finding's applicability hinges on the assumed generator fleet. If the project uses cleaner generators (e.g., Tier 4 diesel at ~0.5 g/kWh NOx, or natural gas), the NOx PTE could fall below 100 tpy, changing the rule from 'applies: yes' to 'applies: no'. The project's actual generator specifications are not known."
+   ],
+   "at": "2026-10-25T08:36:54.508720+00:00"
+  }
+ ],
+ "model_trace": [
+  {
+   "step": "synthesize",
+   "role": "adjudicator",
+   "model": "nvidia/nemotron-3-ultra-550b-a55b",
+   "provider": "nvidia",
+   "receipt_id": "rcpt_req_a2tnjtg6",
+   "total_tokens": 5856,
+   "latency_ms": 27016,
+   "cached": false,
+   "escalated_from": null
+  },
+  {
+   "step": "critique",
+   "role": "critic",
+   "model": "nvidia/nemotron-3-ultra-550b-a55b",
+   "provider": "nvidia",
+   "receipt_id": "rcpt_req_st8lvf8d",
+   "total_tokens": 6838,
+   "latency_ms": 64193,
+   "cached": false,
+   "escalated_from": null
+  }
+ ],
+ "data_trace": [
+  {
+   "backend": "zetaris",
+   "status": "ok",
+   "rows": 0
+  }
+ ],
+ "markovian_runs": [],
+ "worldmodel_log": "samples/tx-abilene-ercot/worldmodel.jsonl",
+ "disclaimer": "Screening aid, not legal advice. Confirm every finding with the cited source."
+}
