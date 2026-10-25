@@ -155,7 +155,7 @@ Loop: plan → investigate → verify (with retries) → adjudicate → critique
   QA scenarios: happy: live probe both; failure: 429 burst → backoff then success; no cloud key → typed error, local steps OK. Evidence .litclaude/evidence/dc-site-screener/task-2.txt
   Commit: Y | feat(router): nemotron step router
 
-- [ ] 3. Data harness: Zetaris adapter (REST primary, MCP if available) + DuckDB fallback
+- [x] 3. Data harness: Zetaris adapter (REST primary, MCP if available) + DuckDB fallback
   What to do / Must NOT do: `DataHarness` interface (`list_sources`, `query(sql)`, `register_table`). Zetaris impl against the shared event instance using REST (API key, org ID, REST URL; Management → API Tokens) per github.com/zetaris/getting-started; if onboarding provides MCP endpoint, add MCP client using `zetaris.list_sources`/`zetaris.query`. Upload/register Parquet/CSV (pipeline_sites, state_baseline, moratoria, federal/ISO rules) under team prefix. Synthetic `pipeline_sites(site_id,name,lat,lon,mw,stage,target_cod,backup_gen)` with 3 showcase + ~12 others. DuckDB impl over same files. Trace shows backend per query. Must NOT touch other teams' objects; no own-AWS deploy without approval.
   Parallelization: Wave 2 | Blocked by: 1,5 | Blocks: 9,11,12
   References: https://github.com/zetaris/getting-started (START-HERE.md, open_data/parquet_csv recipes, claude-code-connection.html, client-setup.html)
