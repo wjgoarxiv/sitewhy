@@ -35,6 +35,7 @@ def _orchestrator_helpers():
 
 
 def _as_of(report) -> str:
+    """Report timestamp, else today (outputs embedding it are date-dependent)."""
     for e in report.get("events") or []:
         if e.get("action") == "resolved" and isinstance(e.get("detail"), dict):
             as_of = e["detail"].get("as_of")

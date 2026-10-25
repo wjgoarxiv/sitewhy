@@ -191,11 +191,16 @@ def create_app(
                 (p for p in runs_dir.iterdir() if (p / "report.json").is_file()),
                 reverse=True,
             ):
-                rows.append(
-                    portfolio_row(
-                        child.name, "live", json.loads((child / "report.json").read_text())
+                try:
+                    rows.append(
+                        portfolio_row(
+                            child.name, "live",
+                            json.loads((child / "report.json").read_text()),
+                        )
                     )
-                )
+                except (KeyError, TypeError):
+                    # One corrupt live report must not break the portfolio.
+                    continue
         return rows
 
     @app.get("/samples")
@@ -253,9 +258,17 @@ def create_app(
 
     @app.get("/runs/{run_id}/context")
     def get_run_context(run_id: str) -> dict:
-        if run_id not in runs:
+        if not RUN_ID_RE.match(run_id):
             raise HTTPException(404, "unknown run")
-        report = runs[run_id].get("report") or {}
+        report: dict = {}
+        if run_id in runs:
+            report = runs[run_id].get("report") or {}
+        else:
+            path = runs_dir / run_id / "report.json"
+            if path.is_file():
+                report = enrich(json.loads(path.read_text()))
+        if not report:
+            raise HTTPException(404, "unknown run")
         jurisdiction = report.get("jurisdiction") or {}
         if "lat" not in jurisdiction or "county_fips" not in jurisdiction:
             raise HTTPException(409, "run not ready")

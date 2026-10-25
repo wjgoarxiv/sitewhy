@@ -110,6 +110,23 @@ def test_transmission_failure_keeps_county(tmp_path):
     assert out["county"]["features"][0]["properties"]["NAME"] == "Pima County"
 
 
+def test_upstream_error_text_not_leaked_to_client(tmp_path):
+    from app.sitecontext import SiteContext
+
+    def boom(request):
+        raise httpx.ConnectError("dns failed for internal-proxy:8080", request=request)
+
+    transport = httpx.MockTransport(boom)
+    sc = SiteContext(client=httpx.Client(transport=transport), cache_dir=tmp_path)
+    out = sc.context(32.2230, -110.9750, "04019")
+    assert out["county"] is None
+    assert out["errors"]
+    for entry in out["errors"]:
+        assert entry["error"] == "ConnectError"
+    assert "internal-proxy" not in json.dumps(out["errors"])
+    assert "dns failed" not in json.dumps(out["errors"])
+
+
 def test_no_place_gives_null(tmp_path):
     sc, _ = make_context(tmp_path, place=EMPTY_FC)
     out = sc.context(39.6929, -77.7215, "24043")

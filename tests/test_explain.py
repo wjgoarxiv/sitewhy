@@ -188,3 +188,10 @@ def test_zero_findings_fallback_headline():
     assert (
         explanation["headline"] == "Go: no fatal or major rule applies to this site."
     )
+
+
+def test_as_of_falls_back_to_today():
+    from datetime import date
+
+    out = enrich({})
+    assert out["explanation"]["site"]["as_of"] == date.today().isoformat()

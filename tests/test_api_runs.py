@@ -192,3 +192,66 @@ def test_post_runs_with_lat_lon_reaches_orchestrator(tmp_path):
     assert factory.calls[-1]["lat"] == 32.223 and factory.calls[-1]["lon"] == -110.975
     assert c.post("/runs", json={"mw": 300}).status_code == 422
     assert c.post("/runs", json={"lat": 10.0, "lon": -110.975, "mw": 300}).status_code == 422
+
+
+class StubSiteContext:
+    def context(self, lat, lon, county_fips):
+        return {
+            "query": {"lat": lat, "lon": lon, "county_fips": county_fips},
+            "county": {"stub": True},
+            "place": None,
+            "transmission": None,
+            "errors": [],
+        }
+
+
+def disk_context_client(tmp_path):
+    samples = tmp_path / "samples"
+    samples.mkdir(exist_ok=True)
+    (samples / "demo.json").write_text(
+        json.dumps({"project": {"address": "A", "mw": 300}, "verdict": "go"})
+    )
+    runs = tmp_path / "runs"
+    done_id = "20261026T120000Z-def456"
+    report = fake_report(done_id)
+    report["jurisdiction"]["county_fips"] = "51107"
+    (runs / done_id).mkdir(parents=True, exist_ok=True)
+    (runs / done_id / "report.json").write_text(json.dumps(report))
+    pending_id = "20261025T120000Z-abc123"
+    (runs / pending_id).mkdir(parents=True, exist_ok=True)
+    (runs / pending_id / "report.json").write_text(
+        json.dumps({"run_id": pending_id, "verdict": "go"})
+    )
+    app = create_app(
+        Settings(), resolver=FakeResolver(WASHINGTON),
+        orchestrator_factory=FakeOrchestrator, samples_dir=samples, runs_dir=runs,
+    )
+    app.state.site_context = StubSiteContext()
+    return TestClient(app)
+
+
+def test_run_context_served_from_disk_after_restart(tmp_path):
+    c = disk_context_client(tmp_path)
+    out = c.get("/runs/20261026T120000Z-def456/context")
+    assert out.status_code == 200
+    assert out.json()["query"]["county_fips"] == "51107"
+    assert c.get("/runs/20261025T000000Z-000000/context").status_code == 404
+    assert c.get("/runs/not-an-id!/context").status_code == 404
+
+
+def test_run_context_without_jurisdiction_is_not_ready(tmp_path):
+    c = disk_context_client(tmp_path)
+    assert c.get("/runs/20261025T120000Z-abc123/context").status_code == 409
+
+
+def test_portfolio_skips_corrupt_live_report(tmp_path):
+    c = portfolio_client(tmp_path)
+    assert len(c.get("/portfolio").json()) == 3
+    runs = tmp_path / "runs"
+    (runs / "20261025T120000Z-abc123" / "report.json").write_text(
+        json.dumps({"broken": True})
+    )
+    (runs / "not-a-run" / "report.json").parent.mkdir(parents=True, exist_ok=True)
+    (runs / "not-a-run" / "report.json").write_text(json.dumps({"broken": True}))
+    rows = c.get("/portfolio").json()
+    assert [r["id"] for r in rows] == ["md-showcase", "20261026T120000Z-def456"]

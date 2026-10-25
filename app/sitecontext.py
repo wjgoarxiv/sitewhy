@@ -8,9 +8,12 @@ plus an entry in ``errors`` while the other parts are still served.
 
 import hashlib
 import json
+import logging
 from pathlib import Path
 
 import httpx
+
+log = logging.getLogger(__name__)
 
 ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_CACHE_DIR = ROOT / "data/geo/context"
@@ -123,7 +126,8 @@ class SiteContext:
                 else:
                     self._write(county_path, county)
             except Exception as exc:  # noqa: BLE001 - one part must not kill the others
-                county, errors = None, [*errors, {"part": "county", "error": str(exc)[:200]}]
+                log.warning("site context county fetch failed", exc_info=True)
+                county, errors = None, [*errors, {"part": "county", "error": type(exc).__name__}]
 
         place_path = self._path("place", f"place:{lat4},{lon4}")
         place = self._read(place_path)
@@ -147,7 +151,8 @@ class SiteContext:
                 place = feats[0] if feats else None
                 self._write(place_path, place)
             except Exception as exc:  # noqa: BLE001 - one part must not kill the others
-                place, errors = None, [*errors, {"part": "place", "error": str(exc)[:200]}]
+                log.warning("site context place fetch failed", exc_info=True)
+                place, errors = None, [*errors, {"part": "place", "error": type(exc).__name__}]
 
         trans_path = self._path("transmission", f"transmission:{lat4},{lon4}")
         transmission = self._read(trans_path)
@@ -172,9 +177,10 @@ class SiteContext:
                 )
                 self._write(trans_path, transmission)
             except Exception as exc:  # noqa: BLE001 - visual context only, degrade gracefully
+                log.warning("site context transmission fetch failed", exc_info=True)
                 transmission, errors = (
                     None,
-                    [*errors, {"part": "transmission", "error": str(exc)[:200]}],
+                    [*errors, {"part": "transmission", "error": type(exc).__name__}],
                 )
 
         return {
