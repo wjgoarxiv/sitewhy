@@ -1,7 +1,7 @@
 """Re-record the four showcase runs live (Todo 9).
 
 Usage: uv run python scripts/record_samples.py [name]
-Runs each site (or one named site) at 300 MW, permits unknown, then writes
+Runs each site (or one named site) at 300 MW, then writes
 samples/<name>.json with a relative worldmodel_log plus
 samples/<name>/worldmodel.jsonl, and warms data/geo/context.
 """
@@ -26,6 +26,13 @@ SITES = {
     "md-hagerstown-city": "100 W Washington St, Hagerstown MD 21740",
 }
 
+# Showcase premise: the two Maryland sites are new greenfield builds with no
+# existing permits or Certificate of Use & Occupancy.
+PERMITS = {
+    "md-washington-county-unincorporated": False,
+    "md-hagerstown-city": False,
+}
+
 
 def preflight(settings) -> None:
     router = ModelRouter(settings)
@@ -40,7 +47,7 @@ def preflight(settings) -> None:
 
 
 def record(name: str, address: str) -> dict:
-    report = build_orchestrator().run(address, 300.0, permits_submitted=None)
+    report = build_orchestrator().run(address, 300.0, permits_submitted=PERMITS.get(name))
     sample_dir = SAMPLES_DIR / name
     sample_dir.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(ROOT / report["worldmodel_log"], sample_dir / "worldmodel.jsonl")
