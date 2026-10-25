@@ -161,17 +161,18 @@ def _flip(rule_id, change: str, old: str, new: str, decisive) -> dict:
     }
 
 
-def _moratorium_flips(finding, project: Project, decisive):
+def _moratorium_flips(finding, project: Project, decisive, place=None):
     from dataclasses import replace
 
     params = finding.get("parameters") or {}
     if not any(k in params for k in ("effective", "duration_days", "scope")):
         return []
+    layer = finding.get("layer")
     out = []
     old = finding.get("applies")
     if params.get("scope") == "unincorporated" and project.incorporated is not None:
         toggled = replace(project, incorporated=not project.incorporated)
-        new = moratorium_applies(toggled, params)["applies"]
+        new = moratorium_applies(toggled, params, layer=layer, place=place)["applies"]
         if new != old:
             where = (
                 "outside city limits (unincorporated)"
@@ -183,7 +184,7 @@ def _moratorium_flips(finding, project: Project, decisive):
             ))
     if params.get("exempt_if_permits_submitted") is True and not project.permits_submitted:
         permitted = replace(project, permits_submitted=True)
-        new = moratorium_applies(permitted, params)["applies"]
+        new = moratorium_applies(permitted, params, layer=layer, place=place)["applies"]
         if new != old:
             out.append(_flip(
                 finding["rule_id"], "if permits had been submitted before the moratorium",
@@ -196,7 +197,7 @@ def _moratorium_flips(finding, project: Project, decisive):
         except ValueError:
             later = None
         if later is not None:
-            new = moratorium_applies(later, params)["applies"]
+            new = moratorium_applies(later, params, layer=layer, place=place)["applies"]
             if new != old:
                 out.append(_flip(
                     finding["rule_id"], f"after the moratorium expires ({expires})",
@@ -219,7 +220,7 @@ def _threshold_flip_mw(current_applies: str, threshold: float, inclusive: bool,
     return None
 
 
-def _rule_flips(finding, project: Project, decisive, rules_by_id):
+def _rule_flips(finding, project: Project, decisive, rules_by_id, place=None):
     old = finding.get("applies")
     if old not in {"yes", "no"}:
         return []
@@ -227,7 +228,7 @@ def _rule_flips(finding, project: Project, decisive, rules_by_id):
     if finding.get("parameters") and any(
         k in finding["parameters"] for k in ("effective", "duration_days", "scope")
     ):
-        return _moratorium_flips(finding, project, decisive)
+        return _moratorium_flips(finding, project, decisive, place=place)
     computed = finding.get("computed") or {}
     if rule_id == TITLE_V_RULE or "nox_tpy" in computed:
         mw = project.mw
@@ -270,6 +271,8 @@ def _rule_flips(finding, project: Project, decisive, rules_by_id):
 
 def _sensitivity(report, findings, project: Project):
     _, null_values, canonical_field, parse_fact = _orchestrator_helpers()
+    jurisdiction = report.get("jurisdiction") or {}
+    place = jurisdiction.get("place")
     by_rule = {f.get("rule_id"): f for f in findings}
     out, seen = [], set()
     for e in report.get("events") or []:
@@ -299,7 +302,10 @@ def _sensitivity(report, findings, project: Project):
             if parsed is None:
                 skip = True
                 break
-            trial = moratorium_applies(project, {**params, field: parsed})
+            trial = moratorium_applies(
+                project, {**params, field: parsed},
+                layer=finding.get("layer"), place=place,
+            )
             readings.append({
                 "value": value, "quote": quote, "url": url, "applies": trial["applies"],
             })
@@ -587,12 +593,15 @@ def enrich(report: dict) -> dict:
     findings = out.get("findings") or []
     decisive = _decisive(findings, as_of)
     rules_by_id = {r["id"]: r for r in load_rules()}
+    jurisdiction = out.get("jurisdiction") or {}
     flips = []
     for finding in findings:
-        flips.extend(_rule_flips(finding, project, decisive, rules_by_id))
+        flips.extend(
+            _rule_flips(finding, project, decisive, rules_by_id,
+                        place=jurisdiction.get("place"))
+        )
     sensitivity = _sensitivity(out, findings, project)
     state_watch = out.get("state_watch") or []
-    jurisdiction = out.get("jurisdiction") or {}
     out["explanation"] = {
         "site": {
             "as_of": as_of,

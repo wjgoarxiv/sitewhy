@@ -581,3 +581,76 @@ def test_quote_recompute_leaves_matching_values_alone(orchestrator_factory):
     assert report["verdict"] == "no-go"
     assert [e for e in report["events"] if e["action"] == "value_corrected_from_quote"] == []
 
+
+def test_county_countywide_unknown_inside_city(orchestrator_factory):
+    """(B) RED: a countywide county pause must not silently reach an incorporated city."""
+    router = ScriptedRouter(
+        planner=[PLAN],
+        county_investigator=[facts_reply(GOOD_FACTS)],
+        adjudicator=[DRAFT_NO_GO],
+        critic=["[]"],
+    )
+    report = orchestrator_factory(router).run("addr", mw=300)
+    finding = next(f for f in report["findings"] if f["rule_id"] == "md-washington-county-2026")
+    assert finding["applies"] == "unknown"
+    assert "Hagerstown city" in finding["reason"]
+
+
+def test_countywide_applies_unincorporated_site(orchestrator_factory):
+    """(B) Washington unincorporated: the county pause still applies."""
+    router = ScriptedRouter(
+        planner=[PLAN],
+        county_investigator=[facts_reply(GOOD_FACTS)],
+        adjudicator=[DRAFT_NO_GO],
+        critic=["[]"],
+    )
+    report = orchestrator_factory(router, jurisdiction=WASHINGTON_UNINCORPORATED).run(
+        "addr", mw=300
+    )
+    finding = next(f for f in report["findings"] if f["rule_id"] == "md-washington-county-2026")
+    assert finding["applies"] == "yes"
+    assert report["verdict"] == "no-go"
+
+
+def test_parse_fact_scope_all_jurisdictions():
+    """(B) RED: scope text naming municipalities parses to all_jurisdictions."""
+    from app.orchestrator import parse_fact
+
+    assert parse_fact("scope", "the pause applies to all areas including municipalities") == (
+        "all_jurisdictions"
+    )
+    assert parse_fact("scope", "applies in incorporated towns") == "all_jurisdictions"
+    assert parse_fact("scope", "all jurisdictions within the county") == "all_jurisdictions"
+    assert parse_fact("scope", "countywide") == "countywide"
+
+
+def test_all_jurisdictions_reaches_city_but_countywide_does_not():
+    """(B) RED: unit-level county-vs-city scope semantics."""
+    from app.applicability import Project, moratorium_applies
+
+    as_of = date(2026, 10, 25)
+    base = {"effective": "2026-06-30", "duration_days": 365}
+    city = Project(mw=300, as_of=as_of, incorporated=True)
+    county_layer = "county"
+    assert (
+        moratorium_applies(city, {**base, "scope": "all_jurisdictions"}, layer=county_layer)[
+            "applies"
+        ]
+        == "yes"
+    )
+    assert (
+        moratorium_applies(city, {**base, "scope": "countywide"}, layer=county_layer)["applies"]
+        == "unknown"
+    )
+    rural = Project(mw=300, as_of=as_of, incorporated=False)
+    assert (
+        moratorium_applies(rural, {**base, "scope": "countywide"}, layer=county_layer)["applies"]
+        == "yes"
+    )
+    unknown_place = Project(mw=300, as_of=as_of, incorporated=None)
+    assert (
+        moratorium_applies(
+            unknown_place, {**base, "scope": "countywide"}, layer=county_layer
+        )["applies"]
+        == "unknown"
+    )

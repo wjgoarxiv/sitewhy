@@ -99,6 +99,12 @@ def parse_fact(field: str, value):
         text = str(value).lower()
         if "unincorporated" in text:
             return "unincorporated"
+        if (
+            "including municipalit" in text
+            or "incorporated town" in text
+            or "all jurisdictions within the county" in text
+        ):
+            return "all_jurisdictions"
         if any(
             k in text for k in ("countywide", "county-wide", "entire county", "all of the county")
         ):
@@ -340,7 +346,9 @@ class Orchestrator:
                     "rule_id": rule["id"],
                     "layer": rule["layer"],
                     "title": rule["title"],
-                    **moratorium_applies(project, params),
+                    **moratorium_applies(
+                        project, params, layer=rule["layer"], place=site.get("place")
+                    ),
                     "parameters": params,
                     "evidence": [
                         {

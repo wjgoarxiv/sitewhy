@@ -39,9 +39,11 @@ def mw_threshold(project: Project, threshold_mw: float, label: str, inclusive: b
     )
 
 
-def moratorium_applies(project: Project, m: dict) -> dict:
+def moratorium_applies(project: Project, m: dict, layer: str | None = None,
+                       place: str | None = None) -> dict:
     """m: {effective: ISO date, duration_days, scope: countywide|unincorporated,
-    exempt_if_permits_submitted}."""
+    exempt_if_permits_submitted}. layer/place gate the county-vs-city boundary:
+    a countywide county pause does not silently reach an incorporated city."""
     if not m.get("effective"):
         return _result("unknown", "effective date not established")
     start = date.fromisoformat(m["effective"])
@@ -52,7 +54,7 @@ def moratorium_applies(project: Project, m: dict) -> dict:
         return _result("no", f"not yet in effect on {project.as_of}", **window)
     if end and project.as_of >= end:
         return _result("no", f"expired on {end}", **window)
-    if m.get("scope") not in {"countywide", "unincorporated"}:
+    if m.get("scope") not in {"countywide", "unincorporated", "all_jurisdictions"}:
         return _result("unknown", "geographic scope (countywide or unincorporated) not established",
                        **window)  # fmt: skip
     if m.get("scope") == "unincorporated":
@@ -62,6 +64,16 @@ def moratorium_applies(project: Project, m: dict) -> dict:
         if project.incorporated:
             return _result("no", "applies only to unincorporated areas; site is inside a city",
                            **window)  # fmt: skip
+    if layer == "county" and m.get("scope") == "countywide" and project.incorporated is not False:
+        # A "countywide" county pause does not silently reach an incorporated
+        # city; only explicit municipality coverage ("all_jurisdictions") does.
+        inside = f"the site is inside {place}" if place else "the site may be inside a city"
+        return _result(
+            "unknown",
+            f"county ordinance; {inside}, which has its own zoning — "
+            "confirm the pause reaches city limits",
+            **window,
+        )
     if m.get("exempt_if_permits_submitted"):
         if project.permits_submitted is None:
             return _result("unknown", "projects that already submitted permits are exempt; "
