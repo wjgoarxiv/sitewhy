@@ -7,7 +7,7 @@ Deadline: **10/28 08:45 KST** (hard). Internal submit target: **10/27 22:00 KST*
 - States: **3** (TX, MD, AZ), matching the 3 showcase sites: ERCOT TX site, Washington County MD (PJM, 2026 moratorium), Pima County AZ (water stress). Todo 9 shrinks to these 3.
 - County investigation: seeded counties only. The Markovian loop (todo 10) still runs, over seeded sources.
 - Source discovery (todo 7): seeded links only. Live discovery is a stretch goal.
-- UI (todo 12): simple HTML report (layers, why-chain, evidence, model trace). No map. Portfolio table is a stretch goal.
+- UI (todo 12): HQ console: satellite map + county/city/transmission context, layer lamps, portfolio, decision-first report (added 2026-10-26, plan `plans/explain-why-upgrade.md`).
 - Eval (todo 13): 3 showcase ground truths + seeded-fault critic test (catch ≥2 of 3).
 - Kept in full: Nightshift as provider, Zetaris data layer, World Model + Markovian engines, multi-agent loop with critic.
 
@@ -39,9 +39,9 @@ Deadline: **10/28 08:45 KST** (hard). Internal submit target: **10/27 22:00 KST*
 - Done when: all 3 showcase sites run end-to-end through the loop, and the trace shows a critic objection that triggered a re-investigation
 
 ### M3. Product surface (10/27 until ~16:00)
-- [ ] Todo 12 HTML report UI
-- [ ] Todo 14 replay / `SAMPLE_MODE`
-- [ ] Todo 13 eval (3 ground truths + critic catch-rate)
+- [x] Todo 12 HTML report UI (HQ console, interface probe 0 HIGH, F3 manual QA pass)
+- [x] Todo 14 replay / `SAMPLE_MODE` (clean clone with no keys passes)
+- [x] Todo 13 eval (showcase ground truth 3/3, critic seeded faults 3/3)
 - Done when: a clean clone runs in `SAMPLE_MODE=true` with no keys, and the UI shows the full report for all 3 sites
 
 ### M4. Submitted (10/27 by 22:00)

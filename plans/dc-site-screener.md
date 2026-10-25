@@ -21,6 +21,7 @@ Your next move: do the human prerequisites below, then run start-work once the b
 ## Scope
 
 ### Revisions 2026-10-25 (supersede conflicting lines below)
+- 2026-10-26 explain-why upgrade and HQ console (`plans/explain-why-upgrade.md`): state layer (TX ERCOT audit rule + Zetaris state watch list), deterministic explanation layer (decisive chain, flips, conflict sensitivity, agent catches), quote-derived values, county-vs-city scope rule, satellite map console with integrated flow.
 - Execution order and scope cuts: `plans/roadmap.md` (thin slice → widen; 3 states TX/MD/AZ; seeded counties; HTML report, no map; portfolio table and live source discovery are stretch).
 - Submission Requirements (HackOS, read 2026-10-24): Zetaris is the data layer; ≥1 Meterless engine in a working feature with a passing test; **Meterless Nightshift is the app's primary AI provider**; NVIDIA models go through Nightshift (NVIDIA award needs ≥1 Nemotron model via Nightshift and the model shown per request). Cursor is optional (announcement 2026-10-22); the build uses Claude Code and the Cursor award is not pursued.
 - Nightshift (Mac M1-M4 edition) verified 2026-10-25 at `http://127.0.0.1:8088/v1`, bearer token read from `~/Library/Application Support/ai.meterless.nightshift.m1m4/runtime-token`, headers `meterless-app: sitewhy` and `meterless-scope: user`. Working models: `nvidia/nemotron-3.5-lightning-30b-a3b` (fast) and `nvidia/nemotron-3-ultra-550b-a55b` (strong; strip `<think>…</think>` from content). `nemotron-3-super-120b` returns 404 and 3.5 Super VL is not offered.
@@ -227,7 +228,7 @@ Loop: plan → investigate → verify (with retries) → adjudicate → critique
   QA scenarios: happy: TX → conditional (SB 6 costs/curtailment), MD → no_go (moratorium), AZ → conditional (water); failure: invalid JSON → repaired or typed error. Evidence .litclaude/evidence/dc-site-screener/task-11.json
   Commit: Y | feat(verdict): synthesizer
 
-- [ ] 12. API + web UI (map, layered report, why-chain, evidence, model trace, simple portfolio table)
+- [x] 12. API + web UI (map, layered report, why-chain, evidence, model trace, simple portfolio table)
   What to do / Must NOT do: `POST /screen {address|lat,lon, mw, backup_gen?}` w/ SSE progress; `GET /portfolio` screens all pipeline sites against prebuilt layers via one Zetaris join (no live calls) and returns one row per site {site, state, county, mw, decisive flag, top risk, baseline status}; the UI shows it as a plain sortable table with a "screen this site" link per row (scope decision 2026-10-18: no portfolio map, charts, or drill-down); vanilla JS + Leaflet (CDN): form, map pins, why-chain panel, layer cards with grade colors, expandable quote/link/as-of/status, conflict and "needs confirmation" badges, model-routing panel, agent-loop trace (role, round, objection, retry, escalation) and a World Model graph view of the evidence behind each why-chain link, Moratorium Nation attribution, "screening, not legal advice" line. Must NOT add frontend build tooling.
   Parallelization: Wave 4 | Blocked by: 3,4,17 | Blocks: 14,15
   References: judging weights Demo 15 / UX 10 / Sponsor 10
@@ -235,7 +236,7 @@ Loop: plan → investigate → verify (with retries) → adjudicate → critique
   QA scenarios: happy: browser run on Pima County AZ; failure: MW ≤ 0 → inline validation. Evidence .litclaude/evidence/dc-site-screener/task-12.png
   Commit: Y | feat(ui): screening web app
 
-- [ ] 13. Showcase ground truth + eval harness
+- [x] 13. Showcase ground truth + eval harness
   What to do / Must NOT do: `eval/ground_truth.yaml` for 3 showcase sites (hand-verified decisive layer, key rule ids, expected overall, expected applicability values); `uv run python -m eval.run` reports decisive-layer match, applicability match, citation coverage (100%), verified-quote rate (≥95%), latency (≤5 min), and critic catch-rate on seeded faults (fixtures with a wrong threshold, a missing exemption, and an unsupported quote; the loop must catch ≥2 of 3 and end with correct grades or needs_confirmation). Must NOT tune prompts on eval without logging changes.
   Parallelization: Wave 4 | Blocked by: 9,10,17 | Blocks: 15
   References: spec acceptance criteria
@@ -243,7 +244,7 @@ Loop: plan → investigate → verify (with retries) → adjudicate → critique
   QA scenarios: happy: full eval; failure: miss → report names metric + site. Evidence .litclaude/evidence/dc-site-screener/task-13.json
   Commit: Y | test(eval): showcase eval harness
 
-- [ ] 14. Replay mode for demo
+- [x] 14. Replay mode for demo
   What to do / Must NOT do: record full run (SSE events + report + trace) to `runs/<site>.jsonl`; `?replay=<site>` streams with original timing × speed factor; UI shows "Recorded run" badge. Must NOT label replay as live.
   Parallelization: Wave 4 | Blocked by: 12,17 | Blocks: 15
   References: spec decision boundary "live demo unstable → recorded runs"; todo 12 SSE format

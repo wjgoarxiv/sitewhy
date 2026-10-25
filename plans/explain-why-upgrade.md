@@ -574,7 +574,7 @@ Single executor, sequential. Todos 1–3 share `app/orchestrator.py`; Todos 5–
   QA scenarios: curl transcript plus a screenshot; cleanup receipt (PID killed, dirs removed). Evidence `task-11.txt`
   Commit: Y (only if fixes were needed) | fix(config): run from a clean clone in SAMPLE_MODE without keys
 
-- [ ] 12. Bookkeeping: tick plans and record results
+- [x] 12. Bookkeeping: tick plans and record results
   What to do:
   - `plans/roadmap.md`:
     - tick M3 Todos 12, 13 and 14 with one-line results (eval 3/3, critic X/3, clean clone passes)
@@ -592,7 +592,7 @@ Single executor, sequential. Todos 1–3 share `app/orchestrator.py`; Todos 5–
 
 ## Final verification wave
 > Runs in parallel after ALL todos. ALL must APPROVE. Surface the results and wait for the user's explicit okay before declaring the work complete.
-- [ ] F1. Plan compliance audit: acceptance criteria met with evidence files present (litclaude:lit-verifier).
+- [x] F1. Plan compliance audit: acceptance criteria met with evidence files present (litclaude:lit-verifier).
 - [x] F2. Code quality and security review of the diff since the plan start commit (litclaude:quality-reviewer):
   - `explain.py` purity
   - no added LLM calls
@@ -600,12 +600,12 @@ Single executor, sequential. Todos 1–3 share `app/orchestrator.py`; Todos 5–
   - input validation on `/context`, `/runs` and `/portfolio` ids
   - sitecontext failure isolation
   - meaningful tests
-- [ ] F3. Real Manual-QA:
+- [x] F3. Real Manual-QA:
   - first-time-user walkthrough (guide → Try → tabs → map click → live run → deep link → restart persistence)
   - 4 samples
   - interface probe 0 HIGH
   - judge test at 1440×900
-- [ ] F4. Scope fidelity:
+- [x] F4. Scope fidelity:
   - no M4 work; no new states; no key-requiring service
   - watch list never decisive; transmission never in rule logic
   - samples only from the script; cut items reported
