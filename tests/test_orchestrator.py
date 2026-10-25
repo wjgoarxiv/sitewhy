@@ -284,3 +284,65 @@ def test_scope_parsing_is_explicit():
     assert parse_fact("scope", "unincorporated Pima County") == "unincorporated"
     assert parse_fact("scope", "countywide") == "countywide"
     assert parse_fact("scope", "Pima County") is None
+
+
+def test_real_duration_conflict_only(orchestrator_factory):
+    """(a) duration_draft_ordinance + duration canonicalize to one duration_days conflict."""
+    from app.worldmodel import WorldModel
+
+    # Empty seed so only the primary-primary disagreement counts
+    # (Washington's dataset seed would add a second event).
+    orch = orchestrator_factory(ScriptedRouter())
+    orch.world = WorldModel()
+    orch.events = []
+    orch.on_event = None
+    src = orch._src("system", 0)
+    entity = orch.world.upsert_entity(type="rule", name="test-rule", source=src)
+    rule = {"id": "test-rule", "layer": "county", "title": "t",
+            "entity": entity, "facts": {}, "seed": {}}
+    f1 = {"field": "duration_draft_ordinance", "value": "six (6) months",
+          "url": "https://example.com/draft", "quote": "for a period of six (6) months"}
+    f2 = {"field": "duration", "value": "twelve (12) months",
+          "url": "https://example.com/release", "quote": "for twelve (12) months"}
+    orch._record_fact(rule, f1, {"status": "verified"}, 1)
+    orch._record_fact(rule, f2, {"status": "verified"}, 1)
+    conflicts = [e for e in orch.events if e["action"] == "conflict"]
+    assert len(conflicts) == 1
+    detail = conflicts[0]["detail"]
+    assert detail["field"] == "duration_days"
+    assert sorted([detail["value"], detail["other_primary"]]) == [182, 365]
+    assert detail["quote"] and detail["url"] and detail["other_quote"] and detail["other_url"]
+
+
+def test_none_value_gives_zero_conflicts(orchestrator_factory):
+    long_quote = "a temporary, twelve (12) month moratorium on the acceptance"
+    facts = [
+        {"field": "duration", "value": "None", "url": RELEASE_URL, "quote": long_quote},
+        {"field": "duration", "value": "twelve (12) months",
+         "url": RELEASE_URL, "quote": "temporary, twelve (12) month"},
+    ]
+    router = ScriptedRouter(
+        planner=[PLAN],
+        county_investigator=[facts_reply(facts)],
+        adjudicator=[DRAFT_NO_GO],
+        critic=["[]"],
+    )
+    report = orchestrator_factory(router).run("addr", mw=300)
+    assert [e for e in report["events"] if e["action"] == "conflict"] == []
+
+
+def test_case_only_other_differences_give_zero_conflicts(orchestrator_factory):
+    long_quote = "a temporary, twelve (12) month moratorium on the acceptance"
+    facts = [
+        {"field": "other", "value": "Acceptance", "url": RELEASE_URL, "quote": long_quote},
+        {"field": "other", "value": "acceptance",
+         "url": RELEASE_URL, "quote": "temporary, twelve (12) month"},
+    ]
+    router = ScriptedRouter(
+        planner=[PLAN],
+        county_investigator=[facts_reply(facts)],
+        adjudicator=[DRAFT_NO_GO],
+        critic=["[]"],
+    )
+    report = orchestrator_factory(router).run("addr", mw=300)
+    assert [e for e in report["events"] if e["action"] == "conflict"] == []

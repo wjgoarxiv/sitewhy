@@ -23,6 +23,21 @@ from app.worldmodel import WorldModel
 ROOT = Path(__file__).resolve().parent.parent
 RUNS_DIR = ROOT / "runs"
 GRADES = {"fatal", "major", "minor", "info"}
+DECISION_FIELDS = ("effective", "duration_days", "scope", "exempt_if_permits_submitted")
+NULL_VALUES = {"", "none", "null", "n/a", "unknown", "not stated"}
+
+
+def canonical_field(name: str) -> str:
+    norm = str(name).lower().replace(" ", "_").replace("-", "_")
+    if norm.startswith("effective") or norm.startswith("adopt") or norm.startswith("enact"):
+        return "effective"
+    if "duration" in norm:
+        return "duration_days"
+    if norm.startswith("scope"):
+        return "scope"
+    if "exempt" in norm and "permit" in norm:
+        return "exempt_if_permits_submitted"
+    return norm
 WORDS = {
     "one": 1,
     "two": 2,
@@ -64,6 +79,8 @@ def parse_date(value) -> str | None:
 
 
 def parse_fact(field: str, value):
+    if value is None or str(value).strip().lower() in NULL_VALUES:
+        return None
     if field == "effective":
         return parse_date(value)
     if field == "duration_days":
@@ -209,16 +226,17 @@ class Orchestrator:
         doc = wm.upsert_entity(
             type="source_document", name=fact["url"], attrs={"url": fact["url"]}, source=src
         )
-        value = parse_fact(fact["field"], fact.get("value"))
+        field = canonical_field(fact["field"])
+        value = parse_fact(field, fact.get("value"))
         claim = wm.add_claim(
             layer=rule["layer"],
-            text=f"{fact['field']} = {value}",
+            text=f"{field} = {value}",
             quote=fact["quote"],
             rule_id=rule["entity"],
             source_id=doc,
             source=src,
             attrs={
-                "field": fact["field"],
+                "field": field,
                 "value": value,
                 "verification": check["status"],
                 "provenance": "primary",
@@ -227,19 +245,23 @@ class Orchestrator:
         )
         if check["status"] != "verified" or value is None:
             return
-        prior = rule["facts"].setdefault(fact["field"], [])
+        prior = rule["facts"].setdefault(field, [])
         others = [("primary", p) for p in prior if p["claim"] != claim]
-        if fact["field"] in rule["seed"]:
-            others.append(("dataset", rule["seed"][fact["field"]]))
-        for kind, other in others:
-            if other["value"] == value:
-                continue
-            wm.relate(claim, "contradicts", other["claim"], source=src, exclusive=False)
-            self._event(round_, "evidence_verifier", "conflict",
-                        {"rule": rule["id"], "field": fact["field"], "value": value,
-                         f"other_{kind}": other["value"]})  # fmt: skip
+        if field in rule["seed"]:
+            others.append(("dataset", rule["seed"][field]))
+        if field in DECISION_FIELDS:
+            for kind, other in others:
+                if other["value"] == value:
+                    continue
+                wm.relate(claim, "contradicts", other["claim"], source=src, exclusive=False)
+                detail = {"rule": rule["id"], "field": field, "value": value,
+                          f"other_{kind}": other["value"], "quote": fact["quote"],
+                          "url": fact["url"], "other_quote": other.get("quote"),
+                          "other_url": other.get("url")}
+                self._event(round_, "evidence_verifier", "conflict", detail)
         if all(p["claim"] != claim for p in prior):
-            prior.append({"value": value, "claim": claim})
+            prior.append({"value": value, "claim": claim,
+                          "quote": fact["quote"], "url": fact["url"]})  # fmt: skip
 
     # -- assessment ------------------------------------------------------
 
@@ -435,7 +457,8 @@ class Orchestrator:
                         "rule": ev["id"],
                     },
                 )
-                rule["seed"][field] = {"value": value, "claim": claim}
+                rule["seed"][field] = {"value": value, "claim": claim,
+                                       "quote": quote, "url": ev["source"]}
             local.append(rule)
         curated = []
         for rule in load_rules():

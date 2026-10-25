@@ -103,6 +103,8 @@ class CountyInvestigator:
             '"value": "<ISO date, number of days, countywide|unincorporated, true|false, '
             'or text>", '
             '"quote": "<exact sentence from a source>", "url": "<that source url>"}]. '
+            "field must be exactly one of effective, duration_days, scope, "
+            "exempt_if_permits_submitted, other. "
             "Use field other for anything else. Omit facts the sources do not state. "
             "Write your notes or the JSON first; the [STATE_CHECKPOINT] block always goes LAST."
         )

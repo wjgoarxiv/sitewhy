@@ -24,6 +24,8 @@ logs/
 
 # fetched source documents (re-fetchable cache)
 data/sources/
+data/llm_cache/
+data/geo/cache/
 
 # per-run traces (selected runs are copied to samples/)
 runs/
