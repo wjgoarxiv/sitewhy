@@ -477,6 +477,11 @@ class Orchestrator:
             "seeded",
             {"local": [r["id"] for r in local], "curated": [r["id"] for r in curated]},
         )
+        county_keys = set(load_county_sources())
+        coverage = {
+            "state_rules": [r["id"] for r in curated if r["layer"] == "state"],
+            "county_sources": [r["id"] for r in local if r["id"] in county_keys],
+        }
         curated_urls = {r["source_url"] for r in curated}
         state_watch = [
             {
@@ -561,6 +566,7 @@ class Orchestrator:
             "findings": findings,
             "state_watch": state_watch,
             "site": site,
+            "coverage": coverage,
             "needs_confirmation": [
                 {
                     "rule_id": o["rule_id"],

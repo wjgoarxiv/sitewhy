@@ -349,6 +349,59 @@ def test_state_watch_present_and_never_in_findings(orchestrator_factory):
     )
 
 
+def test_out_of_coverage_site_completes_with_coverage(tmp_path):
+    from app.data import DuckDbHarness, FallbackHarness
+    from app.evidence import EvidenceFetcher
+    from app.geo import Jurisdiction
+    from app.seed import register_seed
+
+    loudoun = Jurisdiction(
+        matched_address="1 HARRISON ST SE, LEESBURG, VA, 20175",
+        lat=39.11,
+        lon=-77.55,
+        state="VA",
+        state_fips="51",
+        county_name="Loudoun County",
+        county_fips="51107",
+        place=None,
+        county_subdivision=None,
+        utilities=[],
+        nerc_regions=[],
+        iso="unknown",
+        iso_candidates=[],
+    )
+    draft = json.dumps(
+        {
+            "verdict": "conditional",
+            "why": "Title V applies.",
+            "grades": {"federal-title-v-major-source": "major"},
+        }
+    )
+    router = ScriptedRouter(adjudicator=[draft], critic=["[]"])
+    harness = FallbackHarness(DuckDbHarness(), DuckDbHarness())
+    register_seed(harness.primary)
+    fetcher = EvidenceFetcher(
+        client=httpx.Client(transport=httpx.MockTransport(serve)),
+        cache_dir=tmp_path / "src",
+    )
+    orch = Orchestrator(
+        FakeResolver(loudoun), harness, router, fetcher,
+        runs_dir=tmp_path / "runs", as_of=date(2026, 10, 25),
+    )
+    report = orch.run("1 Harrison St SE, Leesburg, VA 20175", mw=300)
+    assert report["coverage"] == {"state_rules": [], "county_sources": []}
+    assert report["explanation"]["coverage_note"] == (
+        "State and grid rules are not modelled for VA; "
+        "federal rule and county dataset only."
+    )
+    lamps = report["explanation"]["layer_status"]
+    # Loudoun County has a dataset moratorium row but no verified facts, so the
+    # county finding is honestly unknown; state and grid layers are un-modelled.
+    assert lamps["county"]["lamp"] == "unknown"
+    assert lamps["state"]["lamp"] == "not_modelled"
+    assert lamps["iso_rto"]["lamp"] == "not_modelled"
+
+
 def test_case_only_other_differences_give_zero_conflicts(orchestrator_factory):
     long_quote = "a temporary, twelve (12) month moratorium on the acceptance"
     facts = [

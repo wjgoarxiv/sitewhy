@@ -8,7 +8,7 @@ import copy
 from datetime import date, datetime
 
 from app.applicability import Project, moratorium_applies, mw_threshold, title_v_major_source
-from app.layers import load_rules
+from app.layers import load_county_sources, load_rules
 
 LAYER_ORDER = ("federal", "iso_rto", "state", "county", "city")
 LAYER_NAMES = {
@@ -506,6 +506,36 @@ def _stats(report):
     }
 
 
+def _default_coverage(report) -> dict:
+    ctx = {**(report.get("site") or {}), **(report.get("jurisdiction") or {})}
+    state_rules = [
+        r["id"]
+        for r in load_rules()
+        if r.get("layer") == "state"
+        and all(ctx.get(k) == v for k, v in (r.get("scope") or {}).items())
+    ]
+    county_keys = set(load_county_sources())
+    county_sources = [
+        f["rule_id"]
+        for f in report.get("findings") or []
+        if f.get("layer") in {"county", "city"} and f.get("rule_id") in county_keys
+    ]
+    return {"state_rules": state_rules, "county_sources": county_sources}
+
+
+def _coverage_note(report) -> str | None:
+    if any((f.get("layer") in {"state", "iso_rto"}) for f in report.get("findings") or []):
+        return None
+    jurisdiction = report.get("jurisdiction") or {}
+    state = jurisdiction.get("state") or (report.get("site") or {}).get("state")
+    if not state:
+        return None
+    return (
+        f"State and grid rules are not modelled for {state}; "
+        "federal rule and county dataset only."
+    )
+
+
 def _headline(report, decisive):
     verdict = report.get("verdict", "needs_confirmation")
     word = VERDICT_WORDS.get(verdict, verdict)
@@ -521,6 +551,7 @@ def _headline(report, decisive):
 def enrich(report: dict) -> dict:
     """Add a deterministic `explanation` to a run report. Pure and idempotent."""
     out = copy.deepcopy(report)
+    out.setdefault("coverage", _default_coverage(out))
     as_of = _as_of(out)
     project = _project(out, as_of)
     findings = out.get("findings") or []
@@ -542,6 +573,7 @@ def enrich(report: dict) -> dict:
             "lon": jurisdiction.get("lon"),
         },
         "headline": _headline(out, decisive),
+        "coverage_note": _coverage_note(out),
         "decisive": decisive,
         "flips": flips,
         "sensitivity": sensitivity,

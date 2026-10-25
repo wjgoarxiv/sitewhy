@@ -482,7 +482,7 @@ Single executor, sequential. Todos 1–3 share `app/orchestrator.py`; Todos 5–
   QA scenarios: (1)–(5) above with claude-in-chrome, plus a first-time-user walkthrough GIF via `gif_creator` (`sitewhy_first_use.gif`). Evidence `task-7/`
   Commit: Y | feat(app): persistent portfolio, click-to-screen on the map, shareable links, guide and export
 
-- [ ] 8. Out-of-coverage addresses: no crash, honest coverage
+- [x] 8. Out-of-coverage addresses: no crash, honest coverage
   What to do:
   - Write a FakeResolver test for Virginia (Loudoun, empty utilities) with ScriptedRouter.
   - The orchestrator completes, and the report has `coverage: {state_rules, county_sources}` from the `rules.yaml` scopes and `county_sources.yaml` keys.
