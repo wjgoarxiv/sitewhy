@@ -149,6 +149,44 @@ def test_unverifiable_quote_triggers_retry_with_feedback(orchestrator_factory):
     assert report["verdict"] == "no-go"
 
 
+def test_zero_fact_attempt_gets_format_aware_retry_feedback(orchestrator_factory):
+    router = ScriptedRouter(
+        planner=[PLAN],
+        county_investigator=[
+            "Relevant sentences noted. [STATE_CHECKPOINT]",
+            "More notes, still no JSON. [STATE_CHECKPOINT]",
+            "Yet more notes. [STATE_CHECKPOINT]",
+            "Final notes, no JSON. [STATE_CHECKPOINT]",
+            facts_reply(GOOD_FACTS),
+        ],
+        adjudicator=[DRAFT_NO_GO],
+        critic=["[]"],
+    )
+    report = orchestrator_factory(router).run("addr", mw=300)
+    retries = [e for e in report["events"] if e["action"] == "retry_requested"]
+    assert retries and "no JSON array" in str(retries[0]["detail"])
+    retry_prompts = [
+        c for r, c in router.calls
+        if r == "county_investigator" and "Verifier feedback" in c
+    ]
+    assert retry_prompts and "JSON array of facts FIRST" in retry_prompts[0]
+
+
+def test_final_attempt_after_zero_facts_uses_ultra(orchestrator_factory):
+    router = ScriptedRouter(
+        planner=[PLAN],
+        county_investigator=["Notes only, no JSON. [STATE_CHECKPOINT]"] * 12,
+        adjudicator=[DRAFT_NO_GO],
+        critic=["[]"],
+    )
+    report = orchestrator_factory(router).run("addr", mw=300)
+    steps = [t["step"] for t in router.trace if t["role"] == "county_investigator"]
+    assert steps[-4:] == ["plan"] * 4 and set(steps[:-4]) == {"extract"}
+    assert any(
+        e["action"] == "ultra_reextract" for e in report["events"]
+    )
+
+
 def test_critic_objection_drives_targeted_second_round(orchestrator_factory):
     objection = json.dumps(
         [

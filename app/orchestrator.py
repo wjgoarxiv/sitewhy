@@ -165,8 +165,16 @@ class Orchestrator:
             self._event(round_, "county_investigator", "skipped", f"{rule['id']}: no sources")
             return
         feedback = ""
+        zero_fact_attempt = False
         for attempt in range(1, self.max_retries + 2):
-            facts = self.investigator.investigate(rule, questions, sources, feedback)
+            step = "plan" if attempt == self.max_retries + 1 and zero_fact_attempt else "extract"
+            if step == "plan":
+                self._event(
+                    round_, "county_investigator", "ultra_reextract",
+                    f"{rule['id']}: Lightning returned no facts; Ultra re-extracting",
+                )
+            facts = self.investigator.investigate(rule, questions, sources, feedback, step=step)
+            zero_fact_attempt = zero_fact_attempt or not facts
             run = self.investigator.runs[-1]
             self._event(
                 round_,
@@ -210,15 +218,16 @@ class Orchestrator:
             if facts and not failed:
                 return
             if attempt <= self.max_retries:
-                feedback = (
-                    (
+                if failed:
+                    feedback = (
                         "These quotes were not found verbatim, copy exact sentences: "
                         + " | ".join(failed)
                     )
-                    if failed
-                    else "No facts returned; answer "
-                )
-                feedback += "" if failed else "every question you can from the sources."
+                else:
+                    feedback = (
+                        "Your reply contained no JSON array. Reply with the JSON array "
+                        "of facts FIRST, then the [STATE_CHECKPOINT] block."
+                    )
                 self._event(round_, "evidence_verifier", "retry_requested", feedback[:300])
 
     def _record_fact(self, rule: dict, fact: dict, check: dict, round_: int) -> None:

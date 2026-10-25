@@ -80,17 +80,24 @@ class CountyInvestigator:
             chunk_config=chunk_config or {"chunkSize": 8000, "carryoverTokens": 768, "maxChunks": 4}
         )
         self.runs: list = []
+        self._step = "extract"
 
     def _generate(self, prompt: str, system: str | None = None) -> dict:
         out = self.router.generate(
-            "extract", _chat(system or self.SYSTEM, prompt), role="county_investigator"
+            self._step, _chat(system or self.SYSTEM, prompt), role="county_investigator"
         )
         self._raw.append(out.text)
         return {"text": out.text}
 
     def investigate(
-        self, rule: dict, questions: list[str], sources: list[dict], feedback: str = ""
+        self,
+        rule: dict,
+        questions: list[str],
+        sources: list[dict],
+        feedback: str = "",
+        step: str = "extract",
     ) -> list[dict]:
+        self._step = step
         memory = "\n\n".join(
             f"SOURCE {i + 1} (url: {s['url']}):\n{s['text'][:7000]}" for i, s in enumerate(sources)
         )

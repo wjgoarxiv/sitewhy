@@ -418,6 +418,16 @@ def _catches(report, sensitivity):
             "text": f"{m.get('step')} moved from {m['escalated_from']} to {m.get('model')}",
             "outcome": "completed",
         })
+    for m in report.get("model_trace") or []:
+        if m.get("role") != "county_investigator" or m.get("step") != "plan":
+            continue
+        catches.append({
+            "round": last_round,
+            "actor": "county_investigator",
+            "kind": "ultra_reextract",
+            "text": "Lightning returned no facts; Ultra re-extracted",
+            "outcome": "completed",
+        })
     return catches
 
 
