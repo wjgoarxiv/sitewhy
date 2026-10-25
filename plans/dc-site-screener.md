@@ -195,7 +195,7 @@ Loop: plan → investigate → verify (with retries) → adjudicate → critique
   QA scenarios: happy: live query; failure: quota exceeded → typed error. Evidence .litclaude/evidence/dc-site-screener/task-7.txt
   Commit: Y | feat(search): search adapter
 
-- [ ] 8. Applicability engine (deterministic threshold + exemption checks)
+- [x] 8. Applicability engine (deterministic threshold + exemption checks)
   What to do / Must NOT do: pure-Python predicates evaluated against project facts {mw, backup_gen type/count/size (default estimate: N+1 diesel gensets sized from MW), permits_filed_date, incorporated?}: MW thresholds (SB 6 75MW, ANOPR 20MW, EO 14318 100MW, state rules), generator potential-to-emit estimate vs Title V 100 tpy and RICE emergency hours, moratorium effective/expiry dates and exemption clauses, unincorporated-area applicability. Output {applies: yes|no|unknown, reason, computed_values}. Assumptions shown explicitly. Must NOT let an LLM decide threshold math.
   Parallelization: Wave 1 | Blocked by: — | Blocks: 11,17
   References: todo 5 `applies_if` schema; user strength = engineering calcs (differentiator vs Spark)
