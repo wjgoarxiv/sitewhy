@@ -163,7 +163,7 @@ Loop: plan → investigate → verify (with retries) → adjudicate → critique
   QA scenarios: happy: portfolio join returns showcase rows w/ flags; failure: Zetaris unreachable → BLOCKED recorded in trace + DuckDB serves. Evidence .litclaude/evidence/dc-site-screener/task-3.txt
   Commit: Y | feat(data): zetaris harness
 
-- [ ] 4. Jurisdiction resolver (address → state, county FIPS, place/CCD, utilities, ISO/RTO)
+- [x] 4. Jurisdiction resolver (address → state, county FIPS, place/CCD, utilities, ISO/RTO)
   What to do / Must NOT do: Census Geocoder `geographies/onelineaddress` and `geographies/coordinates` (benchmark Public_AR_Current, vintage Current_Current); fall back to county subdivision when no incorporated place; EIA-861 2025 Service Territory (county→utilities) + Utility Data (ISO/RTO flags, NERC region) → candidate utilities/ISO with "multiple utilities serve this county" ambiguity flag. Cache responses + EIA tables under `data/geo/`. Must NOT use paid geocoders; no reliance on deactivated HIFLD endpoints.
   Parallelization: Wave 1 | Blocked by: — | Blocks: 10,11,12
   References: https://geocoding.geo.census.gov/geocoder/ ; https://www.eia.gov/electricity/data/eia861/ (f8612025.zip); PUDL alt https://docs.catalyst.coop/pudl/en/stable/data_sources/eia861.html

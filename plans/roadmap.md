@@ -25,7 +25,7 @@ Deadline: **10/28 08:45 KST** (hard). Internal submit target: **10/27 22:00 KST*
 - [x] Todo 1 skeleton (uv, FastAPI, pytest, ruff, config, `SAMPLE_MODE`)
 - [x] Todo 2 model client through Nightshift (+ Ollama fallback, per-request model trace)
 - [x] Todo 3 Zetaris adapter (+ DuckDB/sample fallback)
-- [ ] Todo 4 resolver (address → state, county)
+- [x] Todo 4 resolver (address → state, county)
 - [ ] Todo 5 minimal seed: federal + 3 states + 3 counties
 - Done when: `curl` on one Washington County MD address returns a JSON verdict with ≥1 rule, a quoted source, and the model name that answered
 

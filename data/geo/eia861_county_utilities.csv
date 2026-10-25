@@ -1,0 +1,1117 @@
+state,county,utility_number,utility_name,ownership,nerc_region,rtos
+AZ,Apache,803,Arizona Public Service Co,Investor Owned,WECC,
+AZ,Apache,13314,Navajo Tribal Utility Authority,State,WECC,SPP
+AZ,Apache,13318,"Navopache Electric Coop, Inc",Cooperative,WECC,
+AZ,Apache,27000,WAPA-- Western Area Power Administration,Federal,,CAISO;SPP;MISO
+AZ,Cochise,803,Arizona Public Service Co,Investor Owned,WECC,
+AZ,Cochise,4071,"Columbus Electric Coop, Inc",,,
+AZ,Cochise,18280,Sulphur Springs Valley E C Inc,Cooperative,WECC,
+AZ,Cochise,24211,Tucson Electric Power Co,Investor Owned,WECC,CAISO
+AZ,Cochise,27000,WAPA-- Western Area Power Administration,Federal,,CAISO;SPP;MISO
+AZ,Coconino,803,Arizona Public Service Co,Investor Owned,WECC,
+AZ,Coconino,56535,City of Williams - AZ,,,
+AZ,Coconino,6957,"Garkane Energy Coop, Inc",Cooperative,WECC,
+AZ,Coconino,21538,"Mohave Electric Cooperative, Inc.",Cooperative,WECC,
+AZ,Coconino,13314,Navajo Tribal Utility Authority,State,WECC,SPP
+AZ,Coconino,14373,Page Utility Enterprises,,,
+AZ,Coconino,6753,Town of Fredonia - (AZ),,,
+AZ,Coconino,27000,WAPA-- Western Area Power Administration,Federal,,CAISO;SPP;MISO
+AZ,Gila,803,Arizona Public Service Co,Investor Owned,WECC,
+AZ,Gila,13318,"Navopache Electric Coop, Inc",Cooperative,WECC,
+AZ,Gila,16572,Salt River Project,Political Subdivision,WECC,
+AZ,Gila,19604,USBIA-San Carlos Project,Federal,WECC,
+AZ,Gila,27000,WAPA-- Western Area Power Administration,Federal,,CAISO;SPP;MISO
+AZ,Graham,803,Arizona Public Service Co,Investor Owned,WECC,
+AZ,Graham,16538,City of Safford - (AZ),,,
+AZ,Graham,5438,"Duncan Valley Elec Coop, Inc",,,
+AZ,Graham,7456,Graham County Electric Coop Inc,,,
+AZ,Graham,18280,Sulphur Springs Valley E C Inc,Cooperative,WECC,
+AZ,Graham,18805,Town of Thatcher- (AZ),,,
+AZ,Graham,19604,USBIA-San Carlos Project,Federal,WECC,
+AZ,Greenlee,803,Arizona Public Service Co,Investor Owned,WECC,
+AZ,Greenlee,5438,"Duncan Valley Elec Coop, Inc",,,
+AZ,Greenlee,12919,Morenci Water and Electric,Investor Owned,WECC,
+AZ,Greenlee,13318,"Navopache Electric Coop, Inc",Cooperative,WECC,
+AZ,La Paz,3990,Colorado River Indian Irr Proj,,,
+AZ,La Paz,12191,McMullen Valley Water C&D Dist,,,
+AZ,La Paz,17609,Southern California Edison Co,Investor Owned,WECC,CAISO
+AZ,La Paz,27000,WAPA-- Western Area Power Administration,Federal,,CAISO;SPP;MISO
+AZ,Maricopa,803,Arizona Public Service Co,Investor Owned,WECC,
+AZ,Maricopa,2469,Buckeye Water C&D District,,,
+AZ,Maricopa,12351,City of Mesa - (AZ),Municipal,WECC,
+AZ,Maricopa,5729,Electrical Dist No8 Maricopa,Political Subdivision,WECC,
+AZ,Maricopa,65261,Gila River Indian Utility Authority (GRICUA),Cooperative,,SPP
+AZ,Maricopa,8139,Harquahala Valley Pwr District,,,
+AZ,Maricopa,40355,Maricopa County M W C Dist #1,,,
+AZ,Maricopa,13961,Ocotillo Water Conserv. Dist.,,,
+AZ,Maricopa,16572,Salt River Project,Political Subdivision,WECC,
+AZ,Maricopa,14543,Tohono O'Odham Utility Authority,,,
+AZ,Maricopa,20618,Town of Wickenburg,,,
+AZ,Maricopa,19604,USBIA-San Carlos Project,Federal,WECC,
+AZ,Maricopa,27000,WAPA-- Western Area Power Administration,Federal,,CAISO;SPP;MISO
+AZ,Mohave,58123,Aha Macav Power Service,,,
+AZ,Mohave,803,Arizona Public Service Co,Investor Owned,WECC,
+AZ,Mohave,40165,"Dixie Escalante R E A, Inc",Cooperative,WECC,CAISO
+AZ,Mohave,6957,"Garkane Energy Coop, Inc",Cooperative,WECC,
+AZ,Mohave,21538,"Mohave Electric Cooperative, Inc.",Cooperative,WECC,
+AZ,Mohave,19728,"UNS Electric, Inc",Investor Owned,WECC,CAISO
+AZ,Mohave,27000,WAPA-- Western Area Power Administration,Federal,,CAISO;SPP;MISO
+AZ,Navajo,803,Arizona Public Service Co,Investor Owned,WECC,
+AZ,Navajo,13314,Navajo Tribal Utility Authority,State,WECC,SPP
+AZ,Navajo,13318,"Navopache Electric Coop, Inc",Cooperative,WECC,
+AZ,Navajo,27000,WAPA-- Western Area Power Administration,Federal,,CAISO;SPP;MISO
+AZ,Pima,176,Ajo Improvement Co,Investor Owned,WECC,
+AZ,Pima,803,Arizona Public Service Co,Investor Owned,WECC,
+AZ,Pima,18280,Sulphur Springs Valley E C Inc,Cooperative,WECC,
+AZ,Pima,14543,Tohono O'Odham Utility Authority,,,
+AZ,Pima,19189,Trico Electric Cooperative Inc,Cooperative,WECC,ERCOT
+AZ,Pima,24211,Tucson Electric Power Co,Investor Owned,WECC,CAISO
+AZ,Pima,19604,USBIA-San Carlos Project,Federal,WECC,
+AZ,Pima,27000,WAPA-- Western Area Power Administration,Federal,,CAISO;SPP;MISO
+AZ,Pinal,25866,Ak-Chin Electric Utility Authority,State,WECC,
+AZ,Pinal,803,Arizona Public Service Co,Investor Owned,WECC,
+AZ,Pinal,15048,Electrical Dist No2 Pinal County,Political Subdivision,WECC,
+AZ,Pinal,30518,Electrical Dist No3 Pinal County,Political Subdivision,WECC,
+AZ,Pinal,15049,Electrical Dist No4 Pinal County,,,
+AZ,Pinal,65261,Gila River Indian Utility Authority (GRICUA),Cooperative,,SPP
+AZ,Pinal,8700,Hohokam Irr & Drain Dist,,,
+AZ,Pinal,16572,Salt River Project,Political Subdivision,WECC,
+AZ,Pinal,14543,Tohono O'Odham Utility Authority,,,
+AZ,Pinal,19189,Trico Electric Cooperative Inc,Cooperative,WECC,ERCOT
+AZ,Pinal,19604,USBIA-San Carlos Project,Federal,WECC,
+AZ,Pinal,27000,WAPA-- Western Area Power Administration,Federal,,CAISO;SPP;MISO
+AZ,Santa Cruz,803,Arizona Public Service Co,Investor Owned,WECC,
+AZ,Santa Cruz,18280,Sulphur Springs Valley E C Inc,Cooperative,WECC,
+AZ,Santa Cruz,19189,Trico Electric Cooperative Inc,Cooperative,WECC,ERCOT
+AZ,Santa Cruz,19728,"UNS Electric, Inc",Investor Owned,WECC,CAISO
+AZ,Yavapai,803,Arizona Public Service Co,Investor Owned,WECC,
+AZ,Yavapai,21538,"Mohave Electric Cooperative, Inc.",Cooperative,WECC,
+AZ,Yavapai,27000,WAPA-- Western Area Power Administration,Federal,,CAISO;SPP;MISO
+AZ,Yuma,803,Arizona Public Service Co,Investor Owned,WECC,
+AZ,Yuma,27000,WAPA-- Western Area Power Administration,Federal,,CAISO;SPP;MISO
+AZ,Yuma,25060,Wellton-Mohawk Irr & Drain Dist,,,
+MD,Allegany,15263,The Potomac Edison Company,Investor Owned,RFC,PJM
+MD,Anne Arundel,1167,Baltimore Gas & Electric Co,Investor Owned,RFC,PJM
+MD,Baltimore,1167,Baltimore Gas & Electric Co,Investor Owned,RFC,PJM
+MD,Baltimore City,1167,Baltimore Gas & Electric Co,Investor Owned,RFC,PJM
+MD,Calvert,1167,Baltimore Gas & Electric Co,Investor Owned,RFC,PJM
+MD,Calvert,17637,Southern Maryland Elec Coop Inc,Cooperative,RFC,PJM
+MD,Caroline,3503,"Choptank Electric Cooperative, Inc",Cooperative,RFC,PJM
+MD,Caroline,5027,Delmarva Power,Investor Owned,RFC,PJM
+MD,Carroll,1167,Baltimore Gas & Electric Co,Investor Owned,RFC,PJM
+MD,Carroll,15263,The Potomac Edison Company,Investor Owned,RFC,PJM
+MD,Cecil,3503,"Choptank Electric Cooperative, Inc",Cooperative,RFC,PJM
+MD,Cecil,5027,Delmarva Power,Investor Owned,RFC,PJM
+MD,Charles,17637,Southern Maryland Elec Coop Inc,Cooperative,RFC,PJM
+MD,Dorchester,3503,"Choptank Electric Cooperative, Inc",Cooperative,RFC,PJM
+MD,Dorchester,5027,Delmarva Power,Investor Owned,RFC,PJM
+MD,Frederick,15263,The Potomac Edison Company,Investor Owned,RFC,PJM
+MD,Frederick,18901,Thurmont Municipal Light Co,,,
+MD,Garrett,15263,The Potomac Edison Company,Investor Owned,RFC,PJM
+MD,Harford,1167,Baltimore Gas & Electric Co,Investor Owned,RFC,PJM
+MD,Harford,5027,Delmarva Power,Investor Owned,RFC,PJM
+MD,Howard,1167,Baltimore Gas & Electric Co,Investor Owned,RFC,PJM
+MD,Howard,15263,The Potomac Edison Company,Investor Owned,RFC,PJM
+MD,Kent,3503,"Choptank Electric Cooperative, Inc",Cooperative,RFC,PJM
+MD,Kent,5027,Delmarva Power,Investor Owned,RFC,PJM
+MD,Montgomery,1167,Baltimore Gas & Electric Co,Investor Owned,RFC,PJM
+MD,Montgomery,15270,Potomac Electric Power Co,Investor Owned,RFC,PJM
+MD,Montgomery,15263,The Potomac Edison Company,Investor Owned,RFC,PJM
+MD,Prince Georges,1167,Baltimore Gas & Electric Co,Investor Owned,RFC,PJM
+MD,Prince Georges,15270,Potomac Electric Power Co,Investor Owned,RFC,PJM
+MD,Prince Georges,17637,Southern Maryland Elec Coop Inc,Cooperative,RFC,PJM
+MD,Queen Annes,3503,"Choptank Electric Cooperative, Inc",Cooperative,RFC,PJM
+MD,Queen Annes,5027,Delmarva Power,Investor Owned,RFC,PJM
+MD,Somerset,84,A & N Electric Coop,Cooperative,RFC,PJM
+MD,Somerset,3503,"Choptank Electric Cooperative, Inc",Cooperative,RFC,PJM
+MD,Somerset,5027,Delmarva Power,Investor Owned,RFC,PJM
+MD,St Marys,17637,Southern Maryland Elec Coop Inc,Cooperative,RFC,PJM
+MD,Talbot,3503,"Choptank Electric Cooperative, Inc",Cooperative,RFC,PJM
+MD,Talbot,5027,Delmarva Power,Investor Owned,RFC,PJM
+MD,Talbot,5625,Easton Utilities Comm,Municipal,RFC,PJM
+MD,Washington,7908,Hagerstown Light Department,Municipal,RFC,PJM
+MD,Washington,15263,The Potomac Edison Company,Investor Owned,RFC,PJM
+MD,Washington,20729,Town of Williamsport - (MD),,,
+MD,Wicomico,3503,"Choptank Electric Cooperative, Inc",Cooperative,RFC,PJM
+MD,Wicomico,5027,Delmarva Power,Investor Owned,RFC,PJM
+MD,Worcester,3503,"Choptank Electric Cooperative, Inc",Cooperative,RFC,PJM
+MD,Worcester,5027,Delmarva Power,Investor Owned,RFC,PJM
+MD,Worcester,1615,Town of Berlin - (MD),,,
+TX,Anderson,8898,Houston County Elec Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Anderson,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Anderson,18976,Trinity Valley Elec Coop Inc,Cooperative,,ERCOT
+TX,Andrews,11364,"Lyntegar Electric Coop, Inc",Cooperative,SPP,ERCOT;SPP
+TX,Andrews,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Andrews,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Angelina,8898,Houston County Elec Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Angelina,9668,"Jasper-Newton Elec Coop, Inc",Cooperative,MRO,MISO
+TX,Angelina,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Angelina,16613,Sam Houston Electric Coop Inc,Cooperative,SERC,
+TX,Aransas,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Aransas,16627,San Patricio Electric Coop Inc,Cooperative,TRE,ERCOT
+TX,Archer,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Archer,6611,Fort Belknap Electric Coop Inc,,,
+TX,Archer,9422,J-A-C Electric Coop Inc,,,
+TX,Archer,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Archer,17681,Southwest Rural Elec Assn Inc,,,
+TX,Archer,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Archer,19159,"Tri-County Electric Coop, Inc (TX)",Cooperative,TRE,ERCOT
+TX,Armstrong,7561,"Greenbelt Electric Coop, Inc",Cooperative,SPP,
+TX,Armstrong,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Armstrong,18199,"Swisher Electric Coop, Inc",,,
+TX,Atascosa,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Atascosa,16604,City of San Antonio - (TX),Municipal,TRE,
+TX,Atascosa,10009,Karnes Electric Coop Inc,Cooperative,TRE,ERCOT
+TX,Atascosa,12268,"Medina Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Austin,1892,"Bluebonnet Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Austin,8901,CenterPoint Energy,Investor Owned,TRE,ERCOT
+TX,Austin,1519,City of Bellville - (TX),,,
+TX,Austin,6183,"Fayette Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Austin,16638,"San Bernard Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Bailey,1169,Bailey County Elec Coop Assn,Cooperative,SPP,SPP
+TX,Bailey,10625,"Lamb County Electric Coop, Inc",Cooperative,SPP,
+TX,Bailey,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Bandera,1175,"Bandera Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Bandera,16604,City of San Antonio - (TX),Municipal,TRE,
+TX,Bastrop,1892,"Bluebonnet Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Bastrop,1324,City of Bastrop - (TX),,,
+TX,Bastrop,17453,City of Smithville - (TX),,,
+TX,Bastrop,6183,"Fayette Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Bastrop,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Baylor,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Baylor,16961,City of Seymour - (TX),,,
+TX,Baylor,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Baylor,17681,Southwest Rural Elec Assn Inc,,,
+TX,Baylor,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Baylor,19159,"Tri-County Electric Coop, Inc (TX)",Cooperative,TRE,ERCOT
+TX,Bee,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Bee,10009,Karnes Electric Coop Inc,Cooperative,TRE,ERCOT
+TX,Bee,16627,San Patricio Electric Coop Inc,Cooperative,TRE,ERCOT
+TX,Bell,1273,"Bartlett Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Bell,1287,City of Bartlett - (TX),,,
+TX,Bell,55982,Heart of Texas Electric Coop,Cooperative,,ERCOT
+TX,Bell,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Bell,14626,"Pedernales Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Bexar,1175,"Bandera Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Bexar,16604,City of San Antonio - (TX),Municipal,TRE,
+TX,Bexar,7752,Guadalupe Valley Elec Coop Inc,Cooperative,TRE,
+TX,Bexar,10009,Karnes Electric Coop Inc,Cooperative,TRE,ERCOT
+TX,Bexar,14626,"Pedernales Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Blanco,3282,"Central Texas Elec Coop, Inc",Cooperative,,ERCOT
+TX,Blanco,14626,"Pedernales Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Borden,1591,"Big Country Electric Coop, Inc",Cooperative,TRE,ERCOT;SPP
+TX,Borden,11364,"Lyntegar Electric Coop, Inc",Cooperative,SPP,ERCOT;SPP
+TX,Borden,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Borden,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Bosque,55982,Heart of Texas Electric Coop,Cooperative,,ERCOT
+TX,Bosque,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Bosque,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Bosque,19490,United Electric Coop Service Inc - (TX),Cooperative,TRE,ERCOT
+TX,Bowie,2049,"Bowie-Cass Electric Coop, Inc",Cooperative,SPP,SPP
+TX,Bowie,17671,Southwest Arkansas E C C,Cooperative,,SPP;MISO
+TX,Bowie,17698,Southwestern Electric Power Co,Investor Owned,SPP,SPP
+TX,Brazoria,8901,CenterPoint Energy,Investor Owned,TRE,ERCOT
+TX,Brazoria,9590,"Jackson Electric Coop, Inc - (TX)",Cooperative,TRE,
+TX,Brazoria,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Brazos,2442,City of Bryan - (TX),Municipal,TRE,ERCOT
+TX,Brazos,3940,City of College Station - (TX),Municipal,TRE,ERCOT
+TX,Brazos,55937,Entergy Texas Inc.,Investor Owned,SERC,MISO
+TX,Brazos,12452,Mid-South Electric Coop Assn,Cooperative,TRE,ERCOT;MISO
+TX,Brazos,16146,"Navasota Valley Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Brazos,58113,"Texas A&M, Utilities & Energy Services",,,
+TX,Brewster,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Brewster,16057,"Rio Grande Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Briscoe,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Briscoe,11014,"Lighthouse Electric Coop, Inc",Cooperative,SPP,ERCOT;SPP
+TX,Briscoe,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Briscoe,18199,"Swisher Electric Coop, Inc",,,
+TX,Brooks,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Brooks,11501,Magic Valley Electric Coop Inc,Cooperative,TRE,ERCOT
+TX,Brooks,12268,"Medina Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Brooks,13830,Nueces Electric Cooperative,Cooperative,TRE,ERCOT
+TX,Brown,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Brown,3938,"Coleman County Elec Coop, Inc",,,
+TX,Brown,4295,Comanche County Elec Coop Assn,Cooperative,TRE,ERCOT
+TX,Brown,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Burleson,1273,"Bartlett Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Burleson,1892,"Bluebonnet Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Burleson,2442,City of Bryan - (TX),Municipal,TRE,ERCOT
+TX,Burleson,2800,City of Caldwell,,,
+TX,Burleson,55937,Entergy Texas Inc.,Investor Owned,SERC,MISO
+TX,Burnet,2559,City of Burnet - (TX),,,
+TX,Burnet,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Burnet,14626,"Pedernales Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Caldwell,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Caldwell,1892,"Bluebonnet Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Caldwell,11119,City of Lockhart - (TX),,,
+TX,Caldwell,11316,City of Luling - (TX),,,
+TX,Caldwell,7752,Guadalupe Valley Elec Coop Inc,Cooperative,TRE,
+TX,Caldwell,14626,"Pedernales Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Calhoun,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Calhoun,9590,"Jackson Electric Coop, Inc - (TX)",Cooperative,TRE,
+TX,Calhoun,19806,"Victoria Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Callahan,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Callahan,3938,"Coleman County Elec Coop, Inc",,,
+TX,Callahan,4295,Comanche County Elec Coop Assn,Cooperative,TRE,ERCOT
+TX,Callahan,27369,Taylor Electric Coop Inc - (TX),Cooperative,TRE,
+TX,Cameron,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Cameron,2409,Brownsville Public Utilities Board,Municipal,TRE,ERCOT
+TX,Cameron,11501,Magic Valley Electric Coop Inc,Cooperative,TRE,ERCOT
+TX,Camp,17698,Southwestern Electric Power Co,Investor Owned,SPP,SPP
+TX,Camp,19579,Upshur Rural Elec Coop Corp,Cooperative,SPP,SPP
+TX,Camp,20927,"Wood County Electric Coop, Inc",Cooperative,SPP,
+TX,Carson,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Cass,2049,"Bowie-Cass Electric Coop, Inc",Cooperative,SPP,SPP
+TX,Cass,17671,Southwest Arkansas E C C,Cooperative,,SPP;MISO
+TX,Cass,17698,Southwestern Electric Power Co,Investor Owned,SPP,SPP
+TX,Cass,19579,Upshur Rural Elec Coop Corp,Cooperative,SPP,SPP
+TX,Castro,1169,Bailey County Elec Coop Assn,Cooperative,SPP,SPP
+TX,Castro,4939,"Deaf Smith Electric Coop, Inc",Cooperative,SPP,SPP
+TX,Castro,10625,"Lamb County Electric Coop, Inc",Cooperative,SPP,
+TX,Castro,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Castro,18199,"Swisher Electric Coop, Inc",,,
+TX,Chambers,8901,CenterPoint Energy,Investor Owned,TRE,ERCOT
+TX,Chambers,55937,Entergy Texas Inc.,Investor Owned,SERC,MISO
+TX,Cherokee,3470,Cherokee County Elec Coop Assn - (TX),Cooperative,TRE,
+TX,Cherokee,8898,Houston County Elec Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Cherokee,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Childress,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Childress,7561,"Greenbelt Electric Coop, Inc",Cooperative,SPP,
+TX,Childress,8183,Harmon Electric Assn Inc,,,
+TX,Childress,11014,"Lighthouse Electric Coop, Inc",Cooperative,SPP,ERCOT;SPP
+TX,Childress,17561,South Plains Electric Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Childress,17698,Southwestern Electric Power Co,Investor Owned,SPP,SPP
+TX,Clay,9422,J-A-C Electric Coop Inc,,,
+TX,Clay,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Clay,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Clay,20948,Wise Electric Coop Inc,Cooperative,TRE,
+TX,Cochran,1169,Bailey County Elec Coop Assn,Cooperative,SPP,SPP
+TX,Cochran,10625,"Lamb County Electric Coop, Inc",Cooperative,SPP,
+TX,Cochran,10817,"Lea County Electric Coop, Inc - (NM)",Cooperative,SPP,SPP
+TX,Cochran,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Coke,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Coke,3938,"Coleman County Elec Coop, Inc",,,
+TX,Coke,4146,Concho Valley Elec Coop Inc,Cooperative,TRE,ERCOT
+TX,Coke,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Coke,27369,Taylor Electric Coop Inc - (TX),Cooperative,TRE,
+TX,Coleman,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Coleman,3923,City of Coleman - (TX),,,
+TX,Coleman,3938,"Coleman County Elec Coop, Inc",,,
+TX,Coleman,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Coleman,27369,Taylor Electric Coop Inc - (TX),Cooperative,TRE,
+TX,Collin,6203,City of Farmersville - (TX),,,
+TX,Collin,5078,"Denton County Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Collin,6173,Fannin County Electric Coop,Cooperative,TRE,ERCOT
+TX,Collin,6182,"Farmers Electric Coop, Inc - (TX)",Cooperative,TRE,ERCOT
+TX,Collin,7559,"Grayson-Collin Elec Coop, Inc",Cooperative,TRE,
+TX,Collin,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Collin,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Collingsworth,7561,"Greenbelt Electric Coop, Inc",Cooperative,SPP,
+TX,Collingsworth,11014,"Lighthouse Electric Coop, Inc",Cooperative,SPP,ERCOT;SPP
+TX,Collingsworth,17698,Southwestern Electric Power Co,Investor Owned,SPP,SPP
+TX,Colorado,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Colorado,1892,"Bluebonnet Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Colorado,8901,CenterPoint Energy,Investor Owned,TRE,ERCOT
+TX,Colorado,20331,City of Weimar - (TX),,,
+TX,Colorado,6183,"Fayette Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Colorado,16638,"San Bernard Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Colorado,20472,"Wharton County Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Comal,13418,City of New Braunfels - (TX),Municipal,TRE,ERCOT
+TX,Comal,16604,City of San Antonio - (TX),Municipal,TRE,
+TX,Comal,7752,Guadalupe Valley Elec Coop Inc,Cooperative,TRE,
+TX,Comal,14626,"Pedernales Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Comanche,4295,Comanche County Elec Coop Assn,Cooperative,TRE,ERCOT
+TX,Comanche,7979,Hamilton County Elec Coop Assn,Cooperative,TRE,ERCOT
+TX,Comanche,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Comanche,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Comanche,19490,United Electric Coop Service Inc - (TX),Cooperative,TRE,ERCOT
+TX,Concho,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Concho,3938,"Coleman County Elec Coop, Inc",,,
+TX,Concho,4146,Concho Valley Elec Coop Inc,Cooperative,TRE,ERCOT
+TX,Concho,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Concho,17693,"Southwest Texas Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Cooke,4262,Cooke County Elec Coop Assn,Cooperative,TRE,ERCOT
+TX,Cooke,5078,"Denton County Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Cooke,7559,"Grayson-Collin Elec Coop, Inc",Cooperative,TRE,
+TX,Cooke,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Cooke,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Cooke,20948,Wise Electric Coop Inc,Cooperative,TRE,
+TX,Coryell,7979,Hamilton County Elec Coop Assn,Cooperative,TRE,ERCOT
+TX,Coryell,55982,Heart of Texas Electric Coop,Cooperative,,ERCOT
+TX,Coryell,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Coryell,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Coryell,19490,United Electric Coop Service Inc - (TX),Cooperative,TRE,ERCOT
+TX,Cottle,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Cottle,11014,"Lighthouse Electric Coop, Inc",Cooperative,SPP,ERCOT;SPP
+TX,Cottle,17561,South Plains Electric Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Cottle,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Crane,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Crane,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Crockett,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Crockett,16057,"Rio Grande Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Crockett,17693,"Southwest Texas Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Crockett,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Crosby,11014,"Lighthouse Electric Coop, Inc",Cooperative,SPP,ERCOT;SPP
+TX,Crosby,17561,South Plains Electric Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Crosby,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Culberson,5701,El Paso Electric Co,Investor Owned,WECC,
+TX,Culberson,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Culberson,16057,"Rio Grande Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Dallam,16063,"Rita Blanca Electric Coop, Inc",Cooperative,SPP,SPP
+TX,Dallam,17715,Southwestern Electric Coop Inc - (NM),Cooperative,WECC,
+TX,Dallam,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Dallam,19160,"Tri-County Electric Coop, Inc (OK)",Cooperative,SPP,SPP
+TX,Dallas,6958,City of Garland - (TX),Municipal,TRE,ERCOT
+TX,Dallas,6182,"Farmers Electric Coop, Inc - (TX)",Cooperative,TRE,ERCOT
+TX,Dallas,8620,"HILCO Electric Cooperative, Inc.",Cooperative,TRE,ERCOT
+TX,Dallas,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Dallas,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Dallas,18976,Trinity Valley Elec Coop Inc,Cooperative,,ERCOT
+TX,Dawson,11364,"Lyntegar Electric Coop, Inc",Cooperative,SPP,ERCOT;SPP
+TX,Dawson,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Dawson,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,DeWitt,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,DeWitt,4610,City of Cuero - (TX),,,
+TX,DeWitt,21108,City of Yoakum - (TX),,,
+TX,DeWitt,7752,Guadalupe Valley Elec Coop Inc,Cooperative,TRE,
+TX,DeWitt,10009,Karnes Electric Coop Inc,Cooperative,TRE,ERCOT
+TX,DeWitt,19806,"Victoria Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Deaf Smith,4939,"Deaf Smith Electric Coop, Inc",Cooperative,SPP,SPP
+TX,Deaf Smith,6198,"Farmers Electric Coop, Inc - (NM)",Cooperative,SPP,SPP
+TX,Deaf Smith,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Delta,6182,"Farmers Electric Coop, Inc - (TX)",Cooperative,TRE,ERCOT
+TX,Delta,10649,Lamar County Elec Coop Assn,Cooperative,TRE,ERCOT
+TX,Delta,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Denton,5063,City of Denton - (TX),Municipal,TRE,ERCOT
+TX,Denton,16647,City of Sanger - (TX),,,
+TX,Denton,4262,Cooke County Elec Coop Assn,Cooperative,TRE,ERCOT
+TX,Denton,5078,"Denton County Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Denton,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Denton,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Denton,19159,"Tri-County Electric Coop, Inc (TX)",Cooperative,TRE,ERCOT
+TX,Denton,20948,Wise Electric Coop Inc,Cooperative,TRE,
+TX,Dickens,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Dickens,11014,"Lighthouse Electric Coop, Inc",Cooperative,SPP,ERCOT;SPP
+TX,Dickens,17561,South Plains Electric Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Dimmit,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Dimmit,12268,"Medina Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Dimmit,16057,"Rio Grande Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Donley,7561,"Greenbelt Electric Coop, Inc",Cooperative,SPP,
+TX,Donley,11014,"Lighthouse Electric Coop, Inc",Cooperative,SPP,ERCOT;SPP
+TX,Donley,17698,Southwestern Electric Power Co,Investor Owned,SPP,SPP
+TX,Donley,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Duval,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Duval,12268,"Medina Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Duval,13830,Nueces Electric Cooperative,Cooperative,TRE,ERCOT
+TX,Eastland,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Eastland,4295,Comanche County Elec Coop Assn,Cooperative,TRE,ERCOT
+TX,Eastland,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Eastland,27369,Taylor Electric Coop Inc - (TX),Cooperative,TRE,
+TX,Eastland,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Eastland,19490,United Electric Coop Service Inc - (TX),Cooperative,TRE,ERCOT
+TX,Ector,7419,City of Goldsmith - (TX),,,
+TX,Ector,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Ector,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Edwards,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Edwards,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Edwards,12268,"Medina Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Edwards,14626,"Pedernales Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Edwards,16057,"Rio Grande Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Edwards,17693,"Southwest Texas Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,El Paso,5701,El Paso Electric Co,Investor Owned,WECC,
+TX,El Paso,16057,"Rio Grande Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Ellis,8620,"HILCO Electric Cooperative, Inc.",Cooperative,TRE,ERCOT
+TX,Ellis,13332,"Navarro County Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Ellis,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Ellis,19490,United Electric Coop Service Inc - (TX),Cooperative,TRE,ERCOT
+TX,Erath,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Erath,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Erath,19490,United Electric Coop Service Inc - (TX),Cooperative,TRE,ERCOT
+TX,Falls,55937,Entergy Texas Inc.,Investor Owned,SERC,MISO
+TX,Falls,55982,Heart of Texas Electric Coop,Cooperative,,ERCOT
+TX,Falls,16146,"Navasota Valley Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Falls,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Fannin,6173,Fannin County Electric Coop,Cooperative,TRE,ERCOT
+TX,Fannin,6182,"Farmers Electric Coop, Inc - (TX)",Cooperative,TRE,ERCOT
+TX,Fannin,7559,"Grayson-Collin Elec Coop, Inc",Cooperative,TRE,
+TX,Fannin,10649,Lamar County Elec Coop Assn,Cooperative,TRE,ERCOT
+TX,Fannin,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Fannin,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Fayette,1892,"Bluebonnet Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Fayette,6396,City of Flatonia - (TX),,,
+TX,Fayette,10532,City of La Grange - (TX),,,
+TX,Fayette,16765,City of Schulenburg - (TX),,,
+TX,Fayette,6183,"Fayette Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Fayette,7752,Guadalupe Valley Elec Coop Inc,Cooperative,TRE,
+TX,Fayette,16638,"San Bernard Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Fisher,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Fisher,1591,"Big Country Electric Coop, Inc",Cooperative,TRE,ERCOT;SPP
+TX,Fisher,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Fisher,27369,Taylor Electric Coop Inc - (TX),Cooperative,TRE,
+TX,Floyd,6472,City of Floydada - (TX),,,
+TX,Floyd,11014,"Lighthouse Electric Coop, Inc",Cooperative,SPP,ERCOT;SPP
+TX,Floyd,17561,South Plains Electric Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Floyd,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Foard,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Foard,17561,South Plains Electric Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Foard,17681,Southwest Rural Elec Assn Inc,,,
+TX,Foard,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Foard,19159,"Tri-County Electric Coop, Inc (TX)",Cooperative,TRE,ERCOT
+TX,Fort Bend,8901,CenterPoint Energy,Investor Owned,TRE,ERCOT
+TX,Franklin,2049,"Bowie-Cass Electric Coop, Inc",Cooperative,SPP,SPP
+TX,Franklin,6182,"Farmers Electric Coop, Inc - (TX)",Cooperative,TRE,ERCOT
+TX,Franklin,17698,Southwestern Electric Power Co,Investor Owned,SPP,SPP
+TX,Franklin,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Franklin,20927,"Wood County Electric Coop, Inc",Cooperative,SPP,
+TX,Freestone,8898,Houston County Elec Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Freestone,13332,"Navarro County Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Freestone,16146,"Navasota Valley Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Freestone,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Frio,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Frio,10009,Karnes Electric Coop Inc,Cooperative,TRE,ERCOT
+TX,Frio,12268,"Medina Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Gaines,10817,"Lea County Electric Coop, Inc - (NM)",Cooperative,SPP,SPP
+TX,Gaines,11364,"Lyntegar Electric Coop, Inc",Cooperative,SPP,ERCOT;SPP
+TX,Gaines,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Gaines,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Galveston,8901,CenterPoint Energy,Investor Owned,TRE,ERCOT
+TX,Galveston,55937,Entergy Texas Inc.,Investor Owned,SERC,MISO
+TX,Galveston,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Garza,1591,"Big Country Electric Coop, Inc",Cooperative,TRE,ERCOT;SPP
+TX,Garza,11364,"Lyntegar Electric Coop, Inc",Cooperative,SPP,ERCOT;SPP
+TX,Garza,17561,South Plains Electric Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Garza,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Gillespie,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Gillespie,3282,"Central Texas Elec Coop, Inc",Cooperative,,ERCOT
+TX,Gillespie,6758,City of Fredericksburg - (TX),,,
+TX,Gillespie,14626,"Pedernales Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Glasscock,4146,Concho Valley Elec Coop Inc,Cooperative,TRE,ERCOT
+TX,Glasscock,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Goliad,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Goliad,7752,Guadalupe Valley Elec Coop Inc,Cooperative,TRE,
+TX,Goliad,10009,Karnes Electric Coop Inc,Cooperative,TRE,ERCOT
+TX,Goliad,16627,San Patricio Electric Coop Inc,Cooperative,TRE,ERCOT
+TX,Goliad,19806,"Victoria Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Gonzales,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Gonzales,1892,"Bluebonnet Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Gonzales,6396,City of Flatonia - (TX),,,
+TX,Gonzales,7370,City of Gonzales - (TX),,,
+TX,Gonzales,19952,City of Waelder - (TX),,,
+TX,Gonzales,6183,"Fayette Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Gonzales,7752,Guadalupe Valley Elec Coop Inc,Cooperative,TRE,
+TX,Gray,7561,"Greenbelt Electric Coop, Inc",Cooperative,SPP,
+TX,Gray,17698,Southwestern Electric Power Co,Investor Owned,SPP,SPP
+TX,Gray,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Grayson,20588,City of Whitesboro - (TX),,,
+TX,Grayson,4262,Cooke County Elec Coop Assn,Cooperative,TRE,ERCOT
+TX,Grayson,5078,"Denton County Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Grayson,6173,Fannin County Electric Coop,Cooperative,TRE,ERCOT
+TX,Grayson,7559,"Grayson-Collin Elec Coop, Inc",Cooperative,TRE,
+TX,Grayson,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Grayson,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Gregg,16461,"Rusk County Electric Coop, Inc",Cooperative,SPP,SPP
+TX,Gregg,17698,Southwestern Electric Power Co,Investor Owned,SPP,SPP
+TX,Gregg,19579,Upshur Rural Elec Coop Corp,Cooperative,SPP,SPP
+TX,Grimes,55937,Entergy Texas Inc.,Investor Owned,SERC,MISO
+TX,Grimes,12452,Mid-South Electric Coop Assn,Cooperative,TRE,ERCOT;MISO
+TX,Grimes,16638,"San Bernard Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Guadalupe,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Guadalupe,1892,"Bluebonnet Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Guadalupe,13418,City of New Braunfels - (TX),Municipal,TRE,ERCOT
+TX,Guadalupe,16604,City of San Antonio - (TX),Municipal,TRE,
+TX,Guadalupe,16900,City of Seguin - (TX),Municipal,TRE,ERCOT
+TX,Guadalupe,7752,Guadalupe Valley Elec Coop Inc,Cooperative,TRE,
+TX,Guadalupe,14626,"Pedernales Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Hale,10625,"Lamb County Electric Coop, Inc",Cooperative,SPP,
+TX,Hale,11014,"Lighthouse Electric Coop, Inc",Cooperative,SPP,ERCOT;SPP
+TX,Hale,17561,South Plains Electric Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Hale,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Hale,18199,"Swisher Electric Coop, Inc",,,
+TX,Hall,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Hall,11014,"Lighthouse Electric Coop, Inc",Cooperative,SPP,ERCOT;SPP
+TX,Hall,17561,South Plains Electric Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Hall,17698,Southwestern Electric Power Co,Investor Owned,SPP,SPP
+TX,Hamilton,7979,Hamilton County Elec Coop Assn,Cooperative,TRE,ERCOT
+TX,Hamilton,55982,Heart of Texas Electric Coop,Cooperative,,ERCOT
+TX,Hamilton,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Hamilton,19490,United Electric Coop Service Inc - (TX),Cooperative,TRE,ERCOT
+TX,Hansford,13757,North Plains Electric Coop Inc,Cooperative,SPP,SPP
+TX,Hansford,16063,"Rita Blanca Electric Coop, Inc",Cooperative,SPP,SPP
+TX,Hansford,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Hansford,19160,"Tri-County Electric Coop, Inc (OK)",Cooperative,SPP,SPP
+TX,Hardeman,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Hardeman,8183,Harmon Electric Assn Inc,,,
+TX,Hardeman,17561,South Plains Electric Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Hardeman,17681,Southwest Rural Elec Assn Inc,,,
+TX,Hardin,55937,Entergy Texas Inc.,Investor Owned,SERC,MISO
+TX,Hardin,16613,Sam Houston Electric Coop Inc,Cooperative,SERC,
+TX,Harris,8901,CenterPoint Energy,Investor Owned,TRE,ERCOT
+TX,Harris,55937,Entergy Texas Inc.,Investor Owned,SERC,MISO
+TX,Harris,16638,"San Bernard Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Harrison,14424,"Panola-Harrison Elec Coop, Inc",Cooperative,SPP,SPP
+TX,Harrison,17698,Southwestern Electric Power Co,Investor Owned,SPP,SPP
+TX,Harrison,19579,Upshur Rural Elec Coop Corp,Cooperative,SPP,SPP
+TX,Hartley,16063,"Rita Blanca Electric Coop, Inc",Cooperative,SPP,SPP
+TX,Hartley,17715,Southwestern Electric Coop Inc - (NM),Cooperative,WECC,
+TX,Hartley,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Haskell,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Haskell,1591,"Big Country Electric Coop, Inc",Cooperative,TRE,ERCOT;SPP
+TX,Haskell,19159,"Tri-County Electric Coop, Inc (TX)",Cooperative,TRE,ERCOT
+TX,Hays,1892,"Bluebonnet Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Hays,28978,City of San Marcos - (TX),Municipal,ERCOT,ERCOT
+TX,Hays,14626,"Pedernales Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Hemphill,7561,"Greenbelt Electric Coop, Inc",Cooperative,SPP,
+TX,Hemphill,13757,North Plains Electric Coop Inc,Cooperative,SPP,SPP
+TX,Hemphill,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Henderson,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Henderson,18976,Trinity Valley Elec Coop Inc,Cooperative,,ERCOT
+TX,Hidalgo,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Hidalgo,11501,Magic Valley Electric Coop Inc,Cooperative,TRE,ERCOT
+TX,Hidalgo,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Hill,8620,"HILCO Electric Cooperative, Inc.",Cooperative,TRE,ERCOT
+TX,Hill,13332,"Navarro County Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Hill,16146,"Navasota Valley Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Hill,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Hill,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Hockley,10625,"Lamb County Electric Coop, Inc",Cooperative,SPP,
+TX,Hockley,11364,"Lyntegar Electric Coop, Inc",Cooperative,SPP,ERCOT;SPP
+TX,Hockley,17561,South Plains Electric Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Hockley,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Hood,7480,City of Granbury - (TX),,,
+TX,Hood,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Hood,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Hood,19159,"Tri-County Electric Coop, Inc (TX)",Cooperative,TRE,ERCOT
+TX,Hood,19490,United Electric Coop Service Inc - (TX),Cooperative,TRE,ERCOT
+TX,Hopkins,6182,"Farmers Electric Coop, Inc - (TX)",Cooperative,TRE,ERCOT
+TX,Hopkins,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Hopkins,17698,Southwestern Electric Power Co,Investor Owned,SPP,SPP
+TX,Hopkins,20927,"Wood County Electric Coop, Inc",Cooperative,SPP,
+TX,Houston,55937,Entergy Texas Inc.,Investor Owned,SERC,MISO
+TX,Houston,8898,Houston County Elec Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Houston,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Howard,11364,"Lyntegar Electric Coop, Inc",Cooperative,SPP,ERCOT;SPP
+TX,Howard,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Hudspeth,5701,El Paso Electric Co,Investor Owned,WECC,
+TX,Hudspeth,16057,"Rio Grande Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Hunt,7634,City of Greenville - (TX),Municipal,TRE,ERCOT
+TX,Hunt,6173,Fannin County Electric Coop,Cooperative,TRE,ERCOT
+TX,Hunt,6182,"Farmers Electric Coop, Inc - (TX)",Cooperative,TRE,ERCOT
+TX,Hunt,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Hunt,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Hunt,18976,Trinity Valley Elec Coop Inc,Cooperative,,ERCOT
+TX,Hutchinson,13757,North Plains Electric Coop Inc,Cooperative,SPP,SPP
+TX,Hutchinson,16063,"Rita Blanca Electric Coop, Inc",Cooperative,SPP,SPP
+TX,Hutchinson,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Irion,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Irion,4146,Concho Valley Elec Coop Inc,Cooperative,TRE,ERCOT
+TX,Irion,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Irion,17693,"Southwest Texas Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Jack,6611,Fort Belknap Electric Coop Inc,,,
+TX,Jack,9422,J-A-C Electric Coop Inc,,,
+TX,Jack,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Jack,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Jack,19159,"Tri-County Electric Coop, Inc (TX)",Cooperative,TRE,ERCOT
+TX,Jack,20948,Wise Electric Coop Inc,Cooperative,TRE,
+TX,Jackson,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Jackson,7752,Guadalupe Valley Elec Coop Inc,Cooperative,TRE,
+TX,Jackson,9590,"Jackson Electric Coop, Inc - (TX)",Cooperative,TRE,
+TX,Jackson,19806,"Victoria Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Jackson,20472,"Wharton County Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Jasper,9664,City of Jasper - (TX),,,
+TX,Jasper,4975,Deep East Texas Elec Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Jasper,55937,Entergy Texas Inc.,Investor Owned,SERC,MISO
+TX,Jasper,9668,"Jasper-Newton Elec Coop, Inc",Cooperative,MRO,MISO
+TX,Jasper,10359,Kirbyville Light & Power Co,,,
+TX,Jasper,16613,Sam Houston Electric Coop Inc,Cooperative,SERC,
+TX,Jeff Davis,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Jeff Davis,16057,"Rio Grande Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Jefferson,55937,Entergy Texas Inc.,Investor Owned,SERC,MISO
+TX,Jim Hogg,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Jim Hogg,12268,"Medina Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Jim Wells,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Jim Wells,13830,Nueces Electric Cooperative,Cooperative,TRE,ERCOT
+TX,Jim Wells,16627,San Patricio Electric Coop Inc,Cooperative,TRE,ERCOT
+TX,Johnson,8620,"HILCO Electric Cooperative, Inc.",Cooperative,TRE,ERCOT
+TX,Johnson,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Johnson,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Johnson,19490,United Electric Coop Service Inc - (TX),Cooperative,TRE,ERCOT
+TX,Jones,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Jones,1591,"Big Country Electric Coop, Inc",Cooperative,TRE,ERCOT;SPP
+TX,Jones,27369,Taylor Electric Coop Inc - (TX),Cooperative,TRE,
+TX,Karnes,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Karnes,6427,City of Floresville,Municipal,TRE,
+TX,Karnes,7752,Guadalupe Valley Elec Coop Inc,Cooperative,TRE,
+TX,Karnes,10009,Karnes Electric Coop Inc,Cooperative,TRE,ERCOT
+TX,Kaufman,6182,"Farmers Electric Coop, Inc - (TX)",Cooperative,TRE,ERCOT
+TX,Kaufman,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Kaufman,18976,Trinity Valley Elec Coop Inc,Cooperative,,ERCOT
+TX,Kendall,1175,"Bandera Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Kendall,3282,"Central Texas Elec Coop, Inc",Cooperative,,ERCOT
+TX,Kendall,1913,City of Boerne,,,
+TX,Kendall,16604,City of San Antonio - (TX),Municipal,TRE,
+TX,Kendall,14626,"Pedernales Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Kenedy,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Kenedy,11501,Magic Valley Electric Coop Inc,Cooperative,TRE,ERCOT
+TX,Kenedy,13830,Nueces Electric Cooperative,Cooperative,TRE,ERCOT
+TX,Kent,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Kent,1591,"Big Country Electric Coop, Inc",Cooperative,TRE,ERCOT;SPP
+TX,Kent,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Kent,17561,South Plains Electric Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Kerr,1175,"Bandera Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Kerr,3282,"Central Texas Elec Coop, Inc",Cooperative,,ERCOT
+TX,Kerr,28604,Kerrville Public Utility Board,Municipal,TRE,ERCOT
+TX,Kerr,14626,"Pedernales Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Kimble,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Kimble,3282,"Central Texas Elec Coop, Inc",Cooperative,,ERCOT
+TX,Kimble,14626,"Pedernales Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,King,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,King,17561,South Plains Electric Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,King,19159,"Tri-County Electric Coop, Inc (TX)",Cooperative,TRE,ERCOT
+TX,Kinney,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Kinney,12268,"Medina Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Kinney,14626,"Pedernales Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Kinney,16057,"Rio Grande Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Kleberg,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Kleberg,13830,Nueces Electric Cooperative,Cooperative,TRE,ERCOT
+TX,Knox,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Knox,19159,"Tri-County Electric Coop, Inc (TX)",Cooperative,TRE,ERCOT
+TX,La Salle,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,La Salle,10009,Karnes Electric Coop Inc,Cooperative,TRE,ERCOT
+TX,La Salle,12268,"Medina Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Lamar,6173,Fannin County Electric Coop,Cooperative,TRE,ERCOT
+TX,Lamar,10649,Lamar County Elec Coop Assn,Cooperative,TRE,ERCOT
+TX,Lamar,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Lamar,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Lamb,1169,Bailey County Elec Coop Assn,Cooperative,SPP,SPP
+TX,Lamb,10625,"Lamb County Electric Coop, Inc",Cooperative,SPP,
+TX,Lamb,17561,South Plains Electric Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Lamb,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Lampasas,10656,City of Lampasas - (TX),,,
+TX,Lampasas,7979,Hamilton County Elec Coop Assn,Cooperative,TRE,ERCOT
+TX,Lampasas,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Lampasas,14626,"Pedernales Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Lavaca,7958,City of Hallettsville - (TX),,,
+TX,Lavaca,13025,City of Moulton - (TX),,,
+TX,Lavaca,16765,City of Schulenburg - (TX),,,
+TX,Lavaca,17101,City of Shiner - (TX),,,
+TX,Lavaca,21108,City of Yoakum - (TX),,,
+TX,Lavaca,6183,"Fayette Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Lavaca,7752,Guadalupe Valley Elec Coop Inc,Cooperative,TRE,
+TX,Lavaca,9590,"Jackson Electric Coop, Inc - (TX)",Cooperative,TRE,
+TX,Lavaca,16638,"San Bernard Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Lee,1273,"Bartlett Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Lee,1892,"Bluebonnet Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Lee,7184,City of Giddings - (TX),,,
+TX,Lee,10969,City of Lexington - (TX),,,
+TX,Lee,6183,"Fayette Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Leon,55937,Entergy Texas Inc.,Investor Owned,SERC,MISO
+TX,Leon,8898,Houston County Elec Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Leon,16146,"Navasota Valley Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Leon,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Liberty,8901,CenterPoint Energy,Investor Owned,TRE,ERCOT
+TX,Liberty,10982,City of Liberty - (TX),,,
+TX,Liberty,55937,Entergy Texas Inc.,Investor Owned,SERC,MISO
+TX,Liberty,16613,Sam Houston Electric Coop Inc,Cooperative,SERC,
+TX,Limestone,55937,Entergy Texas Inc.,Investor Owned,SERC,MISO
+TX,Limestone,13332,"Navarro County Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Limestone,16146,"Navasota Valley Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Limestone,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Lipscomb,13757,North Plains Electric Coop Inc,Cooperative,SPP,SPP
+TX,Lipscomb,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Live Oak,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Live Oak,10009,Karnes Electric Coop Inc,Cooperative,TRE,ERCOT
+TX,Live Oak,13830,Nueces Electric Cooperative,Cooperative,TRE,ERCOT
+TX,Live Oak,16627,San Patricio Electric Coop Inc,Cooperative,TRE,ERCOT
+TX,Llano,3282,"Central Texas Elec Coop, Inc",Cooperative,,ERCOT
+TX,Llano,11103,City of Llano - (TX),,,
+TX,Llano,7979,Hamilton County Elec Coop Assn,Cooperative,TRE,ERCOT
+TX,Llano,14626,"Pedernales Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Loving,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Lubbock,11292,City of Lubbock - (TX),Municipal,TRE,ERCOT
+TX,Lubbock,11364,"Lyntegar Electric Coop, Inc",Cooperative,SPP,ERCOT;SPP
+TX,Lubbock,17561,South Plains Electric Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Lubbock,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Lynn,11364,"Lyntegar Electric Coop, Inc",Cooperative,SPP,ERCOT;SPP
+TX,Lynn,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Lynn,17561,South Plains Electric Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Lynn,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Madison,55937,Entergy Texas Inc.,Investor Owned,SERC,MISO
+TX,Madison,8898,Houston County Elec Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Madison,12452,Mid-South Electric Coop Assn,Cooperative,TRE,ERCOT;MISO
+TX,Madison,16146,"Navasota Valley Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Marion,17698,Southwestern Electric Power Co,Investor Owned,SPP,SPP
+TX,Marion,19579,Upshur Rural Elec Coop Corp,Cooperative,SPP,SPP
+TX,Martin,11364,"Lyntegar Electric Coop, Inc",Cooperative,SPP,ERCOT;SPP
+TX,Martin,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Mason,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Mason,3282,"Central Texas Elec Coop, Inc",Cooperative,,ERCOT
+TX,Mason,11793,City of Mason - (TX),,,
+TX,Mason,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Mason,14626,"Pedernales Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Matagorda,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Matagorda,8901,CenterPoint Energy,Investor Owned,TRE,ERCOT
+TX,Matagorda,9590,"Jackson Electric Coop, Inc - (TX)",Cooperative,TRE,
+TX,Matagorda,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Matagorda,20472,"Wharton County Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Maverick,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Maverick,16057,"Rio Grande Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,McCulloch,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,McCulloch,3282,"Central Texas Elec Coop, Inc",Cooperative,,ERCOT
+TX,McCulloch,2135,City of Brady - (TX),,,
+TX,McCulloch,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,McLennan,8620,"HILCO Electric Cooperative, Inc.",Cooperative,TRE,ERCOT
+TX,McLennan,55982,Heart of Texas Electric Coop,Cooperative,,ERCOT
+TX,McLennan,16146,"Navasota Valley Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,McLennan,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,McLennan,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,McMullen,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,McMullen,10009,Karnes Electric Coop Inc,Cooperative,TRE,ERCOT
+TX,McMullen,12268,"Medina Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,McMullen,13830,Nueces Electric Cooperative,Cooperative,TRE,ERCOT
+TX,McMullen,16627,San Patricio Electric Coop Inc,Cooperative,TRE,ERCOT
+TX,Medina,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Medina,1175,"Bandera Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Medina,3168,City of Castroville - (TX),,,
+TX,Medina,8801,City of Hondo - (TX),,,
+TX,Medina,16604,City of San Antonio - (TX),Municipal,TRE,
+TX,Medina,10009,Karnes Electric Coop Inc,Cooperative,TRE,ERCOT
+TX,Medina,12268,"Medina Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Menard,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Menard,3282,"Central Texas Elec Coop, Inc",Cooperative,,ERCOT
+TX,Menard,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Menard,14626,"Pedernales Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Menard,17693,"Southwest Texas Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Midland,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Midland,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Milam,1273,"Bartlett Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Milam,1892,"Bluebonnet Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Milam,55937,Entergy Texas Inc.,Investor Owned,SERC,MISO
+TX,Milam,55982,Heart of Texas Electric Coop,Cooperative,,ERCOT
+TX,Milam,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Mills,7368,City of Goldthwaite - (TX),,,
+TX,Mills,4295,Comanche County Elec Coop Assn,Cooperative,TRE,ERCOT
+TX,Mills,7979,Hamilton County Elec Coop Assn,Cooperative,TRE,ERCOT
+TX,Mills,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Mitchell,1591,"Big Country Electric Coop, Inc",Cooperative,TRE,ERCOT;SPP
+TX,Mitchell,4146,Concho Valley Elec Coop Inc,Cooperative,TRE,ERCOT
+TX,Mitchell,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Mitchell,27369,Taylor Electric Coop Inc - (TX),Cooperative,TRE,
+TX,Montague,2050,City of Bowie - (TX),,,
+TX,Montague,4262,Cooke County Elec Coop Assn,Cooperative,TRE,ERCOT
+TX,Montague,9422,J-A-C Electric Coop Inc,,,
+TX,Montague,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Montague,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Montague,20948,Wise Electric Coop Inc,Cooperative,TRE,
+TX,Montgomery,8901,CenterPoint Energy,Investor Owned,TRE,ERCOT
+TX,Montgomery,55937,Entergy Texas Inc.,Investor Owned,SERC,MISO
+TX,Montgomery,12452,Mid-South Electric Coop Assn,Cooperative,TRE,ERCOT;MISO
+TX,Montgomery,16613,Sam Houston Electric Coop Inc,Cooperative,SERC,
+TX,Montgomery,16638,"San Bernard Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Moore,16063,"Rita Blanca Electric Coop, Inc",Cooperative,SPP,SPP
+TX,Moore,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Morris,2049,"Bowie-Cass Electric Coop, Inc",Cooperative,SPP,SPP
+TX,Morris,17698,Southwestern Electric Power Co,Investor Owned,SPP,SPP
+TX,Morris,19579,Upshur Rural Elec Coop Corp,Cooperative,SPP,SPP
+TX,Motley,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Motley,11014,"Lighthouse Electric Coop, Inc",Cooperative,SPP,ERCOT;SPP
+TX,Motley,17561,South Plains Electric Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Motley,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Nacogdoches,3470,Cherokee County Elec Coop Assn - (TX),Cooperative,TRE,
+TX,Nacogdoches,4975,Deep East Texas Elec Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Nacogdoches,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Nacogdoches,16461,"Rusk County Electric Coop, Inc",Cooperative,SPP,SPP
+TX,Navarro,13332,"Navarro County Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Navarro,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Newton,13603,City of Newton - (TX),,,
+TX,Newton,4975,Deep East Texas Elec Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Newton,55937,Entergy Texas Inc.,Investor Owned,SERC,MISO
+TX,Newton,9668,"Jasper-Newton Elec Coop, Inc",Cooperative,MRO,MISO
+TX,Nolan,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Nolan,1591,"Big Country Electric Coop, Inc",Cooperative,TRE,ERCOT;SPP
+TX,Nolan,4146,Concho Valley Elec Coop Inc,Cooperative,TRE,ERCOT
+TX,Nolan,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Nolan,27369,Taylor Electric Coop Inc - (TX),Cooperative,TRE,
+TX,Nueces,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Nueces,16175,City of Robstown - (TX),,,
+TX,Nueces,13830,Nueces Electric Cooperative,Cooperative,TRE,ERCOT
+TX,Nueces,16627,San Patricio Electric Coop Inc,Cooperative,TRE,ERCOT
+TX,Ochiltree,13757,North Plains Electric Coop Inc,Cooperative,SPP,SPP
+TX,Ochiltree,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Oldham,4939,"Deaf Smith Electric Coop, Inc",Cooperative,SPP,SPP
+TX,Oldham,6198,"Farmers Electric Coop, Inc - (NM)",Cooperative,SPP,SPP
+TX,Oldham,16063,"Rita Blanca Electric Coop, Inc",Cooperative,SPP,SPP
+TX,Oldham,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Orange,55937,Entergy Texas Inc.,Investor Owned,SERC,MISO
+TX,Orange,9668,"Jasper-Newton Elec Coop, Inc",Cooperative,MRO,MISO
+TX,Palo Pinto,6611,Fort Belknap Electric Coop Inc,,,
+TX,Palo Pinto,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Palo Pinto,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Palo Pinto,19159,"Tri-County Electric Coop, Inc (TX)",Cooperative,TRE,ERCOT
+TX,Palo Pinto,19490,United Electric Coop Service Inc - (TX),Cooperative,TRE,ERCOT
+TX,Panola,4975,Deep East Texas Elec Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Panola,14424,"Panola-Harrison Elec Coop, Inc",Cooperative,SPP,SPP
+TX,Panola,16461,"Rusk County Electric Coop, Inc",Cooperative,SPP,SPP
+TX,Panola,17698,Southwestern Electric Power Co,Investor Owned,SPP,SPP
+TX,Parker,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Parker,19159,"Tri-County Electric Coop, Inc (TX)",Cooperative,TRE,ERCOT
+TX,Parker,20230,Weatherford Mun Utility System,Municipal,TRE,ERCOT
+TX,Parker,20948,Wise Electric Coop Inc,Cooperative,TRE,
+TX,Parmer,1169,Bailey County Elec Coop Assn,Cooperative,SPP,SPP
+TX,Parmer,4939,"Deaf Smith Electric Coop, Inc",Cooperative,SPP,SPP
+TX,Parmer,6198,"Farmers Electric Coop, Inc - (NM)",Cooperative,SPP,SPP
+TX,Parmer,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Pecos,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Pecos,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Pecos,16057,"Rio Grande Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Pecos,17693,"Southwest Texas Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Pecos,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Polk,11097,City of Livingston - (TX),,,
+TX,Polk,55937,Entergy Texas Inc.,Investor Owned,SERC,MISO
+TX,Polk,16613,Sam Houston Electric Coop Inc,Cooperative,SERC,
+TX,Potter,16063,"Rita Blanca Electric Coop, Inc",Cooperative,SPP,SPP
+TX,Potter,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Presidio,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Presidio,16057,"Rio Grande Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Rains,6182,"Farmers Electric Coop, Inc - (TX)",Cooperative,TRE,ERCOT
+TX,Rains,17698,Southwestern Electric Power Co,Investor Owned,SPP,SPP
+TX,Rains,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Rains,20927,"Wood County Electric Coop, Inc",Cooperative,SPP,
+TX,Randall,7561,"Greenbelt Electric Coop, Inc",Cooperative,SPP,
+TX,Randall,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Randall,18199,"Swisher Electric Coop, Inc",,,
+TX,Reagan,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Reagan,4146,Concho Valley Elec Coop Inc,Cooperative,TRE,ERCOT
+TX,Reagan,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Reagan,17693,"Southwest Texas Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Real,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Real,1175,"Bandera Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Real,3282,"Central Texas Elec Coop, Inc",Cooperative,,ERCOT
+TX,Real,12268,"Medina Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Real,14626,"Pedernales Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Red River,2049,"Bowie-Cass Electric Coop, Inc",Cooperative,SPP,SPP
+TX,Red River,10649,Lamar County Elec Coop Assn,Cooperative,TRE,ERCOT
+TX,Red River,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Red River,17698,Southwestern Electric Power Co,Investor Owned,SPP,SPP
+TX,Red River,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Reeves,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Reeves,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Reeves,16057,"Rio Grande Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Reeves,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Refugio,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Refugio,16627,San Patricio Electric Coop Inc,Cooperative,TRE,ERCOT
+TX,Refugio,19806,"Victoria Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Roberts,7561,"Greenbelt Electric Coop, Inc",Cooperative,SPP,
+TX,Roberts,13757,North Plains Electric Coop Inc,Cooperative,SPP,SPP
+TX,Roberts,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Robertson,2442,City of Bryan - (TX),Municipal,TRE,ERCOT
+TX,Robertson,8359,City of Hearne - (TX),,,
+TX,Robertson,55937,Entergy Texas Inc.,Investor Owned,SERC,MISO
+TX,Robertson,16146,"Navasota Valley Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Robertson,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Rockwall,6182,"Farmers Electric Coop, Inc - (TX)",Cooperative,TRE,ERCOT
+TX,Rockwall,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Runnels,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Runnels,3938,"Coleman County Elec Coop, Inc",,,
+TX,Runnels,4146,Concho Valley Elec Coop Inc,Cooperative,TRE,ERCOT
+TX,Runnels,27369,Taylor Electric Coop Inc - (TX),Cooperative,TRE,
+TX,Rusk,3470,Cherokee County Elec Coop Assn - (TX),Cooperative,TRE,
+TX,Rusk,4975,Deep East Texas Elec Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Rusk,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Rusk,16461,"Rusk County Electric Coop, Inc",Cooperative,SPP,SPP
+TX,Rusk,17698,Southwestern Electric Power Co,Investor Owned,SPP,SPP
+TX,Rusk,19579,Upshur Rural Elec Coop Corp,Cooperative,SPP,SPP
+TX,Sabine,8432,City of Hemphill - (TX),,,
+TX,Sabine,4975,Deep East Texas Elec Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Sabine,9668,"Jasper-Newton Elec Coop, Inc",Cooperative,MRO,MISO
+TX,San Augustine,16605,City of San Augustine - (TX),,,
+TX,San Augustine,4975,Deep East Texas Elec Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,San Jacinto,55937,Entergy Texas Inc.,Investor Owned,SERC,MISO
+TX,San Jacinto,16613,Sam Houston Electric Coop Inc,Cooperative,SERC,
+TX,San Patricio,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,San Patricio,16627,San Patricio Electric Coop Inc,Cooperative,TRE,ERCOT
+TX,San Saba,3282,"Central Texas Elec Coop, Inc",Cooperative,,ERCOT
+TX,San Saba,28981,City of San Saba - (TX),,,
+TX,San Saba,7979,Hamilton County Elec Coop Assn,Cooperative,TRE,ERCOT
+TX,San Saba,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,San Saba,14626,"Pedernales Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Schleicher,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Schleicher,14626,"Pedernales Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Schleicher,17693,"Southwest Texas Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Scurry,1591,"Big Country Electric Coop, Inc",Cooperative,TRE,ERCOT;SPP
+TX,Scurry,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Shackelford,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Shackelford,1591,"Big Country Electric Coop, Inc",Cooperative,TRE,ERCOT;SPP
+TX,Shackelford,4295,Comanche County Elec Coop Assn,Cooperative,TRE,ERCOT
+TX,Shackelford,6611,Fort Belknap Electric Coop Inc,,,
+TX,Shackelford,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Shackelford,27369,Taylor Electric Coop Inc - (TX),Cooperative,TRE,
+TX,Shelby,18933,City of Timpson - (TX),,,
+TX,Shelby,4975,Deep East Texas Elec Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Shelby,16461,"Rusk County Electric Coop, Inc",Cooperative,SPP,SPP
+TX,Shelby,17698,Southwestern Electric Power Co,Investor Owned,SPP,SPP
+TX,Sherman,16063,"Rita Blanca Electric Coop, Inc",Cooperative,SPP,SPP
+TX,Sherman,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Sherman,19160,"Tri-County Electric Coop, Inc (OK)",Cooperative,SPP,SPP
+TX,Smith,3470,Cherokee County Elec Coop Assn - (TX),Cooperative,TRE,
+TX,Smith,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Smith,17698,Southwestern Electric Power Co,Investor Owned,SPP,SPP
+TX,Smith,19579,Upshur Rural Elec Coop Corp,Cooperative,SPP,SPP
+TX,Smith,20927,"Wood County Electric Coop, Inc",Cooperative,SPP,
+TX,Somervell,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Somervell,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Somervell,19490,United Electric Coop Service Inc - (TX),Cooperative,TRE,ERCOT
+TX,Starr,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Starr,11501,Magic Valley Electric Coop Inc,Cooperative,TRE,ERCOT
+TX,Starr,12268,"Medina Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Stephens,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Stephens,4295,Comanche County Elec Coop Assn,Cooperative,TRE,ERCOT
+TX,Stephens,6611,Fort Belknap Electric Coop Inc,,,
+TX,Stephens,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Stephens,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Stephens,19490,United Electric Coop Service Inc - (TX),Cooperative,TRE,ERCOT
+TX,Sterling,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Sterling,4146,Concho Valley Elec Coop Inc,Cooperative,TRE,ERCOT
+TX,Sterling,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Stonewall,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Stonewall,1591,"Big Country Electric Coop, Inc",Cooperative,TRE,ERCOT;SPP
+TX,Stonewall,17561,South Plains Electric Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Stonewall,19159,"Tri-County Electric Coop, Inc (TX)",Cooperative,TRE,ERCOT
+TX,Sutton,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Sutton,14626,"Pedernales Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Sutton,17693,"Southwest Texas Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Swisher,19264,City of Tulia,,,
+TX,Swisher,11014,"Lighthouse Electric Coop, Inc",Cooperative,SPP,ERCOT;SPP
+TX,Swisher,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Swisher,18199,"Swisher Electric Coop, Inc",,,
+TX,Tarrant,5078,"Denton County Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Tarrant,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Tarrant,19159,"Tri-County Electric Coop, Inc (TX)",Cooperative,TRE,ERCOT
+TX,Tarrant,19490,United Electric Coop Service Inc - (TX),Cooperative,TRE,ERCOT
+TX,Taylor,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Taylor,3938,"Coleman County Elec Coop, Inc",,,
+TX,Taylor,27369,Taylor Electric Coop Inc - (TX),Cooperative,TRE,
+TX,Terrell,16057,"Rio Grande Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Terrell,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Terry,2404,City of Brownfield - (TX),,,
+TX,Terry,11364,"Lyntegar Electric Coop, Inc",Cooperative,SPP,ERCOT;SPP
+TX,Terry,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Terry,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Throckmorton,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Throckmorton,1591,"Big Country Electric Coop, Inc",Cooperative,TRE,ERCOT;SPP
+TX,Throckmorton,6611,Fort Belknap Electric Coop Inc,,,
+TX,Throckmorton,19159,"Tri-County Electric Coop, Inc (TX)",Cooperative,TRE,ERCOT
+TX,Titus,2049,"Bowie-Cass Electric Coop, Inc",Cooperative,SPP,SPP
+TX,Titus,17698,Southwestern Electric Power Co,Investor Owned,SPP,SPP
+TX,Titus,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Titus,20927,"Wood County Electric Coop, Inc",Cooperative,SPP,
+TX,Tom Green,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Tom Green,3938,"Coleman County Elec Coop, Inc",,,
+TX,Tom Green,4146,Concho Valley Elec Coop Inc,Cooperative,TRE,ERCOT
+TX,Tom Green,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Tom Green,17693,"Southwest Texas Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Travis,1015,Austin Energy,Municipal,TRE,ERCOT
+TX,Travis,1892,"Bluebonnet Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Travis,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Travis,14626,"Pedernales Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Trinity,55937,Entergy Texas Inc.,Investor Owned,SERC,MISO
+TX,Trinity,8898,Houston County Elec Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Trinity,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Trinity,16613,Sam Houston Electric Coop Inc,Cooperative,SERC,
+TX,Tyler,55937,Entergy Texas Inc.,Investor Owned,SERC,MISO
+TX,Tyler,16613,Sam Houston Electric Coop Inc,Cooperative,SERC,
+TX,Upshur,17698,Southwestern Electric Power Co,Investor Owned,SPP,SPP
+TX,Upshur,19579,Upshur Rural Elec Coop Corp,Cooperative,SPP,SPP
+TX,Upshur,20927,"Wood County Electric Coop, Inc",Cooperative,SPP,
+TX,Upton,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Upton,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Upton,17693,"Southwest Texas Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Uvalde,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Uvalde,1175,"Bandera Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Uvalde,12268,"Medina Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Uvalde,16057,"Rio Grande Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Val Verde,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Val Verde,16057,"Rio Grande Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Val Verde,17693,"Southwest Texas Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Van Zandt,6182,"Farmers Electric Coop, Inc - (TX)",Cooperative,TRE,ERCOT
+TX,Van Zandt,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Van Zandt,17698,Southwestern Electric Power Co,Investor Owned,SPP,SPP
+TX,Van Zandt,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Van Zandt,18976,Trinity Valley Elec Coop Inc,Cooperative,,ERCOT
+TX,Van Zandt,20927,"Wood County Electric Coop, Inc",Cooperative,SPP,
+TX,Victoria,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Victoria,7752,Guadalupe Valley Elec Coop Inc,Cooperative,TRE,
+TX,Victoria,19806,"Victoria Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Walker,55937,Entergy Texas Inc.,Investor Owned,SERC,MISO
+TX,Walker,8898,Houston County Elec Coop Inc,Cooperative,TRE,ERCOT;SPP
+TX,Walker,12452,Mid-South Electric Coop Assn,Cooperative,TRE,ERCOT;MISO
+TX,Walker,16613,Sam Houston Electric Coop Inc,Cooperative,SERC,
+TX,Waller,8901,CenterPoint Energy,Investor Owned,TRE,ERCOT
+TX,Waller,8435,City of Hempstead - (TX),,,
+TX,Waller,55937,Entergy Texas Inc.,Investor Owned,SERC,MISO
+TX,Waller,12452,Mid-South Electric Coop Assn,Cooperative,TRE,ERCOT;MISO
+TX,Waller,16638,"San Bernard Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Ward,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Ward,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Washington,1892,"Bluebonnet Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Washington,2194,City of Brenham - (TX),Municipal,TRE,ERCOT
+TX,Washington,55937,Entergy Texas Inc.,Investor Owned,SERC,MISO
+TX,Washington,6183,"Fayette Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Webb,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Webb,12268,"Medina Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Webb,16057,"Rio Grande Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Wharton,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Wharton,8901,CenterPoint Energy,Investor Owned,TRE,ERCOT
+TX,Wharton,9590,"Jackson Electric Coop, Inc - (TX)",Cooperative,TRE,
+TX,Wharton,20472,"Wharton County Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Wheeler,7561,"Greenbelt Electric Coop, Inc",Cooperative,SPP,
+TX,Wheeler,13757,North Plains Electric Coop Inc,Cooperative,SPP,SPP
+TX,Wheeler,17698,Southwestern Electric Power Co,Investor Owned,SPP,SPP
+TX,Wheeler,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Wichita,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Wichita,5744,City of Electra - (TX),,,
+TX,Wichita,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Wichita,17681,Southwest Rural Elec Assn Inc,,,
+TX,Wilbarger,20404,AEP Texas North Company,Investor Owned,TRE,ERCOT
+TX,Wilbarger,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Wilbarger,17681,Southwest Rural Elec Assn Inc,,,
+TX,Wilbarger,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Wilbarger,19159,"Tri-County Electric Coop, Inc (TX)",Cooperative,TRE,ERCOT
+TX,Willacy,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Willacy,11501,Magic Valley Electric Coop Inc,Cooperative,TRE,ERCOT
+TX,Williamson,1015,Austin Energy,Municipal,TRE,ERCOT
+TX,Williamson,1273,"Bartlett Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Williamson,1892,"Bluebonnet Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Williamson,1287,City of Bartlett - (TX),,,
+TX,Williamson,7129,City of Georgetown - (TX),Municipal,,ERCOT
+TX,Williamson,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Williamson,14626,"Pedernales Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Wilson,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Wilson,6427,City of Floresville,Municipal,TRE,
+TX,Wilson,16604,City of San Antonio - (TX),Municipal,TRE,
+TX,Wilson,7752,Guadalupe Valley Elec Coop Inc,Cooperative,TRE,
+TX,Wilson,10009,Karnes Electric Coop Inc,Cooperative,TRE,ERCOT
+TX,Winkler,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Winkler,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Wise,2210,City of Bridgeport - (TX),,,
+TX,Wise,4262,Cooke County Elec Coop Assn,Cooperative,TRE,ERCOT
+TX,Wise,5078,"Denton County Elec Coop, Inc",Cooperative,TRE,ERCOT
+TX,Wise,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Wise,19159,"Tri-County Electric Coop, Inc (TX)",Cooperative,TRE,ERCOT
+TX,Wise,20948,Wise Electric Coop Inc,Cooperative,TRE,
+TX,Wood,6182,"Farmers Electric Coop, Inc - (TX)",Cooperative,TRE,ERCOT
+TX,Wood,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Wood,17698,Southwestern Electric Power Co,Investor Owned,SPP,SPP
+TX,Wood,19579,Upshur Rural Elec Coop Corp,Cooperative,SPP,SPP
+TX,Wood,20927,"Wood County Electric Coop, Inc",Cooperative,SPP,
+TX,Yoakum,10817,"Lea County Electric Coop, Inc - (NM)",Cooperative,SPP,SPP
+TX,Yoakum,11364,"Lyntegar Electric Coop, Inc",Cooperative,SPP,ERCOT;SPP
+TX,Yoakum,17718,Southwestern Public Service Co,Investor Owned,SPP,SPP
+TX,Young,6611,Fort Belknap Electric Coop Inc,,,
+TX,Young,44372,Oncor Electric Delivery Company LLC,Investor Owned,TRE,ERCOT
+TX,Young,40051,Texas-New Mexico Power Co,Investor Owned,TRE,ERCOT
+TX,Young,19490,United Electric Coop Service Inc - (TX),Cooperative,TRE,ERCOT
+TX,Zapata,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Zapata,12268,"Medina Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Zavala,3278,AEP Texas Central Company,Investor Owned,TRE,ERCOT
+TX,Zavala,12268,"Medina Electric Coop, Inc",Cooperative,TRE,ERCOT
+TX,Zavala,16057,"Rio Grande Electric Coop, Inc",Cooperative,TRE,ERCOT
