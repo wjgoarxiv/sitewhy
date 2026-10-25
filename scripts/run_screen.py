@@ -6,26 +6,7 @@ Usage: uv run python scripts/run_screen.py "<address>" <mw> [--permits-submitted
 import argparse
 import json
 
-from app.config import load_settings
-from app.data import DuckDbHarness, FallbackHarness, HarnessError, ZetarisHarness
-from app.evidence import EvidenceFetcher
-from app.geo import Resolver
-from app.llm import ModelRouter
-from app.orchestrator import Orchestrator
-from app.seed import register_seed
-
-
-def build(settings=None) -> Orchestrator:
-    settings = settings or load_settings()
-    duck = DuckDbHarness()
-    register_seed(duck)
-    zetaris = ZetarisHarness(settings)
-    harness = FallbackHarness(zetaris, duck)
-    try:
-        register_seed(zetaris)
-    except (HarnessError, OSError) as exc:
-        harness.trace.append({"backend": "zetaris", "status": "BLOCKED", "error": str(exc)[:200]})
-    return Orchestrator(Resolver(), harness, ModelRouter(settings), EvidenceFetcher())
+from app.factory import build_orchestrator
 
 
 def main() -> None:
@@ -35,7 +16,7 @@ def main() -> None:
     p.add_argument("--permits-submitted", choices=["yes", "no"])
     a = p.parse_args()
     permits = None if a.permits_submitted is None else a.permits_submitted == "yes"
-    r = build().run(a.address, a.mw, permits_submitted=permits)
+    r = build_orchestrator().run(a.address, a.mw, permits_submitted=permits)
     print(f"verdict: {r['verdict']}\nwhy: {r['why']}")
     for f in r["findings"]:
         print(f"  [{f['grade']}] {f['rule_id']}: applies={f['applies']} - {f['reason']}")

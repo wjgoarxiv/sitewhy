@@ -52,6 +52,9 @@ def moratorium_applies(project: Project, m: dict) -> dict:
         return _result("no", f"not yet in effect on {project.as_of}", **window)
     if end and project.as_of >= end:
         return _result("no", f"expired on {end}", **window)
+    if m.get("scope") not in {"countywide", "unincorporated"}:
+        return _result("unknown", "geographic scope (countywide or unincorporated) not established",
+                       **window)  # fmt: skip
     if m.get("scope") == "unincorporated":
         if project.incorporated is None:
             return _result("unknown", "applies only to unincorporated areas; site status unknown",

@@ -71,19 +71,20 @@ def test_trace_records_answering_model_receipt_and_role(tmp_path):
     assert entry["cached"] is False and entry["latency_ms"] >= 0
 
 
-def test_cache_hit_skips_network(tmp_path):
+def test_live_mode_always_calls_network_and_records_for_replay(tmp_path):
     calls = []
 
     def handler(request):
         calls.append(1)
-        return reply(LIGHTNING, "same")
+        return reply(LIGHTNING, f"answer {len(calls)}")
 
     router = make_router(handler, tmp_path)
     msgs = [{"role": "user", "content": "q"}]
-    router.generate("extract", msgs)
-    second = router.generate("extract", msgs)
-    assert len(calls) == 1 and second.cached and second.text == "same"
-    assert router.trace[-1]["cached"] is True
+    assert router.generate("extract", msgs).text == "answer 1"
+    assert router.generate("extract", msgs).text == "answer 2"
+    assert len(calls) == 2 and router.trace[-1]["cached"] is False
+    replay = make_router(handler, tmp_path, settings=Settings(sample_mode=True))
+    assert replay.generate("extract", msgs).cached is True and len(calls) == 2
 
 
 def test_retries_on_429_then_succeeds(tmp_path):

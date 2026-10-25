@@ -91,3 +91,8 @@ def test_title_v_major_source_from_emergency_generator_pte():
     small = title_v_major_source(Project(mw=10))
     assert small["applies"] == "no"
     assert title_v_major_source(Project(mw=None))["applies"] == "unknown"
+
+
+def test_missing_scope_is_unknown_not_assumed_countywide():
+    m = {"effective": "2026-06-30", "duration_days": 365}
+    assert moratorium_applies(Project(as_of=date(2026, 10, 25)), m)["applies"] == "unknown"

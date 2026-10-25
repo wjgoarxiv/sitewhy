@@ -258,3 +258,21 @@ def test_two_primary_sources_that_disagree_create_a_conflict(orchestrator_factor
     report = orchestrator_factory(router).run("addr", mw=300)
     conflict = [e for e in report["events"] if e["action"] == "conflict"]
     assert any("other_primary" in e["detail"] for e in conflict)
+
+
+def test_quote_attributed_to_wrong_source_is_verified_against_the_rule_sources(
+    orchestrator_factory,
+):
+    misattributed = [{**GOOD_FACTS[0], "url": PDF_URL}]
+    router = ScriptedRouter(
+        planner=[PLAN],
+        county_investigator=[facts_reply(misattributed + GOOD_FACTS[1:])],
+        adjudicator=[DRAFT_NO_GO],
+        critic=["[]"],
+    )
+    report = orchestrator_factory(router).run("addr", mw=300)
+    wash = next(f for f in report["findings"] if f["rule_id"] == "md-washington-county-2026")
+    eff = [
+        e for e in wash["evidence"] if e["field"] == "effective" and e["provenance"] == "primary"
+    ]
+    assert eff and eff[0]["verification"] == "verified"

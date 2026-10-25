@@ -75,6 +75,10 @@ def parse_fact(field: str, value):
     return str(value)
 
 
+def new_run_id() -> str:
+    return datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ") + "-" + uuid.uuid4().hex[:6]
+
+
 class Orchestrator:
     def __init__(
         self,
@@ -113,7 +117,11 @@ class Orchestrator:
         }
 
     def _event(self, round_: int, role: str, action: str, detail) -> None:
-        self.events.append({"round": round_, "role": role, "action": action, "detail": detail})
+        event = {"round": round_, "role": role, "action": action, "detail": detail,
+                 "at": datetime.now(UTC).isoformat()}  # fmt: skip
+        self.events.append(event)
+        if self.on_event:
+            self.on_event(event)
 
     # -- investigation ---------------------------------------------------
 
@@ -153,6 +161,14 @@ class Orchestrator:
             failed = []
             for f in facts:
                 check = self.fetcher.verify(f["quote"], f["url"])
+                # Models often mislabel which source a sentence came from; try the rule's
+                # other sources, still verbatim, and record the one that matched.
+                for other in (s["url"] for s in sources if s["url"] != f["url"]):
+                    if check["status"] == "verified":
+                        break
+                    alt = self.fetcher.verify(f["quote"], other)
+                    if alt["status"] == "verified":
+                        check, f = alt, {**f, "url": other}
                 self._record_fact(rule, f, check, round_)
                 if check["status"] != "verified":
                     failed.append(f["quote"][:120])
@@ -252,6 +268,7 @@ class Orchestrator:
                             "quote": c["attrs"]["quote"],
                             "verification": c["attrs"]["verification"],
                             "provenance": c["attrs"]["provenance"],
+                            "url": self.world.evidence_path(c["id"])[1]["attrs"].get("url"),
                         }
                         for c in claims
                     ],
@@ -298,7 +315,7 @@ class Orchestrator:
             verdict = "needs_confirmation"
             notes.append("no-go without a verified fatal rule")
         blocking = {o["rule_id"] for o in open_objections}
-        if any(f["rule_id"] in blocking and f["grade"] in {"fatal", "major"} for f in findings):
+        if any(f["rule_id"] in blocking and f["grade"] == "fatal" for f in findings):
             verdict = "needs_confirmation"
             notes.append("unresolved critic objections on decisive rules")
         if any(f["applies"] == "unknown" and f["layer"] in {"county", "city"} for f in findings):
@@ -307,8 +324,16 @@ class Orchestrator:
 
     # -- main loop -------------------------------------------------------
 
-    def run(self, address: str, mw: float, permits_submitted: bool | None = None) -> dict:
-        run_id = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ") + "-" + uuid.uuid4().hex[:6]
+    def run(
+        self,
+        address: str,
+        mw: float,
+        permits_submitted: bool | None = None,
+        run_id: str | None = None,
+        on_event=None,
+    ) -> dict:
+        run_id = run_id or new_run_id()
+        self.on_event = on_event
         run_dir = self.runs_dir / run_id
         self.world = WorldModel(log_path=run_dir / "worldmodel.jsonl")
         self.events: list[dict] = []
@@ -368,17 +393,25 @@ class Orchestrator:
                 attrs={"url": ev["source"]},
                 source=sys_src,
             )
-            for field, raw in (
-                ("effective", row["date_enacted_iso"]),
-                ("duration_days", row["duration_days"]),
-            ):
+            seeds = [
+                ("effective", row["date_enacted_iso"], ev["quote"]),
+                ("duration_days", row["duration_days"], ev["quote"]),
+            ]
+            scope_text = next(
+                (t for t in (ev["summary"], ev["current_status"], ev["quote"])
+                 if t and "unincorporated" in t.lower()),
+                None,
+            )  # fmt: skip
+            if scope_text:
+                seeds.append(("scope", "unincorporated", scope_text))
+            for field, raw, quote in seeds:
                 value = parse_fact(field, raw) if raw else None
                 if value is None:
                     continue
                 claim = self.world.add_claim(
                     layer=ev["layer"],
                     text=f"{field} = {value}",
-                    quote=ev["quote"],
+                    quote=quote,
                     rule_id=entity,
                     source_id=doc,
                     source=sys_src,

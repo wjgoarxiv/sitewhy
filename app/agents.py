@@ -96,7 +96,8 @@ class CountyInvestigator:
         )
         goal = (
             f"Rule: {rule['title']}.\nQuestions:\n- " + "\n- ".join(questions) + "\n\n"
-            "Chunk 1: read the sources and note the relevant sentences. Final chunk: output a "
+            "If the sources are short enough, answer in this first reply. Otherwise note the "
+            "relevant sentences first and answer in a later chunk. The answer is a "
             "JSON list of facts, one per answered question: "
             '[{"field": "effective|duration_days|scope|exempt_if_permits_submitted|other", '
             '"value": "<ISO date, number of days, countywide|unincorporated, true|false, '
@@ -129,7 +130,10 @@ class Adjudicator:
         "You are the adjudicator. The applicability results were computed by code; do not "
         "change them. Grade each rule (fatal: blocks the project now; major: costly or slow; "
         "minor; info: does not apply) and write a cross-layer why-chain that links power, "
-        "permits, air and local politics to one verdict. Reply with JSON: "
+        "permits, air and local politics to one verdict. Every sentence must rest on a "
+        "finding's quote, reason or computed values; never add timelines, costs, motives or "
+        "exemptions that the findings do not state. Name assumptions as assumptions. "
+        "Reply with JSON: "
         '{"verdict": "go|conditional|no-go|needs_confirmation", "why": "<3-5 sentences>", '
         '"grades": {"<rule_id>": "fatal|major|minor|info"}}.'
     )
@@ -152,7 +156,9 @@ class Critic:
         "evidence shows a real problem: a why-chain link with no verified quote "
         "(unsupported_link), an exemption the draft ignored (missed_exemption), two sources "
         "that disagree (source_conflict), a threshold applied wrongly (threshold_misread), or a "
-        "project fact the decision depends on that nobody knows (unknown_input). Reply with a "
+        "project fact the decision depends on that nobody knows (unknown_input). Assumptions "
+        "already listed in a finding's computed values are disclosed by design; object to one "
+        "only if a plausible alternative would flip that finding. Reply with a "
         'JSON list: [{"rule_id": "...", "type": "<one of the types>", "text": "<objection>", '
         '"question": "<what would resolve it>"}]. Reply [] if the draft holds.'
     )

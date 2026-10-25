@@ -157,11 +157,13 @@ class ModelRouter:
         }
         cache_file = self._cache_path(payload)
         escalated_from = None
-        if cache_file.is_file():
+        if self.settings.sample_mode:
+            # The cache is a replay store: read only in SAMPLE_MODE, so live retries
+            # always get a fresh completion instead of the one that just failed.
+            if not cache_file.is_file():
+                raise SampleMissError(f"no cached response for step {step!r} in SAMPLE_MODE")
             start = self.clock()
             data, cached = json.loads(cache_file.read_text()), True
-        elif self.settings.sample_mode:
-            raise SampleMissError(f"no cached response for step {step!r} in SAMPLE_MODE")
         elif not self.settings.nightshift_configured:
             raise NotConfiguredError("Nightshift is not configured (token missing)")
         else:
