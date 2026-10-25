@@ -32,7 +32,7 @@ Deadline: **10/28 08:45 KST** (hard). Internal submit target: **10/27 22:00 KST*
 ### M2. Agent core (10/26)
 - [ ] Todo 6 quote verifier
 - [ ] Todo 8 applicability engine
-- [ ] Todo 16 World Model engine (shared evidence graph) + conformance test
+- [x] Todo 16 World Model engine (shared evidence graph) + conformance test
 - [ ] Todo 10 county investigator on the Markovian loop + test
 - [ ] Todo 11 adjudicator (why-chain)
 - [ ] Todo 17 orchestrator: verifier retries, critic loop (≤2 rounds), escalation

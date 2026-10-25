@@ -259,7 +259,7 @@ Loop: plan → investigate → verify (with retries) → adjudicate → critique
   QA scenarios: happy: follow README in clean dir; failure: missing key → troubleshooting section covers it. Evidence .litclaude/evidence/dc-site-screener/task-15.md
   Commit: Y | docs: readme, deck, demo
 
-- [ ] 16. Meterless World Model engine (Python port) as the shared evidence graph
+- [x] 16. Meterless World Model engine (Python port) as the shared evidence graph
   What to do / Must NOT do: implement the World Model spec (github.com/Meterless/Meterless engines/world-model AGENTS.md: entity, context, relationship records; content-derived stable hash IDs; idempotent append-only ingest log; versioned schema; derived views rebuildable from the log) in `app/worldmodel/` over SQLite or DuckDB. Domain mapping: entities = jurisdiction, project, rule, source_document, claim; contexts = screening run, layer; relationships = applies_to, cites, supports, contradicts, supersedes, exempts, objection_on. Every write carries provenance (agent role, model, round, source URL, fetched_at). JSONL event log per run in `runs/<run_id>/worldmodel.jsonl` (submission evidence). Read surface: `claims_for(layer)`, `conflicts()`, `evidence_path(node_id)`, `open_objections()`. Must NOT vendor the TypeScript reference into the repo; credit the spec (Apache-2.0) in README.
   Parallelization: Wave 2 | Blocked by: 1 | Blocks: 9,10,11,17
   References: https://github.com/Meterless/Meterless/tree/main/engines/world-model (README, AGENTS.md, docs/aggregate-shapes.md, reference/scripts/idempotency-check.ts for the core invariant); HackOS Meterless folder (AGENT ENGINES INDEX)
