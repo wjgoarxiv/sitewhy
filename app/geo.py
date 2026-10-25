@@ -22,6 +22,8 @@ CENSUS_PARAMS = {
     "layers": "Counties,States,Incorporated Places,County Subdivisions",
     "format": "json",
 }
+COORDS_URL = "https://geocoding.geo.census.gov/geocoder/geographies/coordinates"
+COORDS_PARAMS = {"benchmark": "Public_AR_Current", "vintage": "Current_Current", "format": "json"}
 UTILITIES_CSV = ROOT / "data/geo/eia861_county_utilities.csv"
 DEFAULT_CACHE_DIR = ROOT / "data/geo/cache"
 STATE_ABBR = {
@@ -119,15 +121,13 @@ class Resolver:
         cache.write_text(json.dumps(data))
         return data
 
-    def resolve(self, address: str) -> Jurisdiction:
-        matches = self._geocode(address).get("result", {}).get("addressMatches") or []
-        if not matches:
-            raise UnresolvedAddressError(
-                f"Could not match address {address!r} to a US location (Census Geocoder)."
-            )
-        m = matches[0]
-        geo = m["geographies"]
-        county = geo["Counties"][0]
+    def _jurisdiction(
+        self, geo: dict, matched_address: str, lat: float, lon: float
+    ) -> Jurisdiction:
+        counties = geo.get("Counties") or []
+        if not counties:
+            raise UnresolvedAddressError("No county found for this location (Census Geocoder).")
+        county = counties[0]
         state = STATE_ABBR.get(county["STATE"], county["STATE"])
         place = (geo.get("Incorporated Places") or [{}])[0].get("NAME")
         subdivision = (geo.get("County Subdivisions") or [{}])[0].get("NAME")
@@ -145,9 +145,9 @@ class Resolver:
         ]
         iso, candidates = iso_for(utilities)
         return Jurisdiction(
-            matched_address=m["matchedAddress"],
-            lat=m["coordinates"]["y"],
-            lon=m["coordinates"]["x"],
+            matched_address=matched_address,
+            lat=lat,
+            lon=lon,
             state=state,
             state_fips=county["STATE"],
             county_name=county["NAME"],
@@ -159,3 +159,40 @@ class Resolver:
             iso=iso,
             iso_candidates=candidates,
         )
+
+    def resolve(self, address: str) -> Jurisdiction:
+        matches = self._geocode(address).get("result", {}).get("addressMatches") or []
+        if not matches:
+            raise UnresolvedAddressError(
+                f"Could not match address {address!r} to a US location (Census Geocoder)."
+            )
+        m = matches[0]
+        return self._jurisdiction(
+            m["geographies"], m["matchedAddress"], m["coordinates"]["y"], m["coordinates"]["x"]
+        )
+
+    def resolve_point(self, lat: float, lon: float) -> Jurisdiction:
+        if not (18 <= lat <= 72 and -180 <= lon <= -60):
+            raise UnresolvedAddressError(
+                f"Coordinates ({lat}, {lon}) are outside the US range "
+                "(lat 18..72, lon -180..-60)."
+            )
+        key = hashlib.sha256(f"point:{lat},{lon}".encode()).hexdigest()[:24]
+        cache = self.cache_dir / f"census-{key}.json"
+        if cache.is_file():
+            data = json.loads(cache.read_text())
+        else:
+            resp = self.client.get(COORDS_URL, params={**COORDS_PARAMS, "x": lon, "y": lat})
+            resp.raise_for_status()
+            data = resp.json()
+            self.cache_dir.mkdir(parents=True, exist_ok=True)
+            cache.write_text(json.dumps(data))
+        geo = data.get("result", {}).get("geographies") or {}
+        counties = geo.get("Counties") or []
+        if not counties:
+            raise UnresolvedAddressError(
+                f"Could not match coordinates ({lat}, {lon}) to a US county."
+            )
+        state = STATE_ABBR.get(counties[0]["STATE"], counties[0]["STATE"])
+        matched = f"{lat}, {lon} ({counties[0]['NAME']}, {state})"
+        return self._jurisdiction(geo, matched, lat, lon)

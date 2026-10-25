@@ -360,11 +360,13 @@ class Orchestrator:
 
     def run(
         self,
-        address: str,
-        mw: float,
+        address: str | None = None,
+        mw: float = 0,
         permits_submitted: bool | None = None,
         run_id: str | None = None,
         on_event=None,
+        lat: float | None = None,
+        lon: float | None = None,
     ) -> dict:
         run_id = run_id or new_run_id()
         self.on_event = on_event
@@ -373,7 +375,12 @@ class Orchestrator:
         self.events: list[dict] = []
         model_start, data_start = len(self.router.trace), len(self.harness.trace)
 
-        j = self.resolver.resolve(address)
+        if address is not None:
+            j = self.resolver.resolve(address)
+        elif lat is not None and lon is not None:
+            j = self.resolver.resolve_point(lat, lon)
+        else:
+            raise ValueError("run needs an address or lat+lon")
         project = Project(
             mw=mw,
             as_of=self.as_of or date.today(),

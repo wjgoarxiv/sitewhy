@@ -89,3 +89,29 @@ def test_resolve_endpoint_returns_422_for_bad_address(resolver):
     assert ok.status_code == 200 and ok.json()["iso"] == "PJM"
     bad = client.get("/resolve", params={"address": "asdkjh qwe zzz"})
     assert bad.status_code == 422 and "address" in bad.json()["detail"].lower()
+
+
+def point_resolver(tmp_path):
+    def handler(request):
+        return httpx.Response(
+            200, json=json.loads((FIX / "tucson-point.json").read_text())
+        )
+
+    return Resolver(
+        client=httpx.Client(transport=httpx.MockTransport(handler)), cache_dir=tmp_path
+    )
+
+
+def test_resolve_point_tucson_gives_pima_and_city(tmp_path):
+    j = point_resolver(tmp_path).resolve_point(32.223, -110.975)
+    assert (j.state, j.county_fips, j.county_name) == ("AZ", "04019", "Pima County")
+    assert j.place == "Tucson city"
+    assert j.matched_address == "32.223, -110.975 (Pima County, AZ)"
+
+
+def test_resolve_point_rejects_out_of_range_values(tmp_path):
+    r = point_resolver(tmp_path)
+    with pytest.raises(UnresolvedAddressError):
+        r.resolve_point(10.0, -110.975)
+    with pytest.raises(UnresolvedAddressError):
+        r.resolve_point(32.223, -10.0)

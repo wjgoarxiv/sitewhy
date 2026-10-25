@@ -1,4 +1,5 @@
 import json
+import re
 import threading
 from collections.abc import Callable
 from functools import cache
@@ -6,18 +7,19 @@ from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 from app.config import Settings, load_settings
 from app.explain import enrich
 from app.geo import Resolver, UnresolvedAddressError
-from app.orchestrator import Orchestrator, new_run_id
+from app.orchestrator import RUNS_DIR, Orchestrator, new_run_id
 from app.screen import Screener
 from app.sitecontext import SiteContext
 
 ROOT = Path(__file__).resolve().parent.parent
 SAMPLES_DIR = ROOT / "samples"
 WEB_DIR = ROOT / "web"
+RUN_ID_RE = re.compile(r"^[0-9TZ]+-[0-9a-f]{6}$")
 
 
 class ScreenRequest(BaseModel):
@@ -25,8 +27,23 @@ class ScreenRequest(BaseModel):
     mw: float = Field(gt=0, le=10000)
 
 
-class RunRequest(ScreenRequest):
+class RunRequest(BaseModel):
+    address: str | None = None
+    lat: float | None = None
+    lon: float | None = None
+    mw: float = Field(gt=0, le=10000)
     permits_submitted: bool | None = None
+
+    @model_validator(mode="after")
+    def exactly_one_target(self):
+        has_address = bool(self.address and self.address.strip())
+        has_lat = self.lat is not None
+        has_lon = self.lon is not None
+        if has_lat != has_lon or has_address == (has_lat and has_lon):
+            raise ValueError("provide either address or lat+lon")
+        if has_lat and not (18 <= self.lat <= 72 and -180 <= self.lon <= -60):
+            raise ValueError("lat/lon outside the US range (lat 18..72, lon -180..-60)")
+        return self
 
 
 def create_app(
@@ -35,12 +52,14 @@ def create_app(
     screener: Screener | None = None,
     orchestrator_factory: Callable[[], Orchestrator] | None = None,
     samples_dir: Path = SAMPLES_DIR,
+    runs_dir: Path | None = None,
 ) -> FastAPI:
     settings = settings or load_settings()
     resolver = resolver or Resolver()
     app = FastAPI(title="SiteWhy")
     runs: dict[str, dict] = {}
     run_lock = threading.Lock()
+    runs_dir = Path(runs_dir) if runs_dir is not None else RUNS_DIR
 
     @cache
     def get_screener() -> Screener:
@@ -92,13 +111,24 @@ def create_app(
         state = runs[run_id]
         with run_lock:
             try:
-                state["report"] = get_orchestrator().run(
-                    req.address,
-                    req.mw,
-                    permits_submitted=req.permits_submitted,
-                    run_id=run_id,
-                    on_event=state["events"].append,
-                )
+                if req.address is not None:
+                    state["report"] = get_orchestrator().run(
+                        req.address,
+                        req.mw,
+                        permits_submitted=req.permits_submitted,
+                        run_id=run_id,
+                        on_event=state["events"].append,
+                    )
+                else:
+                    state["report"] = get_orchestrator().run(
+                        None,
+                        req.mw,
+                        permits_submitted=req.permits_submitted,
+                        run_id=run_id,
+                        on_event=state["events"].append,
+                        lat=req.lat,
+                        lon=req.lon,
+                    )
                 state["status"] = "done"
             except UnresolvedAddressError as exc:
                 state.update(status="error", error=str(exc))
@@ -116,9 +146,57 @@ def create_app(
 
     @app.get("/runs/{run_id}")
     def get_run(run_id: str) -> dict:
-        if run_id not in runs:
+        if not RUN_ID_RE.match(run_id):
             raise HTTPException(404, "unknown run")
-        return {"run_id": run_id, **runs[run_id]}
+        if run_id in runs:
+            return {"run_id": run_id, **runs[run_id]}
+        path = runs_dir / run_id / "report.json"
+        if not path.is_file():
+            raise HTTPException(404, "unknown run")
+        report = enrich(json.loads(path.read_text()))
+        return {
+            "run_id": run_id,
+            "status": "done",
+            "events": report.get("events", []),
+            "report": report,
+        }
+
+    def portfolio_row(entry_id: str, kind: str, report: dict) -> dict:
+        report = enrich(report)
+        jurisdiction = report.get("jurisdiction") or {}
+        events = report.get("events") or []
+        created = next((e["at"] for e in events if e.get("at")), report.get("run_id", ""))
+        return {
+            "id": entry_id,
+            "kind": kind,
+            "address": report["project"]["address"],
+            "mw": report["project"]["mw"],
+            "verdict": report["verdict"],
+            "headline": report["explanation"]["headline"],
+            "lat": jurisdiction.get("lat"),
+            "lon": jurisdiction.get("lon"),
+            "county": jurisdiction.get("county_name"),
+            "created": created,
+        }
+
+    @app.get("/portfolio")
+    def portfolio() -> list[dict]:
+        rows = []
+        for path in sorted(samples_dir.glob("*.json")):
+            rows.append(
+                portfolio_row(path.stem, "showcase", json.loads(path.read_text()))
+            )
+        if runs_dir.is_dir():
+            for child in sorted(
+                (p for p in runs_dir.iterdir() if (p / "report.json").is_file()),
+                reverse=True,
+            ):
+                rows.append(
+                    portfolio_row(
+                        child.name, "live", json.loads((child / "report.json").read_text())
+                    )
+                )
+        return rows
 
     @app.get("/samples")
     def list_samples() -> list[dict]:
