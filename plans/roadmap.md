@@ -33,9 +33,9 @@ Deadline: **10/28 08:45 KST** (hard). Internal submit target: **10/27 22:00 KST*
 - [x] Todo 6 quote verifier
 - [x] Todo 8 applicability engine
 - [x] Todo 16 World Model engine (shared evidence graph) + conformance test
-- [ ] Todo 10 county investigator on the Markovian loop + test
-- [ ] Todo 11 adjudicator (why-chain)
-- [ ] Todo 17 orchestrator: verifier retries, critic loop (≤2 rounds), escalation
+- [x] Todo 10 county investigator on the Markovian loop + test
+- [x] Todo 11 adjudicator (why-chain)
+- [x] Todo 17 orchestrator: verifier retries, critic loop (≤2 rounds), escalation
 - Done when: all 3 showcase sites run end-to-end through the loop, and the trace shows a critic objection that triggered a re-investigation
 
 ### M3. Product surface (10/27 until ~16:00)

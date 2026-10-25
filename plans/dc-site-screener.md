@@ -211,7 +211,7 @@ Loop: plan → investigate → verify (with retries) → adjudicate → critique
   QA scenarios: happy: build TX,MD,AZ and inspect rows; failure: search error → state `pending`. Evidence .litclaude/evidence/dc-site-screener/task-9.txt
   Commit: Y | feat(baseline): state baseline builder
 
-- [ ] 10. County/city investigator (seeded + live verification, Meterless Markovian loop)
+- [x] 10. County/city investigator (seeded + live verification, Meterless Markovian loop)
   What to do / Must NOT do: given resolved county/place: pull matching Moratorium Nation instruments (geo/jurisdiction match); then live: discover sources (7), fetch (6), and run the extraction as a Meterless Markovian chunked loop (Python port of engines/markovian spec: bounded chunks, compressed carryover state of open questions + found rules, `maxChunks` cap) so long minutes/ordinance PDFs never exceed a fixed context; Lightning extracts status/dates/exemptions/zoning requirements; every candidate claim goes to the World Model (16) for the verifier. Log projected-vs-actual token savings per run (Markovian's demo metric). Reconcile seed vs live (newer wins, conflicts written as `contradicts` edges). Accept targeted re-investigation tasks from the orchestrator (17). Timebox ≤3 min, stream progress. Must NOT present unverified rule as fact.
   Parallelization: Wave 3 | Blocked by: 2,4,5,6,7,16 | Blocks: 11,13,17
   References: 2026 moratoria in context.md (Boone/Grant IN, Washington/Worcester MD, Pima AZ, Knox TN); https://github.com/Meterless/Meterless/tree/main/engines/markovian (README savings model, AGENTS.md)
@@ -219,7 +219,7 @@ Loop: plan → investigate → verify (with retries) → adjudicate → critique
   QA scenarios: happy: Washington County MD; failure: county with nothing → "no county-specific DC rules found (searched N sources, seed: 0)". Evidence .litclaude/evidence/dc-site-screener/task-10.txt
   Commit: Y | feat(county): seeded live investigator
 
-- [ ] 11. Adjudicator: verdict synthesizer (cross-layer why-chain)
+- [x] 11. Adjudicator: verdict synthesizer (cross-layer why-chain)
   What to do / Must NOT do: the adjudicator role in the agent loop (17); reads verified claims from the World Model. Inputs: jurisdiction, project facts, rules from all layers (federal/ISO/state via harness join, county), applicability results (8). Super/Ultra writes pydantic-validated JSON {layers[{layer, rules[{id, grade, applies, why, citation{quote,url,as_of,status}}]}], why_chain (ordered narrative linking power/permits/water/local), conflicts[], decisive_layer, overall go|conditional|no_go, needs_confirmation[]}. Every why_chain link cites World Model node IDs so the critic can check it. Re-prompt on schema failure. Must NOT grade fatal unless verified AND applies=yes.
   Parallelization: Wave 3 | Blocked by: 2,3,4,8,9,10,16 | Blocks: 17
   References: spec output definition; competition gap list in draft
@@ -267,7 +267,7 @@ Loop: plan → investigate → verify (with retries) → adjudicate → critique
   QA scenarios: happy: ingest Washington County MD fixture and print the evidence path for the moratorium rule; failure: write without provenance → rejected with typed error. Evidence .litclaude/evidence/dc-site-screener/task-16.txt
   Commit: Y | feat(worldmodel): meterless world model engine
 
-- [ ] 17. Agent orchestrator with verifier retries, critic loop, and escalation
+- [x] 17. Agent orchestrator with verifier retries, critic loop, and escalation
   What to do / Must NOT do: `app/agents/` implementing the roles and loop in "Agent architecture": planner → layer investigators (federal+ISO, state, county from todo 10) → evidence verifier (todo 6 + Lightning `verify_support`, up to 2 retries per claim with a different source) → adjudicator (todo 11, applicability via todo 8) → critic (3.5 Super with a separate red-team prompt; 3 Ultra only as fallback) returning typed objections {kind: unsupported_link|missed_exemption|unresolved_conflict|threshold_misread, node_ids, ask}. Objections become `objection_on` edges in the World Model; planner issues only targeted tasks; max 2 revision rounds, then each open objection escalates to `needs_confirmation`. Budget guard: 5-minute wall clock and cloud RPM; degrade to local-only roles with a visible badge. Every step emits an SSE event {role, round, action, model, tokens, latency}. Must NOT hardcode per-site paths or outcomes (judges discount hardcoded demo paths); must NOT skip the critic in live runs.
   Parallelization: Wave 3b | Blocked by: 2,6,8,10,11,16 | Blocks: 12,13,14
   References: HackOS "Hackathon Overview" §4 (weak vs strong agent systems) and §14 (what judges prioritise); "Agent architecture" in this plan
