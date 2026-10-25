@@ -248,7 +248,7 @@ class WorldModel:
     ) -> str:
         claim_id = self.upsert_entity(
             type="claim",
-            name=f"{rule_id}|{source_id}|{quote}",
+            name=f"{rule_id}|{source_id}|{quote}|{text}",
             attrs={"layer": layer, "text": text, "quote": quote, **(attrs or {})},
             source=source,
         )

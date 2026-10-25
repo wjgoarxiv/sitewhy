@@ -195,3 +195,17 @@ def test_lightning_failure_escalates_to_ultra_and_is_traced(tmp_path):
     out = router.generate("extract", [{"role": "user", "content": "q"}])
     assert out.text == "ok" and out.model == ULTRA
     assert router.trace[-1]["escalated_from"] == LIGHTNING
+
+
+def test_thinking_only_for_judgment_steps(tmp_path):
+    seen = []
+
+    def handler(request):
+        body = json.loads(request.content)
+        seen.append((body["chat_template_kwargs"]["enable_thinking"], body["max_tokens"]))
+        return reply(body["model"], "ok")
+
+    router = make_router(handler, tmp_path)
+    router.generate("extract", [{"role": "user", "content": "a"}])
+    router.generate("critique", [{"role": "user", "content": "b"}])
+    assert seen == [(False, 4096), (True, 8192)]

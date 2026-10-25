@@ -29,6 +29,11 @@ STEP_MODELS = {
     "critique": ULTRA,
 }
 
+# Reasoning stays on only where judgment matters; elsewhere it costs time and,
+# on Lightning, sometimes leaves the completion empty.
+THINKING_STEPS = {"synthesize", "critique"}
+THINKING_MAX_TOKENS = 8192
+
 APP_ID = "sitewhy"
 RETRYABLE = {429, 500, 502, 503, 504}
 MAX_ATTEMPTS = 3
@@ -142,11 +147,13 @@ class ModelRouter:
     ) -> Completion:
         if step not in STEP_MODELS:
             raise ValueError(f"unknown step {step!r}; expected one of {sorted(STEP_MODELS)}")
+        thinking = step in THINKING_STEPS
         payload = {
             "model": STEP_MODELS[step],
             "messages": messages,
-            "max_tokens": max_tokens,
+            "max_tokens": max(max_tokens, THINKING_MAX_TOKENS) if thinking else max_tokens,
             "temperature": temperature,
+            "chat_template_kwargs": {"enable_thinking": thinking},
         }
         cache_file = self._cache_path(payload)
         escalated_from = None

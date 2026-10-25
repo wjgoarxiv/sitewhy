@@ -24,3 +24,6 @@ logs/
 
 # fetched source documents (re-fetchable cache)
 data/sources/
+
+# per-run traces (selected runs are copied to samples/)
+runs/
