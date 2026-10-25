@@ -107,7 +107,7 @@ def test_provider_error_is_not_retried(tmp_path):
 
     router = make_router(handler, tmp_path)
     with pytest.raises(ProviderError):
-        router.generate("extract", [{"role": "user", "content": "q"}])
+        router.generate("plan", [{"role": "user", "content": "q"}])
     assert len(calls) == 1
 
 
@@ -182,3 +182,16 @@ def test_live_nightshift_both_models(tmp_path):
         assert "OK" in out.text
     assert {e["model"] for e in router.trace} == {LIGHTNING, ULTRA}
     assert all(e["receipt_id"] for e in router.trace)
+
+
+def test_lightning_failure_escalates_to_ultra_and_is_traced(tmp_path):
+    def handler(request):
+        model = json.loads(request.content)["model"]
+        if model == LIGHTNING:
+            return httpx.Response(502, json={"error": {"message": "empty_response"}})
+        return reply(ULTRA, "x</think>ok")
+
+    router = make_router(handler, tmp_path)
+    out = router.generate("extract", [{"role": "user", "content": "q"}])
+    assert out.text == "ok" and out.model == ULTRA
+    assert router.trace[-1]["escalated_from"] == LIGHTNING

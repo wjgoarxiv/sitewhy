@@ -137,7 +137,7 @@ class ModelRouter:
         step: str,
         messages: list[dict],
         role: str | None = None,
-        max_tokens: int = 2048,
+        max_tokens: int = 4096,
         temperature: float = 0.2,
     ) -> Completion:
         if step not in STEP_MODELS:
@@ -149,6 +149,7 @@ class ModelRouter:
             "temperature": temperature,
         }
         cache_file = self._cache_path(payload)
+        escalated_from = None
         if cache_file.is_file():
             start = self.clock()
             data, cached = json.loads(cache_file.read_text()), True
@@ -157,7 +158,16 @@ class ModelRouter:
         elif not self.settings.nightshift_configured:
             raise NotConfiguredError("Nightshift is not configured (token missing)")
         else:
-            data, cached = self._post(payload), False
+            try:
+                data = self._post(payload)
+            except ProviderError:
+                if payload["model"] != LIGHTNING:
+                    raise
+                # Lightning intermittently returns an empty completion; escalate once.
+                payload = {**payload, "model": ULTRA}
+                data = self._post(payload)
+                escalated_from = LIGHTNING
+            data, cached = data, False
             start = self._started
             self.cache_dir.mkdir(parents=True, exist_ok=True)
             cache_file.write_text(json.dumps(data))
@@ -177,6 +187,7 @@ class ModelRouter:
                 "total_tokens": usage.get("total_tokens"),
                 "latency_ms": round(max(end - start, 0) * 1000),
                 "cached": cached,
+                "escalated_from": escalated_from,
             }
         )
         return Completion(text, model, receipt.get("receipt_id", ""), cached)
