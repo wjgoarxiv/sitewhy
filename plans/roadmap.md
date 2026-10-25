@@ -23,7 +23,7 @@ Deadline: **10/28 08:45 KST** (hard). Internal submit target: **10/27 22:00 KST*
 
 ### M1. Walking skeleton (10/25)
 - [x] Todo 1 skeleton (uv, FastAPI, pytest, ruff, config, `SAMPLE_MODE`)
-- [ ] Todo 2 model client through Nightshift (+ Ollama fallback, per-request model trace)
+- [x] Todo 2 model client through Nightshift (+ Ollama fallback, per-request model trace)
 - [ ] Todo 3 Zetaris adapter (+ DuckDB/sample fallback)
 - [ ] Todo 4 resolver (address → state, county)
 - [ ] Todo 5 minimal seed: federal + 3 states + 3 counties
