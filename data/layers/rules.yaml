@@ -20,3 +20,13 @@
   source_title: "Texas SB 6 (89R), enrolled text, Utilities Code Sec. 37.0561(c)"
   as_of: "2025-06-20"
   status: final
+- id: tx-ercot-data-center-audit-2026
+  layer: state
+  title: "Texas Governor's data center interconnection audit (ERCOT)"
+  scope: {iso: ERCOT}
+  check: {mw_threshold: 75, inclusive: false, label: "ERCOT large load"}
+  quote: "The PUCT and ERCOT must complete this audit before any data center project moves forward."
+  source_url: "https://gov.texas.gov/news/post/governor-abbott-directs-comprehensive-data-center-audit"
+  source_title: "Office of the Texas Governor press release, 2026-08-03"
+  as_of: "2026-08-03"
+  status: in_force

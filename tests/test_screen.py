@@ -121,6 +121,32 @@ def test_screen_with_no_local_evidence_still_returns_report(harness):
     assert report["evidence"] == [] and report["verdict"] == "go"
 
 
+def test_state_actions_returns_enacted_and_in_force_only(harness):
+    from app.geo import Jurisdiction
+
+    tucson = Jurisdiction(
+        matched_address="255 W ALAMEDA ST, TUCSON, AZ, 85701",
+        lat=32.22,
+        lon=-110.97,
+        state="AZ",
+        state_fips="04",
+        county_name="Pima County",
+        county_fips="04019",
+        place="Tucson city",
+        county_subdivision=None,
+    )
+    tx_rows = Screener(FakeResolver(TAYLOR), harness, FakeRouter("{}")).state_actions(
+        TAYLOR
+    )
+    assert "tx-abbott-2026-08-03-data-center-audit-directive" in {
+        r["policy_action_id"] for r in tx_rows
+    }
+    az_rows = Screener(FakeResolver(tucson), harness, FakeRouter("{}")).state_actions(tucson)
+    assert "az-hb-4168-2026" in {r["policy_action_id"] for r in az_rows}
+    for r in tx_rows + az_rows:
+        assert r["bill_status_category"] != "failed_died"
+
+
 def test_findings_citing_unknown_evidence_are_dropped(harness):
     bad = json.loads(verdict_json())
     bad["findings"][0]["evidence_id"] = "made-up-id"

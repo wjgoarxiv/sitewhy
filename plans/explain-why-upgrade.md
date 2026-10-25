@@ -222,7 +222,7 @@ Single executor, sequential. Todos 1–3 share `app/orchestrator.py`; Todos 5–
   QA scenarios: show RED, then GREEN. Evidence `task-1.txt`
   Commit: Y | fix(agents): compare only canonical decision fields so source conflicts are real
 
-- [ ] 2. State layer: TX audit directive rule plus a Zetaris state watch list
+- [x] 2. State layer: TX audit directive rule plus a Zetaris state watch list
   What to do:
   - (a) Append to `data/layers/rules.yaml`:
 
@@ -318,7 +318,7 @@ Single executor, sequential. Todos 1–3 share `app/orchestrator.py`; Todos 5–
   QA scenarios: curl a sample after restart; failure — zero findings gives empty lists and a fallback headline. Evidence `task-3.txt`
   Commit: Y | feat(explain): decisive chain, flips, conflict sensitivity, agent catches and layer status from run data
 
-- [ ] 4. Site context geo endpoint (TIGERweb boundaries, HIFLD transmission), cached
+- [x] 4. Site context geo endpoint (TIGERweb boundaries, HIFLD transmission), cached
   What to do: create `app/sitecontext.py` with `SiteContext(client, cache_dir=ROOT/"data/geo/context")` and `context(lat, lon, county_fips)`. It returns:
   - (a) `county`: TIGERweb layer 82, `where=GEOID='<fips>'`, `outSR=4326`, `maxAllowableOffset=0.002`, `geometryPrecision=5`, `f=geojson`
   - (b) `place`: layer 28 point intersect, or `null`

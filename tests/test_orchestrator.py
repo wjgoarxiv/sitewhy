@@ -331,6 +331,24 @@ def test_none_value_gives_zero_conflicts(orchestrator_factory):
     assert [e for e in report["events"] if e["action"] == "conflict"] == []
 
 
+def test_state_watch_present_and_never_in_findings(orchestrator_factory):
+    router = ScriptedRouter(
+        planner=[PLAN],
+        county_investigator=[facts_reply(GOOD_FACTS)],
+        adjudicator=[DRAFT_NO_GO],
+        critic=["[]"],
+    )
+    report = orchestrator_factory(router).run("addr", mw=300)
+    assert "state_watch" in report and report["state_watch"]
+    watch_ids = {r["policy_action_id"] for r in report["state_watch"]}
+    assert watch_ids.isdisjoint({f["rule_id"] for f in report["findings"]})
+    for row in report["state_watch"]:
+        assert row["provenance"] == "dataset"
+    assert any(
+        e["action"] == "state_watch" and e["role"] == "system" for e in report["events"]
+    )
+
+
 def test_case_only_other_differences_give_zero_conflicts(orchestrator_factory):
     long_quote = "a temporary, twelve (12) month moratorium on the acceptance"
     facts = [

@@ -475,6 +475,21 @@ class Orchestrator:
             "seeded",
             {"local": [r["id"] for r in local], "curated": [r["id"] for r in curated]},
         )
+        curated_urls = {r["source_url"] for r in curated}
+        state_watch = [
+            {
+                **row,
+                "provenance": "dataset",
+                "source": "Moratorium Nation state_legislation.csv",
+                **(
+                    {"covered_by_rule": True}
+                    if row.get("primary_source_url") in curated_urls
+                    else {}
+                ),
+            }
+            for row in Screener(None, self.harness, None).state_actions(j)
+        ]
+        self._event(0, "system", "state_watch", [r["policy_action_id"] for r in state_watch])
 
         rule_briefs = [{"id": r["id"], "title": r["title"], "layer": r["layer"]} for r in local]
         tasks = self.planner.plan(site, rule_briefs) if local else []
@@ -542,6 +557,7 @@ class Orchestrator:
             "jurisdiction": j.to_dict(),
             **result,
             "findings": findings,
+            "state_watch": state_watch,
             "needs_confirmation": [
                 {
                     "rule_id": o["rule_id"],

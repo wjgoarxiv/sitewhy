@@ -4,6 +4,7 @@ from app.applicability import Project
 from app.layers import evaluate_rule, load_county_sources, load_rules
 
 REQUIRED = {"id", "layer", "title", "scope", "check", "quote", "source_url", "as_of", "status"}
+ALLOWED_STATUS = {"final", "proposed", "pending", "in_force"}
 
 
 def test_every_rule_has_source_quote_as_of_and_status():
@@ -11,7 +12,7 @@ def test_every_rule_has_source_quote_as_of_and_status():
     assert rules
     for r in rules:
         assert REQUIRED <= r.keys(), r["id"]
-        assert r["status"] in {"final", "proposed", "pending"}
+        assert r["status"] in ALLOWED_STATUS
         assert r["source_url"].startswith("https://") and len(r["quote"]) > 20
 
 
@@ -27,6 +28,14 @@ def test_scope_filter_and_checks():
     assert evaluate_rule(sb6, Project(mw=75.1), {"iso": "ERCOT"})["applies"] == "yes"
     tv = next(r for r in load_rules() if r["id"] == "federal-title-v-major-source")
     assert evaluate_rule(tv, Project(mw=300), {"iso": "PJM"})["applies"] == "yes"
+
+
+def test_tx_audit_rule_scope():
+    audit = next(r for r in load_rules() if r["id"] == "tx-ercot-data-center-audit-2026")
+    assert audit["layer"] == "state"
+    assert evaluate_rule(audit, Project(mw=300), {"iso": "ERCOT"})["applies"] == "yes"
+    assert evaluate_rule(audit, Project(mw=70), {"iso": "ERCOT"})["applies"] == "no"
+    assert evaluate_rule(audit, Project(mw=300), {"iso": "PJM"}) is None
 
 
 @pytest.mark.live

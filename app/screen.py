@@ -55,6 +55,17 @@ class Screener:
         self.harness = harness
         self.router = router
 
+    def state_actions(self, j) -> list[dict]:
+        rows = self.harness.query(
+            "SELECT policy_action_id, bill, status, key_provisions, policy_mechanism, "
+            "scope_of_action, legal_effect_status, bill_status_category, "
+            "last_action_date_iso, primary_source_url FROM SITEWHY.state_legislation "
+            f"WHERE state_abbrev = {_sql_str(j.state)} "
+            "AND (bill_status_category = 'enacted' OR legal_effect_status = 'in_force') "
+            "ORDER BY last_action_date_iso DESC"
+        )
+        return rows
+
     def local_evidence(self, j) -> list[dict]:
         names = ", ".join(_sql_str(n) for n in _local_names(j))
         rows = self.harness.query(
