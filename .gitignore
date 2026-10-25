@@ -1,0 +1,23 @@
+# secrets
+.env
+.env.*
+!.env.example
+
+# local session state (keep out of the public repo)
+HANDOFF.md
+.handoff/
+.litclaude/
+*.textClipping
+.DS_Store
+
+# python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# runtime output
+data/cache/
+logs/
