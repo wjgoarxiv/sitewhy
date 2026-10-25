@@ -44,55 +44,99 @@ if (matchMedia("(prefers-color-scheme: light)").matches) {
 }
 applyTheme();
 
-const state = { rows: [], reports: {}, contexts: {}, selected: null, dots: {}, map: null, layers: null };
+const state = { rows: [], reports: {}, contexts: {}, selected: null, dots: {}, map: null, layers: null, sampleMode: false, popupAt: 0, currentCtx: null };
+
+function dismissGuide() {
+  try { localStorage.setItem("sitewhy-guide-dismissed", "1"); } catch { /* private mode */ }
+}
+function guideDismissed() {
+  try { return localStorage.getItem("sitewhy-guide-dismissed") === "1"; }
+  catch { return false; }
+}
 
 function shortAddress(address) {
   return String(address || "").split(",")[0].trim();
 }
 
-function renderPortfolio() {
-  const ul = $("portfolio");
-  ul.innerHTML = state.rows.map((r) => {
-    const rep = state.reports[r.name];
-    const county = r.county || rep?.jurisdiction?.county_name || "";
-    const current = state.selected === r.name ? "true" : "false";
-    return `<li><button type="button" class="site-row" data-name="${esc(r.name)}" aria-current="${current}">`
-      + `<span class="dot ${esc(r.verdict)}" aria-hidden="true"></span>`
-      + `<span><span class="addr">${esc(shortAddress(r.address))}</span>`
-      + `<span class="meta">${esc(r.mw)} MW${county ? ` · ${esc(county)}` : ""} · ${esc(VERDICT_TEXT[r.verdict] || r.verdict)}</span></span>`
-      + `</button></li>`;
-  }).join("");
-  ul.querySelectorAll("button").forEach((b) =>
-    b.addEventListener("click", () => selectSite(b.dataset.name, true)));
+function isSelected(r) {
+  return !!state.selected && state.selected.kind === (r.kind || "showcase") && state.selected.id === (r.id || r.name);
 }
 
-async function bootSamples() {
+function renderPortfolio() {
+  const paint = (ul, rows) => {
+    ul.innerHTML = rows.map((r) => {
+      const id = r.id || r.name;
+      const kind = r.kind || "showcase";
+      const current = isSelected(r) ? "true" : "false";
+      return `<li><button type="button" class="site-row" data-kind="${esc(kind)}" data-id="${esc(id)}" aria-current="${current}">`
+        + `<span class="dot ${esc(r.verdict)}" aria-hidden="true"></span>`
+        + `<span><span class="addr">${esc(shortAddress(r.address))}</span>`
+        + `<span class="meta">${esc(r.mw)} MW${r.county ? ` · ${esc(r.county)}` : ""} · ${esc(VERDICT_TEXT[r.verdict] || r.verdict)}</span></span>`
+        + `</button></li>`;
+    }).join("");
+    ul.querySelectorAll("button").forEach((b) =>
+      b.addEventListener("click", () => selectRow(b.dataset.kind, b.dataset.id, true)));
+  };
+  paint($("portfolio"), state.rows.filter((r) => (r.kind || "showcase") === "showcase"));
+  const live = state.rows.filter((r) => r.kind === "live");
+  $("live-details").hidden = live.length === 0 && !$("running-row");
+  paint($("portfolio-live"), live);
+}
+
+function selectRow(kind, id, fly) {
+  if (kind === "live") selectLive(id, fly);
+  else selectSite(id, fly);
+}
+
+async function bootPortfolio() {
   let rows;
   try {
-    rows = await api("/samples");
+    rows = await api("/portfolio");
   } catch (err) {
-    $("portfolio").innerHTML = `<li class="note">Could not load samples. Check the server and reload.</li>`;
+    $("portfolio").innerHTML = `<li class="note">Could not load the portfolio. Check the server and reload.</li>`;
     renderLampsFallback();
     renderTelemetryFallback();
     return;
   }
   state.rows = rows;
   renderPortfolio();
-  await Promise.allSettled(rows.map(async (r) => {
-    try {
-      const rep = await api(`/samples/${encodeURIComponent(r.name)}`);
-      state.reports[r.name] = rep;
-      if (rep.jurisdiction?.county_name && !r.county) r.county = rep.jurisdiction.county_name;
-      if (rep.jurisdiction && (r.lat === undefined || r.lon === undefined)) {
-        r.lat = rep.jurisdiction.lat;
-        r.lon = rep.jurisdiction.lon;
-      }
-      if (!r.headline && rep.explanation?.headline) r.headline = rep.explanation.headline;
-    } catch { /* row keeps skeleton data; selection retries */ }
-  }));
-  renderPortfolio();
-  if (rows.length) await selectSite(rows[0].name, false);
+  renderDots();
+  const hash = parseHash();
+  if (hash) {
+    await restoreHash(hash);
+  } else if (guideDismissed()) {
+    const first = rows.find((r) => (r.kind || "showcase") === "showcase") || rows[0];
+    if (first) await selectRow(first.kind || "showcase", first.id || first.name, false);
+    else showGuide(false);
+  } else {
+    showGuide(false);
+  }
 }
+
+function parseHash() {
+  const m = location.hash.match(/^#\/(site|run)\/([^/]+)$/);
+  return m ? { kind: m[1], id: decodeURIComponent(m[2]) } : null;
+}
+
+async function restoreHash({ kind, id }) {
+  const row = state.rows.find((r) => (r.kind || "showcase") === (kind === "run" ? "live" : "showcase") && (r.id || r.name) === id);
+  if (row) await selectRow(row.kind || "showcase", row.id || row.name, false);
+  else if (kind === "site") await selectSite(id, false);
+  else await selectLive(id, false);
+}
+
+function setHash(kind, id) {
+  const h = kind === "live" ? `#/run/${encodeURIComponent(id)}` : `#/site/${encodeURIComponent(id)}`;
+  if (location.hash !== h) location.hash = h;
+}
+
+addEventListener("hashchange", () => {
+  const hash = parseHash();
+  if (!hash) { showGuide(!!state.currentReport); return; }
+  const key = `${hash.kind}:${hash.id}`;
+  const cur = state.selected ? `${state.selected.kind === "live" ? "run" : "site"}:${state.selected.id}` : "";
+  if (key !== cur) restoreHash(hash);
+});
 
 function tileUrl(kind) {
   if (new URLSearchParams(location.search).get("tiles") === "invalid") return "https://invalid.local/tiles/{z}/{x}/{y}.png";
@@ -117,6 +161,7 @@ function ensureMap(lat, lon) {
     fadeAnimation: !reduced, zoomAnimation: !reduced, inertia: !reduced,
   });
   state.baseLayers = { sat: esri, street: streets, dark };
+  state.map.on("click", onMapClick);
   let watchdog = null, okTiles = false;
   const armWatchdog = () => {
     clearTimeout(watchdog);
@@ -253,16 +298,7 @@ function renderOverlays(report, ctx) {
     title: report.project?.address || "",
     alt: `Selected site: ${report.project?.address || ""}`,
   }).addTo(state.map);
-  for (const r of state.rows) {
-    if (r.name === state.selected || r.lat === undefined) continue;
-    const dot = L_.marker([r.lat, r.lon], {
-      icon: L_.divIcon({ className: "", html: `<div class="site-dot ${verdictClass(r.verdict)}" aria-hidden="true"><span></span></div>`, iconSize: [44, 44], iconAnchor: [22, 22] }),
-      title: r.address, alt: r.address,
-    });
-    dot.on("click", () => selectSite(r.name, true));
-    dot.addTo(state.map);
-    state.dots[r.name] = dot;
-  }
+  renderDots();
   const link = document.querySelector(".gmaps");
   if (link) link.remove();
   if (ctx?.google_maps_url) {
@@ -275,6 +311,50 @@ function renderOverlays(report, ctx) {
     document.querySelector(".map-wrap").appendChild(a);
   }
   state.map.flyTo([lat, lon], Math.max(state.map.getZoom(), 11), { duration: reduced() ? 0 : 0.8 });
+}
+
+function renderDots() {
+  if (!state.map || !window.L) return;
+  Object.values(state.dots).forEach((d) => d.remove());
+  state.dots = {};
+  for (const r of state.rows) {
+    const id = r.id || r.name;
+    const kind = r.kind || "showcase";
+    if (r.lat === undefined || r.lon === undefined) continue;
+    if (state.selected && state.selected.kind === kind && state.selected.id === id) continue;
+    const dot = window.L.marker([r.lat, r.lon], {
+      icon: window.L.divIcon({ className: "", html: `<div class="site-dot ${verdictClass(r.verdict)}" aria-hidden="true"><span></span></div>`, iconSize: [44, 44], iconAnchor: [22, 22] }),
+      title: r.address, alt: r.address,
+    });
+    dot.on("click", () => { state.popupAt = Date.now(); selectRow(kind, id, true); });
+    dot.addTo(state.map);
+    state.dots[`${kind}:${id}`] = dot;
+  }
+}
+
+function onMapClick(e) {
+  if (!state.map || Date.now() - state.popupAt < 500) return;
+  const lat = Math.round(e.latlng.lat * 10000) / 10000;
+  const lon = Math.round(e.latlng.lng * 10000) / 10000;
+  const div = document.createElement("div");
+  div.className = "map-popup";
+  if (state.sampleMode) {
+    div.innerHTML = `<p><strong>Screen this location</strong><br>${esc(lat)}, ${esc(lon)}</p>`
+      + `<p class="note">Live runs are off in sample mode — pick a site from the portfolio.</p>`;
+  } else {
+    div.innerHTML = `<p><strong>Screen this location</strong><br>${esc(lat)}, ${esc(lon)}</p>`
+      + `<form><div class="field"><label class="label" for="popup-mw">IT load (MW)</label>`
+      + `<input id="popup-mw" name="mw" type="number" min="1" max="10000" step="1" value="300" required></div>`
+      + `<p class="status" data-role="error"></p>`
+      + `<button type="submit">Screen ${esc(lat)}, ${esc(lon)}</button></form>`;
+    div.querySelector("form").addEventListener("submit", async (ev) => {
+      ev.preventDefault();
+      const mw = Number(div.querySelector("#popup-mw").value);
+      state.map.closePopup();
+      await submitRun({ lat, lon, mw }, `${lat}, ${lon}`);
+    });
+  }
+  window.L.popup().setLatLng(e.latlng).setContent(div).openOn(state.map);
 }
 
 function reduced() {
@@ -458,10 +538,11 @@ function synthModel(report) {
 }
 
 async function selectSite(name, fly) {
-  const row = state.rows.find((r) => r.name === name);
-  if (!row) return;
-  state.selected = name;
+  state.selected = { kind: "showcase", id: name };
+  setHash("showcase", name);
+  dismissGuide();
   renderPortfolio();
+  renderDots();
   let report = state.reports[name];
   if (!report) {
     try {
@@ -479,6 +560,46 @@ async function selectSite(name, fly) {
       ctx = await api(`/samples/${encodeURIComponent(name)}/context`);
       state.contexts[name] = ctx;
     } catch { ctx = null; }
+  }
+  showReport(report, ctx, fly);
+}
+
+async function fetchLiveContext(id, report) {
+  try {
+    return await api(`/runs/${encodeURIComponent(id)}/context`);
+  } catch { /* fall through to coordinate lookup */ }
+  const j = report?.jurisdiction || {};
+  if (j.lat !== undefined && j.lon !== undefined && j.county_fips) {
+    try {
+      return await api(`/context?lat=${j.lat}&lon=${j.lon}&county_fips=${encodeURIComponent(j.county_fips)}`);
+    } catch { /* pin only */ }
+  }
+  return null;
+}
+
+async function selectLive(id, fly) {
+  state.selected = { kind: "live", id };
+  setHash("live", id);
+  dismissGuide();
+  renderPortfolio();
+  renderDots();
+  let report = state.reports[`live:${id}`];
+  if (!report) {
+    try {
+      const s = await api(`/runs/${encodeURIComponent(id)}`);
+      report = s.report;
+      if (!report) throw new Error("run has no report yet");
+      state.reports[`live:${id}`] = report;
+    } catch {
+      $("map-note").textContent = "Report unavailable. Check the server and retry.";
+      $("map-note").hidden = false;
+      return;
+    }
+  }
+  let ctx = state.contexts[`live:${id}`];
+  if (!ctx) {
+    ctx = await fetchLiveContext(id, report);
+    state.contexts[`live:${id}`] = ctx;
   }
   showReport(report, ctx, fly);
 }
@@ -672,9 +793,31 @@ function buildTabs() {
   bar._select = (id) => select(bar.querySelector(`#tab-${id}`) || tabs[0], false);
 }
 
+function showErrorCard(title, message) {
+  state.currentReport = null;
+  state.currentCtx = null;
+  hideGuide();
+  $("report-empty").hidden = true;
+  $("report-view").hidden = false;
+  $("banner-dot").className = "dot unknown";
+  $("banner-verdict").textContent = title;
+  $("banner-headline").textContent = "";
+  $("banner-project").textContent = "";
+  $("print-site").textContent = "";
+  $("print-disc").textContent = "";
+  $("page-answer").innerHTML = `<div class="decisive"><h3>${esc(title)}</h3>`
+    + `<p class="result-line">${esc(message)}</p>`
+    + `<p class="note">Try a different address, or pick a site from the portfolio.</p></div>`;
+  for (const id of ["flips", "caught", "rules", "hood"]) $(`page-${id}`).innerHTML = "";
+  buildTabs();
+  $("tablist")._select("answer");
+  updateScrollCue();
+}
+
 function showReport(report, ctx, fly) {
   state.currentReport = report;
-  $("guide").hidden = true;
+  state.currentCtx = ctx || null;
+  hideGuide();
   $("report-empty").hidden = true;
   $("report-view").hidden = false;
   $("banner-dot").className = `dot ${verdictClass(report.verdict)}`;
@@ -705,13 +848,25 @@ function showMapFallbackCoords(report, ctx) {
   if (!$("map-fallback").hidden) showMapFallback(report.jurisdiction.lat, report.jurisdiction.lon, ctx.google_maps_url);
 }
 
-function runningRow(address, mw) {
+function showGuide(withBack) {
+  $("guide").hidden = false;
+  $("report-view").hidden = true;
+  $("report-empty").hidden = true;
+  $("guide-back").hidden = !(withBack && state.currentReport);
+}
+
+function hideGuide() {
+  $("guide").hidden = true;
+}
+
+function runningRow(addressLabel, mw) {
   $("running-row")?.remove();
+  $("live-details").hidden = false;
   const li = document.createElement("li");
   li.id = "running-row";
   li.innerHTML = `<div class="site-row running" aria-busy="true"><span class="dot major" aria-hidden="true"></span>`
-    + `<span><span class="addr">Screening…</span><span class="meta">${esc(address)} · ${esc(mw)} MW</span></span></div>`;
-  $("portfolio").prepend(li);
+    + `<span><span class="addr">Screening…</span><span class="meta">${esc(addressLabel)} · ${esc(mw)} MW</span></span></div>`;
+  $("portfolio-live").prepend(li);
 }
 
 async function pollRun(runId, request) {
@@ -754,15 +909,23 @@ async function submitRun(body, addressLabel) {
     $("form-status").textContent = "";
     $("run-status").innerHTML = "";
     state.reports[`live:${data.run_id}`] = report;
-    let ctx = null;
-    try { ctx = await api(`/runs/${data.run_id}/context`); } catch { /* pin only */ }
+    const ctx = await fetchLiveContext(data.run_id, report);
     state.contexts[`live:${data.run_id}`] = ctx;
+    state.selected = { kind: "live", id: data.run_id };
+    setHash("live", data.run_id);
+    dismissGuide();
+    try {
+      state.rows = await api("/portfolio");
+    } catch { /* keep current rows; the report below is authoritative */ }
+    renderPortfolio();
     showReport(report, ctx, true);
   } catch (err) {
     $("running-row")?.remove();
-    $("form-status").textContent = err.message.includes("503") || err.message.includes("SAMPLE_MODE")
+    const msg = err.message.includes("503") || err.message.includes("SAMPLE_MODE")
       ? "Live runs are off in sample mode — pick a site from the portfolio."
       : `Could not screen: ${err.message}`;
+    $("form-status").textContent = msg;
+    showErrorCard("Screening failed", msg);
   } finally { $("run-btn").disabled = false; $("run-status").textContent = ""; }
 }
 
@@ -791,12 +954,25 @@ $("copy-link")?.addEventListener("click", async () => {
   }
 });
 
+$("guide-glossary").innerHTML = Object.entries(GLOSSARY).map(([term, def]) =>
+  `<dt>${esc(term)}</dt><dd>${esc(def)}</dd>`).join("");
+
+$("guide-open")?.addEventListener("click", () => showGuide(true));
+$("guide-back")?.addEventListener("click", () => {
+  if (state.currentReport) { hideGuide(); $("report-view").hidden = false; }
+});
+$("guide-try")?.addEventListener("click", () => {
+  dismissGuide();
+  selectRow("showcase", "md-washington-county-unincorporated", true);
+});
+
 $("download-json")?.addEventListener("click", () => {
   if (!state.currentReport) return;
+  const id = state.selected ? state.selected.id : "report";
   const blob = new Blob([JSON.stringify(state.currentReport, null, 1)], { type: "application/json" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = `sitewhy-${state.selected || "report"}.json`;
+  a.download = `sitewhy-${id}.json`;
   document.body.appendChild(a);
   a.click();
   setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
@@ -811,12 +987,13 @@ async function boot() {
   if (matchMedia("(max-width: 1179px)").matches) $("portfolio-details").removeAttribute("open");
   try {
     const status = await api("/status");
+    state.sampleMode = !!status.sample_mode;
     if (status.sample_mode) {
       $("run-btn").disabled = true;
       $("form-status").textContent = "Live runs are off in sample mode — pick a site from the portfolio.";
     }
   } catch { /* status optional; submit surfaces errors */ }
-  await bootSamples();
+  await bootPortfolio();
 }
 
 boot();
