@@ -490,9 +490,16 @@ const GLOSSARY = {
   estimate: "A projection from the remaining rules, not a new finding.",
 };
 const FIELD_LABELS = {
-  effective: "Effective date", duration_days: "Duration", scope: "Scope",
+  effective: "Effective date", effective_date: "Effective date",
+  duration: "Duration", duration_days: "Duration", scope: "Scope",
   exempt_if_permits_submitted: "Permits exemption",
 };
+
+function fieldLabel(field) {
+  const key = String(field || "");
+  if (FIELD_LABELS[key]) return FIELD_LABELS[key];
+  return key.split("_").map((w) => w ? w.charAt(0).toUpperCase() + w.slice(1) : w).join(" ");
+}
 const LAYER_NAMES = {
   federal: "Federal", iso_rto: "Grid/ISO", state: "State", county: "County", city: "City",
 };
@@ -518,7 +525,7 @@ function sourceLink(url, provenance) {
 }
 
 function evItem(ev) {
-  const field = FIELD_LABELS[ev.field] || (ev.field === "other" ? "" : ev.field);
+  const field = ev.field === "other" ? "" : fieldLabel(ev.field);
   return `<div class="ev-item">“${esc(ev.quote)}”`
     + `<span class="meta"><span class="tag ${esc(ev.verification)}">${esc(ev.verification)}</span>`
     + `${field ? ` ${esc(field)} · ` : " "}${sourceLink(ev.url, ev.provenance)}</span></div>`;
@@ -659,7 +666,7 @@ function renderCaught(report) {
       try { host = r.url ? new URL(r.url).hostname : ""; } catch { /* keep empty */ }
       return `${r.value}${host ? ` (${host})` : ""}`;
     }).join(" vs ");
-    return `<div class="sens-row">Sources disagree on ${esc(s.field)}: ${esc(rs)} — `
+    return `<div class="sens-row">Sources disagree on ${esc(fieldLabel(s.field).toLowerCase())}: ${esc(rs)} — `
       + (s.holds ? "verdict holds under both readings" : "still open for your team") + `</div>`;
   }).join("");
   if (!catches && !sens) return `<p class="note">No corrections and no source disagreements.</p>`;
