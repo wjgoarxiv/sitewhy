@@ -24,26 +24,6 @@ async function api(path, opts) {
   return res.json();
 }
 
-function isLight() {
-  return document.documentElement.dataset.theme === "light";
-}
-function applyTheme() {
-  const light = isLight();
-  const btn = $("theme-toggle");
-  btn.setAttribute("aria-pressed", String(!light));
-  btn.textContent = light ? "Use dark theme" : "Use light theme";
-}
-$("theme-toggle").addEventListener("click", () => {
-  document.documentElement.dataset.theme = isLight() ? "dark" : "light";
-  applyTheme();
-});
-// Default is the dark console. Honor an OS-level light preference once, at boot,
-// as an explicit initialized choice; afterwards only the toggle changes it.
-if (matchMedia("(prefers-color-scheme: light)").matches) {
-  document.documentElement.dataset.theme = "light";
-}
-applyTheme();
-
 const state = { rows: [], reports: {}, contexts: {}, selected: null, dots: {}, map: null, layers: null, sampleMode: false, popupAt: 0, currentCtx: null };
 
 function dismissGuide() {
