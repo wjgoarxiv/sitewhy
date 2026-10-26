@@ -762,6 +762,8 @@ function openChecked(section) {
 window.SiteWhy = {
   selectSite: (name) => selectSite(name),
   openChecked,
+  current: () => state.currentReport,
+  sites: () => state.rows.slice(),
 };
 
 function showErrorCard(title, message) {
@@ -819,6 +821,8 @@ function showReport(report, ctx, fly) {
   if (ctx?.google_maps_url) showMapFallbackCoords(report, ctx);
   renderLamps(report);
   if (!fly) state.map?.setView([report.jurisdiction.lat, report.jurisdiction.lon], 12, { animate: false });
+  // Add-on modules (nav, palette, chain, lanes, settings) re-render from this event.
+  document.dispatchEvent(new CustomEvent("sitewhy:report", { detail: { report, ctx: ctx || null } }));
 }
 
 function showMapFallbackCoords(report, ctx) {
