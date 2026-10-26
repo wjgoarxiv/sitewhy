@@ -2,6 +2,8 @@
   "use strict";
 
   const STEP_MS = 9000;
+  const INTRO_MS = 6000;
+  const OUTRO_MS = 9000;
   const SPINE = "md-washington-county-unincorporated";
   const BREADTH_GO = "az-tucson-pima";
   const BREADTH_ERCOT = "tx-abilene-ercot";
@@ -38,25 +40,55 @@
     return report;
   }
 
+  // Fixed rail titles (8 stops). Data-driven facts stay in `captions`.
+  const TITLES = [
+    "Pick a site",
+    "The verdict",
+    "On the map",
+    "The rule that decides",
+    "Agents double-check",
+    "Who did the work",
+    "What would change it",
+    "Another grid",
+  ];
+
+  const LOOKS = [
+    "the showcase site list on the left",
+    "the yellow verdict panel at the top",
+    "the satellite map with the jurisdiction overlay",
+    "the evidence card with the ordinance quote",
+    "the double-checks card",
+    "the model and data receipts",
+    "the sensitivity table",
+    "a different site under a different grid",
+  ];
+
+  const INTRO_TITLE = "A 75-second tour of how SiteWhy decides";
+  const INTRO_LINE = "8 stops · auto-advances · Space pauses · Esc exits";
+  const INTRO_LOOK = "the how-it-works strip at the top";
+  const OUTRO_LINE = "That's SiteWhy: verdict, the rule behind it, and the agents that checked it.";
+  const OUTRO_LOOK = "the portfolio list — pick your next site";
+  const OUTRO_CTA = "Try another site";
+
   const captions = {
     picker: (r) => {
       const mw = Number(r.project?.mw);
       const load = Number.isFinite(mw) ? `${Math.round(mw)} MW at ` : "";
-      return `${load}${shortAddr(r.project?.address)} screens ${verdictWord(r)} — this is the roll's spine.`;
+      return `${load}${shortAddr(r.project?.address)} screens ${verdictWord(r)} — this is the site we will walk through.`;
     },
     banner: (r) =>
       `Verdict up top: ${txt(r.explanation?.headline, "the headline states the verdict and the decisive rule")}.`,
     map: (r) => {
       const chip = document.querySelector('[data-demo="map"] .chip');
       const rendered = String(chip?.textContent || "").trim();
-      if (rendered) return rendered;
+      if (rendered) return `${rendered} — the geographic scope of the ruling.`;
       const j = r.jurisdiction || {};
-      return `${txt(j.county_name, "the county")} · ${txt(j.iso, "its grid")}`;
+      return `${txt(j.county_name, "the county")} · ${txt(j.iso, "its grid")} — the geographic scope of the ruling.`;
     },
     decisive: (r) => {
       const fact = r.explanation?.decisive?.[0]?.fact;
-      if (!fact?.quote) return "The decisive card states the rule and its source.";
-      return `“${clip(fact.quote, 140)}” — recorded as ${txt(fact.verification, "checked")}.`;
+      if (!fact?.quote) return "This is the single rule that decides the verdict — no verified quote on this run.";
+      return `This is the single rule that decides the verdict: “${clip(fact.quote, 140)}” — recorded as ${txt(fact.verification, "checked")}.`;
     },
     catches: (r) => {
       const all = r.explanation?.catches || [];
@@ -130,9 +162,50 @@
     } catch { /* skip */ }
   }
 
+  function targetEl(anchor) {
+    if (!anchor) return null;
+    try {
+      return document.querySelector(`[data-demo="${anchor}"]`);
+    } catch {
+      return null;
+    }
+  }
+
+  // No overlay element, so Leaflet keeps receiving pointer events.
+  function applyDim(anchor) {
+    const target = targetEl(anchor);
+    try {
+      document.querySelectorAll("[data-demo]").forEach((el) => {
+        const keep =
+          !!target && (el === target || el.contains(target) || target.contains(el));
+        if (keep) {
+          el.style.opacity = "";
+          el.classList.remove("demo-dim");
+        } else {
+          el.style.opacity = "0.35";
+          el.classList.add("demo-dim");
+        }
+      });
+      document.querySelectorAll(".rail section").forEach((el) => {
+        const keep = !!target && (el === target || el.contains(target));
+        el.style.opacity = keep ? "" : "0.35";
+      });
+    } catch { /* skip */ }
+  }
+
+  function clearDim() {
+    try {
+      document.querySelectorAll("[data-demo], .rail section").forEach((el) => {
+        el.style.opacity = "";
+        if (el.classList) el.classList.remove("demo-dim");
+      });
+    } catch { /* skip */ }
+  }
+
   const demo = {
     running: false,
     paused: false,
+    phase: "idle",
     index: 0,
     timer: 0,
     epoch: 0,
@@ -150,44 +223,106 @@
     bar.hidden = true;
     bar.setAttribute("role", "region");
     bar.setAttribute("aria-label", "Demo roll");
+    const railBtns = TITLES.map(
+      (t, i) =>
+        `<button type="button" class="demo-rail-btn" data-i="${i}" data-state="upcoming">${t}</button>`,
+    ).join("");
     bar.innerHTML =
       `<div class="demo-progress" role="progressbar" aria-label="Demo roll progress" ` +
       `aria-valuemin="1" aria-valuemax="${STEPS.length}" aria-valuenow="1"><span></span></div>` +
+      `<nav class="demo-rail" aria-label="Tour stops">${railBtns}</nav>` +
       `<p class="demo-step" id="demo-step"></p>` +
-      `<p class="demo-caption" id="demo-caption" aria-live="polite"></p>` +
+      `<div class="demo-caption" id="demo-caption" aria-live="polite" tabindex="-1">` +
+      `<p class="demo-look"><strong>LOOK:</strong> <span id="demo-look"></span></p>` +
+      `<p class="demo-why"><strong>WHY IT MATTERS:</strong> <span id="demo-why"></span></p>` +
+      `</div>` +
       `<div class="demo-controls">` +
       `<button type="button" id="demo-pause">Pause</button>` +
       `<button type="button" id="demo-back">Back</button>` +
       `<button type="button" id="demo-next">Next</button>` +
+      `<button type="button" id="demo-try" hidden>${OUTRO_CTA}</button>` +
       `<button type="button" id="demo-exit">Exit</button>` +
       `</div>`;
     document.body.appendChild(bar);
+    bar.querySelectorAll(".demo-rail-btn").forEach((b) =>
+      b.addEventListener("click", () => jump(Number(b.dataset.i))),
+    );
     $("demo-pause").addEventListener("click", () => togglePause());
     $("demo-back").addEventListener("click", () => move(-1));
     $("demo-next").addEventListener("click", () => move(1));
+    $("demo-try").addEventListener("click", () => tryAnother());
     $("demo-exit").addEventListener("click", () => exit());
+  }
+
+  function paintRail() {
+    const btns = document.querySelectorAll("#demo-bar .demo-rail-btn");
+    btns.forEach((b, i) => {
+      let state = "upcoming";
+      if (demo.phase === "step") {
+        state = i < demo.index ? "done" : i === demo.index ? "current" : "upcoming";
+      } else if (demo.phase === "outro") {
+        state = "done";
+      }
+      b.dataset.state = state;
+      if (state === "current") b.setAttribute("aria-current", "true");
+      else b.removeAttribute("aria-current");
+    });
+  }
+
+  function paintCaption(look, why) {
+    const lookEl = $("demo-look");
+    const whyEl = $("demo-why");
+    if (lookEl) lookEl.textContent = look;
+    if (whyEl) whyEl.textContent = why;
   }
 
   function paint() {
     const stepEl = $("demo-step");
-    const capEl = $("demo-caption");
     const bar = $("demo-bar");
-    if (!stepEl || !capEl || !bar) return;
-    stepEl.textContent = `Step ${demo.index + 1} of ${STEPS.length}`;
+    if (!stepEl || !bar) return;
+    if (demo.phase === "intro") {
+      stepEl.textContent = `Intro · ${TITLES.length} stops`;
+    } else if (demo.phase === "outro") {
+      stepEl.textContent = `Outro · ${OUTRO_CTA}`;
+    } else {
+      stepEl.textContent = `Step ${demo.index + 1} of ${STEPS.length} · ${TITLES[demo.index]}`;
+    }
     const progress = bar.querySelector(".demo-progress");
     if (progress) {
-      progress.setAttribute("aria-valuenow", String(demo.index + 1));
+      const now =
+        demo.phase === "intro" ? 1 : demo.phase === "outro" ? STEPS.length : demo.index + 1;
+      const frac = demo.phase === "intro" ? 0 : now / STEPS.length;
+      progress.setAttribute("aria-valuenow", String(now));
       const fill = progress.querySelector("span");
-      if (fill) fill.style.width = `${((demo.index + 1) / STEPS.length) * 100}%`;
+      if (fill) fill.style.width = `${frac * 100}%`;
     }
+    paintRail();
     const pauseBtn = $("demo-pause");
     if (pauseBtn) pauseBtn.textContent = demo.paused ? "Resume" : "Pause";
+    const tryBtn = $("demo-try");
+    if (tryBtn) tryBtn.hidden = demo.phase !== "outro";
+  }
+
+  function pushLog(entry) {
+    const look = String(entry.look ?? "").trim();
+    const why = String(entry.why ?? "").trim();
+    demo.log.push({
+      phase: entry.phase,
+      step: entry.step,
+      anchor: entry.anchor ?? null,
+      highlighted: !!entry.highlighted,
+      look,
+      why,
+      caption: `LOOK: ${look || "—"} WHY IT MATTERS: ${why || "—"}`,
+    });
   }
 
   function armTimer(epoch) {
     clearTimeout(demo.timer);
     if (!alive(epoch) || demo.paused) return;
-    if (demo.index >= LAST) demo.timer = setTimeout(() => exit(), STEP_MS);
+    if (demo.phase === "intro") demo.timer = setTimeout(() => move(1), INTRO_MS);
+    else if (demo.phase === "outro") demo.timer = setTimeout(() => exit(), OUTRO_MS);
+    else if (demo.index >= LAST) demo.timer = setTimeout(() => move(1), STEP_MS);
     else demo.timer = setTimeout(() => void move(1), STEP_MS);
   }
 
@@ -197,11 +332,26 @@
     }
   }
 
-  async function show(i, epoch) {
+  async function showIntro(epoch) {
     if (!alive(epoch)) return;
+    demo.phase = "intro";
+    demo.index = 0;
+    const anchor = "how";
+    const highlighted = highlight(anchor);
+    applyDim(highlighted ? anchor : null);
+    const why = `${INTRO_TITLE} — ${INTRO_LINE}.`;
+    paintCaption(INTRO_LOOK, why);
+    pushLog({ phase: "intro", step: -1, anchor, highlighted, look: INTRO_LOOK, why });
+    paint();
+    armTimer(epoch);
+  }
+
+  async function showStep(i, epoch) {
+    if (!alive(epoch)) return;
+    demo.phase = "step";
     demo.index = Math.max(0, Math.min(LAST, i));
     const step = STEPS[demo.index];
-    let caption = "The demo roll is playing.";
+    let why = "This stop is unavailable offline — the roll continues.";
     try {
       if (step.breadth) {
         const [a, b] = await Promise.all([fetchReport(BREADTH_GO), fetchReport(BREADTH_ERCOT)]);
@@ -214,7 +364,7 @@
           restoreAfterStale();
           return;
         }
-        caption = captions.breadth(a, b);
+        why = captions.breadth(a, b);
       } else {
         if (step.checked) openChecked(step.checked);
         const report = await fetchReport(step.site);
@@ -227,32 +377,63 @@
           restoreAfterStale();
           return;
         }
-        caption = step.caption(report);
+        why = step.caption(report);
       }
     } catch {
-      caption = "This stop is unavailable offline — the roll continues.";
+      why = "This stop is unavailable offline — the roll continues.";
     }
     if (!alive(epoch)) {
       restoreAfterStale();
       return;
     }
+    const look = LOOKS[demo.index] || "";
     const highlighted = highlight(step.anchor);
-    demo.log.push({ step: demo.index, anchor: step.anchor, highlighted, caption });
-    const capEl = $("demo-caption");
-    if (capEl) capEl.textContent = caption;
+    applyDim(step.anchor);
+    paintCaption(look, why);
+    pushLog({ phase: "step", step: demo.index, anchor: step.anchor, highlighted, look, why });
+    paint();
+    armTimer(epoch);
+  }
+
+  async function showOutro(epoch) {
+    if (!alive(epoch)) return;
+    demo.phase = "outro";
+    clearSpot();
+    applyDim(null);
+    paintCaption(OUTRO_LOOK, OUTRO_LINE);
+    pushLog({ phase: "outro", step: STEPS.length, anchor: null, highlighted: false, look: OUTRO_LOOK, why: OUTRO_LINE });
     paint();
     armTimer(epoch);
   }
 
   function move(d) {
     if (!demo.running) return Promise.resolve();
-    if (d > 0 && demo.index >= LAST) {
+    if (d > 0 && demo.phase === "outro") {
       exit();
       return Promise.resolve();
     }
     const epoch = ++demo.epoch;
     clearTimeout(demo.timer);
-    return show(demo.index + d, epoch);
+    if (demo.phase === "intro") {
+      return showStep(d > 0 ? 0 : 0, epoch);
+    }
+    if (demo.phase === "outro") {
+      return showStep(LAST, epoch);
+    }
+    if (d > 0 && demo.index >= LAST) {
+      return showOutro(epoch);
+    }
+    if (d < 0 && demo.index <= 0) {
+      return showIntro(epoch);
+    }
+    return showStep(demo.index + d, epoch);
+  }
+
+  function jump(i) {
+    if (!demo.running) return;
+    const epoch = ++demo.epoch;
+    clearTimeout(demo.timer);
+    void showStep(i, epoch);
   }
 
   function togglePause() {
@@ -272,20 +453,36 @@
     const epoch = ++demo.epoch;
     demo.running = true;
     demo.paused = false;
+    demo.phase = "intro";
     demo.log = [];
     demo.savedHash = location.hash;
     demo.savedFocus = document.activeElement;
     document.body.classList.add("demo-running");
     const bar = $("demo-bar");
     if (bar) bar.hidden = false;
-    await show(0, epoch);
+    await showIntro(epoch);
     const capEl = $("demo-caption");
     if (capEl && capEl.focus) {
-      capEl.setAttribute("tabindex", "-1");
       try {
         capEl.focus({ preventScroll: true });
       } catch { /* skip */ }
     }
+  }
+
+  function tryAnother() {
+    exit();
+    try {
+      const addr = document.getElementById("address");
+      if (addr && addr.focus) {
+        addr.focus({ preventScroll: false });
+        try {
+          addr.scrollIntoView({ block: "center", behavior: reducedMotion() ? "auto" : "smooth" });
+        } catch { /* skip */ }
+        return;
+      }
+      const row = document.querySelector("#portfolio .site-row");
+      if (row && row.focus) row.focus({ preventScroll: false });
+    } catch { /* skip */ }
   }
 
   function exit() {
@@ -293,8 +490,10 @@
     demo.epoch += 1;
     demo.running = false;
     demo.paused = false;
+    demo.phase = "idle";
     clearTimeout(demo.timer);
     clearSpot();
+    clearDim();
     document.body.classList.remove("demo-running");
     const bar = $("demo-bar");
     if (bar) bar.hidden = true;
@@ -352,7 +551,7 @@
     start,
     exit,
     get state() {
-      return { running: demo.running, paused: demo.paused, index: demo.index, log: demo.log.slice() };
+      return { running: demo.running, paused: demo.paused, phase: demo.phase, index: demo.index, log: demo.log.slice() };
     },
   };
 
