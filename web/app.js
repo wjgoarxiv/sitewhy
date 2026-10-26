@@ -26,14 +26,6 @@ async function api(path, opts) {
 
 const state = { rows: [], reports: {}, contexts: {}, selected: null, dots: {}, map: null, layers: null, sampleMode: false, popupAt: 0, currentCtx: null };
 
-function dismissGuide() {
-  try { localStorage.setItem("sitewhy-guide-dismissed", "1"); } catch { /* private mode */ }
-}
-function guideDismissed() {
-  try { return localStorage.getItem("sitewhy-guide-dismissed") === "1"; }
-  catch { return false; }
-}
-
 function shortAddress(address) {
   return String(address || "").split(",")[0].trim();
 }
@@ -85,12 +77,9 @@ async function bootPortfolio() {
   const hash = parseHash();
   if (hash) {
     await restoreHash(hash);
-  } else if (guideDismissed()) {
+  } else {
     const first = rows.find((r) => (r.kind || "showcase") === "showcase") || rows[0];
     if (first) await selectRow(first.kind || "showcase", first.id || first.name, false);
-    else showGuide(false);
-  } else {
-    showGuide(false);
   }
 }
 
@@ -113,7 +102,10 @@ function setHash(kind, id) {
 
 addEventListener("hashchange", () => {
   const hash = parseHash();
-  if (!hash) { showGuide(!!state.currentReport); return; }
+  if (!hash) {
+    if (!state.currentReport) { $("report-view").hidden = true; $("report-empty").hidden = false; }
+    return;
+  }
   const key = `${hash.kind}:${hash.id}`;
   const cur = state.selected ? `${state.selected.kind === "live" ? "run" : "site"}:${state.selected.id}` : "";
   if (key !== cur) restoreHash(hash);
@@ -516,7 +508,6 @@ function synthModel(report) {
 async function selectSite(name, fly) {
   state.selected = { kind: "showcase", id: name };
   setHash("showcase", name);
-  dismissGuide();
   renderPortfolio();
   renderDots();
   let report = state.reports[name];
@@ -556,7 +547,6 @@ async function fetchLiveContext(id, report) {
 async function selectLive(id, fly) {
   state.selected = { kind: "live", id };
   setHash("live", id);
-  dismissGuide();
   renderPortfolio();
   renderDots();
   let report = state.reports[`live:${id}`];
@@ -769,7 +759,6 @@ window.SiteWhy = {
 function showErrorCard(title, message) {
   state.currentReport = null;
   state.currentCtx = null;
-  hideGuide();
   $("report-empty").hidden = true;
   $("report-view").hidden = false;
   $("banner-dot").className = "dot unknown";
@@ -793,7 +782,6 @@ function showErrorCard(title, message) {
 function showReport(report, ctx, fly) {
   state.currentReport = report;
   state.currentCtx = ctx || null;
-  hideGuide();
   $("report-empty").hidden = true;
   $("report-view").hidden = false;
   $("banner-dot").className = `dot ${verdictClass(report.verdict)}`;
@@ -827,17 +815,6 @@ function showReport(report, ctx, fly) {
 
 function showMapFallbackCoords(report, ctx) {
   if (!$("map-fallback").hidden) showMapFallback(report.jurisdiction.lat, report.jurisdiction.lon, ctx.google_maps_url);
-}
-
-function showGuide(withBack) {
-  $("guide").hidden = false;
-  $("report-view").hidden = true;
-  $("report-empty").hidden = true;
-  $("guide-back").hidden = !(withBack && state.currentReport);
-}
-
-function hideGuide() {
-  $("guide").hidden = true;
 }
 
 function runningRow(addressLabel, mw) {
@@ -894,7 +871,6 @@ async function submitRun(body, addressLabel) {
     state.contexts[`live:${data.run_id}`] = ctx;
     state.selected = { kind: "live", id: data.run_id };
     setHash("live", data.run_id);
-    dismissGuide();
     try {
       state.rows = await api("/portfolio");
     } catch { /* keep current rows; the report below is authoritative */ }
@@ -935,17 +911,8 @@ $("copy-link")?.addEventListener("click", async () => {
   }
 });
 
-$("guide-glossary").innerHTML = Object.entries(GLOSSARY).map(([term, def]) =>
+$("legend-glossary").innerHTML = Object.entries(GLOSSARY).map(([term, def]) =>
   `<dt>${esc(term)}</dt><dd>${esc(def)}</dd>`).join("");
-
-$("guide-open")?.addEventListener("click", () => showGuide(true));
-$("guide-back")?.addEventListener("click", () => {
-  if (state.currentReport) { hideGuide(); $("report-view").hidden = false; }
-});
-$("guide-try")?.addEventListener("click", () => {
-  dismissGuide();
-  selectRow("showcase", "md-washington-county-unincorporated", true);
-});
 
 $("download-json")?.addEventListener("click", () => {
   if (!state.currentReport) return;

@@ -28,7 +28,18 @@ h2 { font-size: 13px; font-family: var(--mono); font-weight: 600; text-transform
 .brand { margin-bottom: 12px; }
 .center { min-width: 0; display: flex; flex-direction: column; padding: 20px 16px; gap: 16px; }
 #report-view { display: flex; flex-direction: column; gap: 16px; width: 100%; max-width: 920px; margin: 0 auto; }
-#guide, #report-empty { width: 100%; max-width: 920px; margin: 0 auto; }
+#how, #report-empty { width: 100%; max-width: 920px; margin: 0 auto; }
+#how { border: 3px solid var(--ink); border-radius: 0; background: var(--panel);
+  box-shadow: 5px 5px 0 var(--shadow); padding: 8px 12px; }
+.how-steps { list-style: none; counter-reset: how; display: grid;
+  grid-template-columns: repeat(3, 1fr); gap: 4px 16px; margin: 0; padding: 0; font-size: 14px; }
+.how-steps li { display: flex; gap: 8px; align-items: baseline; overflow-wrap: anywhere; }
+.how-steps li::before { counter-increment: how; content: counter(how); flex: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; background: var(--ink); color: var(--bg);
+  font: 700 13px var(--sans); transform: translateY(3px); }
+.how-sponsor { margin: 6px 0 0; font: 12px var(--mono); color: var(--ink-2); overflow-wrap: anywhere; }
+@media (max-width: 700px) { .how-steps { grid-template-columns: 1fr; } }
 
 @media (min-width: 1180px) {
   .shell { display: grid; grid-template-columns: 280px minmax(0, 1fr); height: 100dvh; min-height: 0; }
@@ -42,7 +53,8 @@ h2 { font-size: 13px; font-family: var(--mono); font-weight: 600; text-transform
   .center { display: contents; }
   .brand { order: 1; padding: 20px 16px 0; }
   .shell #demo-roll { order: 2; margin: 0 16px; width: auto; }
-  #guide, #report-empty, #report-view { order: 3; padding: 0 16px; margin: 0 auto; max-width: 920px; width: 100%; }
+  #how, #report-empty, #report-view { order: 3; padding: 0 16px; margin: 0 auto; max-width: 920px; width: 100%; }
+  .rail .rail-tools { order: 1; padding: 8px 16px 0; width: 100%; }
   .rail section[aria-labelledby="portfolio-h"] { order: 4; padding: 0 16px; max-width: 920px; width: 100%; margin: 0 auto; }
   .rail section[aria-labelledby="screen-h"] { order: 5; padding: 0 16px; max-width: 920px; width: 100%; margin: 0 auto; }
   .rail-buttons { order: 6; padding: 0 16px 20px; margin-bottom: 0; }
@@ -124,6 +136,8 @@ body.demo-running .center { padding-bottom: 180px; }
 .tile dd small { display: block; font: 12px var(--mono); font-weight: 400; color: var(--ink-2); }
 
 .rail-buttons { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; }
+.rail-buttons:empty { display: none; }
+.rail .rail-tools { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; }
 .answer-first { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
 #report-view, .map-wrap, .layers, .disclosure { min-width: 0; }
 #flips-top { overflow-x: auto; }
@@ -141,11 +155,7 @@ body.demo-running .center { padding-bottom: 180px; }
 .share-items { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
 .share-items button { font: 600 13px var(--sans); color: var(--ink); background: var(--panel);
   border: 3px solid var(--ink); border-radius: 0; padding: 8px 12px; min-height: 44px; cursor: pointer; }
-#guide-open { width: 44px; height: 44px; border-radius: 0; border: 3px solid var(--ink);
-  background: var(--panel); color: var(--ink); font: 700 18px var(--sans); cursor: pointer; flex: none; }
-#report-empty p, #guide p { max-width: 60ch; }
-.guide-steps { margin: 0 0 12px; padding-left: 24px; display: flex; flex-direction: column; gap: 8px; }
-.guide-steps li { overflow-wrap: anywhere; }
+#report-empty p { max-width: 60ch; }
 .try-btn { font: 700 14px var(--sans); color: var(--accent-ink); background: var(--accent);
   border: 3px solid var(--ink); border-radius: 0; box-shadow: 5px 5px 0 var(--shadow);
   padding: 8px 16px; min-height: 44px; cursor: pointer; }
@@ -236,7 +246,7 @@ body.demo-running .center { padding-bottom: 180px; }
   #run-btn, .try-btn, .ghost-btn { box-shadow: none; }
   .shell { display: block; height: auto; }
   .rail, .map-wrap, .layers, .disclosure, .share-menu, #run-status, #copy-status,
-  #guide, #report-empty, .map-note, .gloss:hover::after { display: none; }
+  #report-empty, .map-note, .gloss:hover::after { display: none; }
   .center { overflow: visible; border: 0; padding: 0; display: block; }
   #report-view { display: block; max-width: none; }
   .print-head, .print-disc { display: block; }
