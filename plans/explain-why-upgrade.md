@@ -623,4 +623,4 @@ One commit per todo, in todo order, on `master`, using the messages above. No AI
 - [ ] C007 | channel: tmux | test: tests/test_eval.py::test_showcase_ground_truth | scenario: scripts/eval.py prints 3/3; live critic test catches ≥2 of 3 seeded faults
 - [ ] C008 | channel: HTTP | test: tests/test_api_runs.py::test_sample_mode_disables_live_runs | scenario: clean clone with no keys and no external network serves all samples, explanations and cached overlays; Screen disabled with a visible note
 - [ ] C009 | channel: browser | test: tests/test_orchestrator.py::test_out_of_coverage_site | scenario: a VA address completes or fails clearly, never crashes, and the coverage note appears
-- [ ] C010 | channel: browser | test: interface-probe | scenario: 0 HIGH at 320/390/768/1440, dark mode, reduced motion and 200% zoom; tile failure falls back to coordinates and the Google Maps link
+- [x] C010 | channel: browser | test: interface-probe | scenario: 0 HIGH at 320/390/768/1440, dark mode, reduced motion and 200% zoom; tile failure falls back to coordinates and the Google Maps link

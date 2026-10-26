@@ -42,6 +42,7 @@ Deadline: **10/28 08:45 KST** (hard). Internal submit target: **10/27 22:00 KST*
 - [x] Todo 12 HTML report UI (HQ console, interface probe 0 HIGH, F3 manual QA pass)
 - [x] Todo 14 replay / `SAMPLE_MODE` (clean clone with no keys passes)
 - [x] Todo 13 eval (showcase ground truth 3/3, critic seeded faults 3/3)
+- [x] HQ demo roll (8-step guided tour, `#/demo`), Midnight Ops theme and answer-first layout (`plans/hq-demo-roll.md`)
 - Done when: a clean clone runs in `SAMPLE_MODE=true` with no keys, and the UI shows the full report for all 3 sites
 
 ### M4. Submitted (10/27 by 22:00)
