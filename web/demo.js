@@ -59,10 +59,12 @@
       return `“${clip(fact.quote, 140)}” — recorded as ${txt(fact.verification, "checked")}.`;
     },
     catches: (r) => {
-      const c = r.explanation?.catches?.[0];
+      const all = r.explanation?.catches || [];
+      const rank = (k) => ({ source_conflict: 0, unsupported_link: 1, correction: 2, conflict: 3 })[k] ?? (k === "retry" ? 9 : 5);
+      const c = all.slice().sort((a, b) => rank(a.kind) - rank(b.kind))[0];
       if (!c) return "No double-checks were needed on this run.";
       const t = clip(c.text, 130);
-      return `A second agent (${txt(c.actor, "reviewer")}, ${txt(c.kind, "check").replace(/_/g, " ")}) flagged this run: ${t}${t.endsWith(".") ? "" : "."}`;
+      return `A second agent (${txt(c.actor, "reviewer")}, ${txt(c.kind, "check").replace(/_/g, " ")}) flagged this run: ${t}${/[.…]$/.test(t) ? "" : "."}`;
     },
     trace: (r) => {
       const m = r.model_trace?.[0];
