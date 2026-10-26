@@ -1,1 +1,114 @@
-/* SiteWhy lanes module */
+/* SiteWhy agent-lanes module: swimlane of who ran each step. */
+
+#agent-lanes {
+  min-width: 0;
+}
+
+.lanes-summary {
+  font-size: 14px;
+  margin: 0 0 12px;
+  max-width: 70ch;
+}
+
+.lanes-scroll {
+  overflow-x: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 4px;
+  max-width: 100%;
+}
+
+.lane-row {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+  min-width: min-content;
+}
+
+.lane-role {
+  flex: none;
+  width: 148px;
+  font: 700 11px/1.3 var(--mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  background: var(--panel);
+  border: 3px solid var(--ink);
+  border-radius: 0;
+  padding: 8px 10px;
+  overflow-wrap: anywhere;
+}
+
+.lane-flag {
+  color: var(--accent-ink);
+  background: var(--accent);
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  padding: 0 5px;
+  margin-left: 6px;
+  cursor: help;
+  white-space: nowrap;
+}
+
+.lane-blocks {
+  display: flex;
+  gap: 8px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.lane-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 120px;
+  background: var(--panel);
+  border: 3px solid var(--ink);
+  border-radius: 0;
+  box-shadow: 5px 5px 0 var(--shadow);
+  padding: 6px 10px;
+  overflow-wrap: anywhere;
+}
+
+.lane-step {
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.lane-model {
+  font: 11px var(--mono);
+  color: var(--ink-2);
+  overflow-wrap: anywhere;
+}
+
+.lane-badge {
+  align-self: flex-start;
+  font: 600 11px var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  padding: 0 5px;
+  margin-top: 2px;
+}
+
+.lane-data .lane-role {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.lane-data-cell {
+  box-shadow: none;
+  font: 12px var(--mono);
+}
+
+#agent-lanes .note {
+  margin: 0;
+}
+
+@media print {
+  #agent-lanes .lanes-scroll {
+    display: none;
+  }
+}
