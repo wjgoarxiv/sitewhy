@@ -174,13 +174,14 @@ body.demo-running .center { padding-bottom: 180px; }
 .answer-first > div:empty, .disclosure > div:empty { display: none; }
 .decisive { border: 3px solid var(--ink); border-radius: 0; box-shadow: 5px 5px 0 var(--shadow);
   padding: 12px; margin-bottom: 12px; background: var(--panel); }
-.decisive h3 { font-size: 18px; font-weight: 900; margin: 0 0 4px; overflow-wrap: anywhere; }
+.decisive h3 { font-size: 16px; font-weight: 900; margin: 0 0 4px; overflow-wrap: anywhere; }
 .decisive .step { margin: 8px 0 0; }
-.decisive .step-label { font: 11px/1.3 var(--mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-2); }
+.decisive .step-label { font: 12px/1.3 var(--mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-2); }
 .decisive blockquote { margin: 4px 0 0; padding: 8px 12px; background: var(--bg);
-  border: 2px solid var(--ink); border-radius: 0; font-size: 14px; overflow-wrap: anywhere; }
-.decisive blockquote .meta { display: block; font: 11px var(--mono); color: var(--ink-2); margin-top: 4px; }
-.decisive .rule-line, .decisive .check-line, .decisive .result-line { font-size: 14px; margin: 4px 0 0; overflow-wrap: anywhere; }
+  border: 2px solid var(--ink); border-radius: 0; font-size: 15px; overflow-wrap: anywhere; }
+.decisive blockquote .meta { display: block; font: 12px var(--mono); color: var(--ink-2); margin-top: 4px; }
+.decisive .rule-line, .decisive .check-line, .decisive .result-line { font-size: 15px; margin: 4px 0 0; overflow-wrap: anywhere; }
+mark { background: var(--highlight); color: var(--ink); padding: 0 3px; }
 .decisive .result-line { font-weight: 650; }
 .adjudicator { font-size: 13px; color: var(--ink-2); margin: 12px 0 0; max-width: 70ch; }
 .openq { margin: 8px 0; padding-left: 24px; font-size: 14px; }
@@ -202,11 +203,11 @@ body.demo-running .center { padding-bottom: 180px; }
 .rule-row details { font-size: 13px; }
 .rule-row summary { cursor: pointer; min-height: 44px; padding: 8px 0; }
 .ev-item { margin: 8px 0; padding: 8px 12px; background: var(--bg);
-  border: 2px solid var(--ink); border-radius: 0; overflow-wrap: anywhere; }
+  border: 2px solid var(--ink); border-radius: 0; overflow-wrap: anywhere; max-width: 65ch; }
 .ev-item .meta { display: block; font: 11px var(--mono); color: var(--ink-2); margin-top: 4px; }
 .watch-row { border-top: 1px solid var(--rule); padding: 8px 0; font-size: 13px; }
 .watch-row .tag { margin-left: 8px; }
-.tag { display: inline-block; font: 600 11px var(--mono); padding: 2px 6px; border-radius: 0; border: 2px solid var(--ink); }
+.tag { display: inline-block; font: 600 12px var(--mono); padding: 2px 6px; border-radius: 0; border: 2px solid var(--ink); }
 .tag.verified { background: var(--mist); color: var(--mist-ink); border-color: var(--mist); }
 .tag.estimate { border-style: dashed; }
 .feed { list-style: none; margin: 0 0 8px; padding: 0; font-size: 13px; }

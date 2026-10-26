@@ -14,6 +14,53 @@ const LAMP_WORD = {
   fatal: "Stop", major: "Needs a fix", minor: "Noted", clear: "Clear",
   unknown: "Not checked", not_modelled: "Out of scope",
 };
+const MONTH_NAMES = "January|February|March|April|May|June|July|August|September|October|November|December";
+const NUMBER_WORDS = "one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve";
+
+function escapeRegExp(s) {
+  return String(s || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+// Data-driven emphasis: wrap the FIRST key-phrase match in <mark>.
+// Field selects the pattern; parameters/jurisdiction supply scope literals.
+// No match → the escaped quote is returned unchanged. Never hard-codes text.
+function markKeyPhrase(escapedQuote, field, parameters, jurisdiction) {
+  const quote = String(escapedQuote ?? "");
+  const candidates = [];
+  if (field === "duration_days") {
+    candidates.push(new RegExp(`\\b(?:${NUMBER_WORDS}|\\d+)\\s*(?:\\(\\d+\\)\\s*)?(?:months?|days?|weeks?|years?)\\b`, "i"));
+  } else if (field === "effective") {
+    candidates.push(new RegExp(`\\b\\d{1,2}(?:st|nd|rd|th)?\\s+(?:day\\s+of\\s+)?(?:${MONTH_NAMES})[,\\s]+\\d{4}\\b`, "i"));
+  } else if (field === "scope") {
+    const scope = parameters && parameters.scope ? esc(String(parameters.scope)) : "";
+    if (scope) candidates.push(new RegExp(`\\b${escapeRegExp(scope)}\\b`, "i"));
+    const county = jurisdiction && jurisdiction.county_name ? esc(String(jurisdiction.county_name)) : "";
+    if (county) candidates.push(new RegExp(escapeRegExp(county), "i"));
+    const place = jurisdiction && jurisdiction.place ? esc(String(jurisdiction.place)) : "";
+    if (place) candidates.push(new RegExp(escapeRegExp(place), "i"));
+  } else {
+    candidates.push(/\b\d[\d,]*\.?\d*\s*(?:tpy|MW|megawatts?|kV|kW|%)\b/i);
+  }
+  for (const pat of candidates) {
+    const m = pat.exec(quote);
+    if (m) return quote.slice(0, m.index) + "<mark>" + m[0] + "</mark>" + quote.slice(m.index + m[0].length);
+  }
+  return quote;
+}
+
+// Bold dates (YYYY-MM-DD) and quantities in already-escaped HTML.
+function boldFigures(escapedHtml) {
+  return String(escapedHtml ?? "").replace(/\b(\d{4}-\d{2}-\d{2}|\d[\d,]*\.?\d*\s*(?:tpy|MW|megawatts?|kV|kW|%))/g, "<strong>$1</strong>");
+}
+
+// Headline without the repeated verdict prefix, cause phrase bolded.
+function headlineHtml(report) {
+  const head = (report && report.explanation && report.explanation.headline) || "";
+  const word = VERDICT_TEXT[report && report.verdict];
+  const prefix = word ? `${word}:` : "";
+  const rest = prefix && head.startsWith(prefix) ? head.slice(prefix.length).trimStart() : head;
+  return `<strong>${esc(rest)}</strong>`;
+}
 
 async function api(path, opts) {
   const res = await fetch(path, opts);
@@ -485,19 +532,21 @@ function sourceLink(url, provenance) {
   return esc(url || label);
 }
 
-function evItem(ev) {
+function evItem(ev, extra) {
   const field = ev.field === "other" ? "" : fieldLabel(ev.field);
-  return `<div class="ev-item">“${esc(ev.quote)}”`
+  const quote = markKeyPhrase(esc(ev.quote), ev.field,
+    extra && extra.parameters, extra && extra.jurisdiction);
+  return `<div class="ev-item">“${quote}”`
     + `<span class="meta"><span class="tag ${esc(ev.verification)}">${esc(ev.verification)}</span>`
     + `${field ? ` ${esc(field)} · ` : " "}${sourceLink(ev.url, ev.provenance)}</span></div>`;
 }
 
-function evidenceBlock(list) {
+function evidenceBlock(list, extra) {
   const shown = (list || []).filter((e) => e.field !== "other");
   if (!shown.length) return `<p class="note">No cited evidence.</p>`;
-  const first = shown.slice(0, 3).map(evItem).join("");
+  const first = shown.slice(0, 3).map((e) => evItem(e, extra)).join("");
   if (shown.length <= 3) return first;
-  return first + `<details><summary>Show ${shown.length - 3} more</summary>${shown.slice(3).map(evItem).join("")}</details>`;
+  return first + `<details><summary>Show ${shown.length - 3} more</summary>${shown.slice(3).map((e) => evItem(e, extra)).join("")}</details>`;
 }
 
 function synthModel(report) {
@@ -583,12 +632,13 @@ function projectLine(report) {
 
 function decisiveCard(d, report, demo) {
   const f = (report.findings || []).find((x) => x.rule_id === d.rule_id);
+  const extra = { parameters: f && f.parameters, jurisdiction: report.jurisdiction };
   return `<div class="decisive"${demo ? ` data-demo="decisive"` : ""}><h3>${esc(d.title)} ${gradeChip(d.grade)}</h3>`
     + `<p class="step"><span class="step-label">Source says</span></p>`
-    + (d.fact?.quote ? evItem(d.fact) : `<p class="note">No verified quote.</p>`)
+    + (d.fact?.quote ? evItem(d.fact, extra) : `<p class="note">No verified quote.</p>`)
     + (d.more_sources ? `<p class="note">Plus ${esc(d.more_sources)} more source${d.more_sources === 1 ? "" : "s"}.</p>` : "")
-    + `<p class="rule-line"><span class="step-label">Rule</span> ${esc(f?.reason || `${LAYER_NAMES[d.layer] || d.layer} rule`)}</p>`
-    + `<p class="check-line"><span class="step-label">Check</span> ${esc(d.computation || "")}</p>`
+    + `<p class="rule-line"><span class="step-label">Rule</span> ${boldFigures(esc(f?.reason || `${LAYER_NAMES[d.layer] || d.layer} rule`))}</p>`
+    + `<p class="check-line"><span class="step-label">Check</span> ${boldFigures(esc(d.computation || ""))}</p>`
     + `<p class="result-line"><span class="step-label">Result</span> ${esc(d.result || "")}</p></div>`;
 }
 
@@ -660,7 +710,7 @@ function renderRules(report) {
       `<div class="rule-row"><div class="rule-head">${gradeChip(f.grade)}`
       + `<span class="rule-title">${esc(f.title)}</span>`
       + `<span class="note">applies: ${esc(f.applies)}</span></div>`
-      + `<p class="reason">${esc(f.reason || "")}</p>${evidenceBlock(f.evidence)}</div>`).join("");
+      + `<p class="reason">${esc(f.reason || "")}</p>${evidenceBlock(f.evidence, { parameters: f.parameters, jurisdiction: report.jurisdiction })}</div>`).join("");
     return `<h3>${esc(LAYER_NAMES[layer] || layer)}</h3>${fs}`;
   }).join("");
   const watch = (report.state_watch || []).map((w) =>
@@ -786,7 +836,7 @@ function showReport(report, ctx, fly) {
   $("report-view").hidden = false;
   $("banner-dot").className = `dot ${verdictClass(report.verdict)}`;
   $("banner-verdict").textContent = VERDICT_TEXT[report.verdict] || report.verdict;
-  $("banner-headline").textContent = report.explanation?.headline || "";
+  $("banner-headline").innerHTML = headlineHtml(report);
   $("banner-project").textContent = projectLine(report);
   $("print-site").textContent = projectLine(report);
   $("print-disc").textContent = report.disclaimer || "";
