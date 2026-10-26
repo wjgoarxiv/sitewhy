@@ -4,15 +4,15 @@ const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({
 }[c]));
 const VERDICT_TEXT = {
   "no-go": "No-go", go: "Go", conditional: "Conditional",
-  needs_confirmation: "Needs confirmation",
+  needs_confirmation: "Needs one more check",
 };
 const LAMPS = [
   ["federal", "Federal"], ["iso_rto", "Grid/ISO"], ["state", "State"],
   ["county", "County"], ["city", "City"],
 ];
 const LAMP_WORD = {
-  fatal: "Fatal", major: "Major", minor: "Minor", clear: "Clear",
-  unknown: "Unknown", not_modelled: "Not modelled",
+  fatal: "Stop", major: "Needs a fix", minor: "Noted", clear: "Clear",
+  unknown: "Not checked", not_modelled: "Out of scope",
 };
 
 async function api(path, opts) {
@@ -314,14 +314,12 @@ function renderDots() {
 
 function onMapClick(e) {
   if (!state.map || Date.now() - state.popupAt < 500) return;
+  if (state.sampleMode) return;
   const lat = Math.round(e.latlng.lat * 10000) / 10000;
   const lon = Math.round(e.latlng.lng * 10000) / 10000;
   const div = document.createElement("div");
   div.className = "map-popup";
-  if (state.sampleMode) {
-    div.innerHTML = `<p><strong>Screen this location</strong><br>${esc(lat)}, ${esc(lon)}</p>`
-      + `<p class="note">Live runs are off in sample mode — pick a site from the portfolio.</p>`;
-  } else {
+  {
     div.innerHTML = `<p><strong>Screen this location</strong><br>${esc(lat)}, ${esc(lon)}</p>`
       + `<form><div class="field"><label class="label" for="popup-mw">IT load (MW)</label>`
       + `<input id="popup-mw" name="mw" type="number" min="1" max="10000" step="1" value="300" required></div>`
@@ -368,17 +366,16 @@ function lampFor(layer, report) {
 function renderLamps(report) {
   $("lamps").innerHTML = LAMPS.map(([key, name]) => {
     const { lamp, summary } = lampFor(key, report);
-    return `<li class="lamp" tabindex="0" aria-label="${esc(name)}: ${esc(LAMP_WORD[lamp])}. ${esc(summary)}">`
+    return `<li class="lamp" tabindex="0" aria-label="${esc(name)}: ${esc(LAMP_WORD[lamp])}. ${esc(summary)}" title="${esc(summary)}">`
       + `<span class="dot ${esc(lamp)}" aria-hidden="true"></span>`
-      + `<span><span class="name">${esc(name)}</span><span class="state">${esc(LAMP_WORD[lamp])}</span>`
-      + `<span class="summary">${esc(summary)}</span></span></li>`;
+      + `<span class="name">${esc(name)}</span><span class="state">${esc(LAMP_WORD[lamp])}</span></li>`;
   }).join("");
 }
 
 function renderLampsFallback() {
   $("lamps").innerHTML = LAMPS.map(([, name]) =>
     `<li class="lamp"><span class="dot unknown" aria-hidden="true"></span>`
-    + `<span><span class="name">${esc(name)}</span><span class="state">Unknown</span></span></li>`).join("");
+    + `<span class="name">${esc(name)}</span><span class="state">Not checked</span></li>`).join("");
 }
 
 function splitModels(calls) {
@@ -435,15 +432,6 @@ function statsFor(report) {
   ];
 }
 
-function updateScrollCue() {
-  const board = document.querySelector(".statusboard");
-  const cue = $("scroll-cue");
-  if (!board || !cue) return;
-  const scrollable = board.scrollHeight > board.clientHeight + 8;
-  const atBottom = board.scrollTop + board.clientHeight >= board.scrollHeight - 8;
-  cue.hidden = !(scrollable && !atBottom);
-}
-
 function renderTelemetry(report) {
   $("telemetry").innerHTML = statsFor(report).map((t) =>
     `<div class="tile"><dt>${esc(t.label)}</dt><dd>${esc(t.value)}${t.sub ? `<small>${esc(t.sub)}</small>` : ""}</dd></div>`).join("");
@@ -454,14 +442,13 @@ function renderTelemetryFallback() {
     .map((label) => `<div class="tile"><dt>${esc(label)}</dt><dd>—</dd></div>`).join("");
 }
 
-const TABS = [
-  ["answer", "Answer & why"], ["flips", "What would change it"],
-  ["caught", "What the agents caught"], ["rules", "All rules"], ["hood", "Under the hood"],
-];
 const GLOSSARY = {
-  fatal: "A decisive rule that applies: the site cannot proceed as proposed.",
-  major: "Applies, but a condition, waiver or design change may resolve it.",
-  minor: "Applies with limited impact; noted for the record.",
+  stop: "A decisive rule applies: the site cannot proceed as proposed.",
+  "needs a fix": "Applies, but a condition, waiver or design change may resolve it.",
+  noted: "Applies with limited impact; noted for the record.",
+  clear: "No blocking rule at this layer.",
+  "not checked": "Not yet evaluated.",
+  "out of scope": "This layer does not model this site.",
   info: "Background information; it does not affect the verdict.",
   "grid/iso": "The power market operator for the site, for example PJM or ERCOT.",
   moratorium: "A temporary pause on accepting or approving data center projects.",
@@ -602,41 +589,51 @@ function projectLine(report) {
   return bits.filter(Boolean).join(" · ");
 }
 
-function renderAnswer(report) {
-  const exp = report.explanation || {};
-  const decisive = exp.decisive || [];
+function decisiveCard(d, report, demo) {
+  const f = (report.findings || []).find((x) => x.rule_id === d.rule_id);
+  return `<div class="decisive"${demo ? ` data-demo="decisive"` : ""}><h3>${esc(d.title)} ${gradeChip(d.grade)}</h3>`
+    + `<p class="step"><span class="step-label">Source says</span></p>`
+    + (d.fact?.quote ? evItem(d.fact) : `<p class="note">No verified quote.</p>`)
+    + (d.more_sources ? `<p class="note">Plus ${esc(d.more_sources)} more source${d.more_sources === 1 ? "" : "s"}.</p>` : "")
+    + `<p class="rule-line"><span class="step-label">Rule</span> ${esc(f?.reason || `${LAYER_NAMES[d.layer] || d.layer} rule`)}</p>`
+    + `<p class="check-line"><span class="step-label">Check</span> ${esc(d.computation || "")}</p>`
+    + `<p class="result-line"><span class="step-label">Result</span> ${esc(d.result || "")}</p></div>`;
+}
+
+function openQuestionsHtml(report) {
   const needs = report.needs_confirmation || [];
-  const cards = decisive.map((d) => {
-    const f = (report.findings || []).find((x) => x.rule_id === d.rule_id);
-    return `<div class="decisive"><h3>${esc(d.title)} ${gradeChip(d.grade)}</h3>`
-      + `<p class="step"><span class="step-label">Source says</span></p>`
-      + (d.fact?.quote ? evItem(d.fact) : `<p class="note">No verified quote.</p>`)
-      + (d.more_sources ? `<p class="note">Plus ${esc(d.more_sources)} more source${d.more_sources === 1 ? "" : "s"}.</p>` : "")
-      + `<p class="rule-line"><span class="step-label">Rule</span> ${esc(f?.reason || `${LAYER_NAMES[d.layer] || d.layer} rule`)}</p>`
-      + `<p class="check-line"><span class="step-label">Check</span> ${esc(d.computation || "")}</p>`
-      + `<p class="result-line"><span class="step-label">Result</span> ${esc(d.result || "")}</p></div>`;
-  }).join("");
   const model = synthModel(report);
   const why = `<p class="adjudicator">Adjudicator${model ? ` (${esc(model)})` : ""}: ${esc(report.why || "")}</p>`;
   const open = needs.length
     ? `<h3>Open questions</h3><ul class="openq">${needs.map((o) =>
       `<li><strong>${esc(o.rule_id)}</strong> <span class="tag">${esc((o.type || "").replace(/_/g, " "))}</span><br>${esc(o.text)}${o.question ? `<div class="q">To resolve: ${esc(o.question)}</div>` : ""}</li>`).join("")}</ul>`
     : "";
-  return (cards || `<p class="note">No decisive rules.</p>`) + why + open;
+  return why + open;
 }
 
-function renderFlips(report) {
-  const flips = (report.explanation || {}).flips || [];
-  if (!flips.length) return `<p class="note">No single change flips the answer.</p>`;
+function flipsTable(rows) {
   return `<table class="flips-table"><thead><tr><th>Change</th><th>Effect</th><th>Estimated verdict</th></tr></thead><tbody>`
-    + flips.map((f) => `<tr><td>${esc(f.change)}</td><td>${esc(f.effect)}</td>`
+    + rows.map((f) => `<tr><td>${esc(f.change)}</td><td>${esc(f.effect)}</td>`
       + `<td><span class="tag estimate"${glossAttrs("estimate")}>estimate</span> ${esc(f.estimated_verdict)}</td></tr>`).join("")
     + `</tbody></table>`;
 }
 
+function renderFlipsTop(report) {
+  const flips = (report.explanation || {}).flips || [];
+  if (!flips.length) return `<div data-demo="flips"><h3>What would change it</h3><p class="note">No single change flips the answer.</p></div>`;
+  return `<div data-demo="flips"><h3>What would change it</h3>${flipsTable(flips.slice(0, 2))}</div>`;
+}
+
+function renderFlipsRest(report) {
+  const flips = (report.explanation || {}).flips || [];
+  if (flips.length <= 2) return "";
+  return `<h3>More changes that flip it</h3>${flipsTable(flips.slice(2))}`;
+}
+
 function renderCaught(report) {
   const exp = report.explanation || {};
-  const catches = (exp.catches || []).map((c) =>
+  const list = exp.catches || [];
+  const catches = list.map((c) =>
     `<div class="catch"><span class="actor">${esc(c.actor)} · ${esc((c.kind || "").replace(/_/g, " "))}</span>`
     + `<span class="note">round ${esc(c.round)}</span><p>${esc(c.text)}</p>`
     + (c.outcome ? `<p class="outcome">Outcome: ${esc(c.outcome)}</p>` : "") + `</div>`).join("");
@@ -649,8 +646,9 @@ function renderCaught(report) {
     return `<div class="sens-row">Sources disagree on ${esc(fieldLabel(s.field).toLowerCase())}: ${esc(rs)} — `
       + (s.holds ? "verdict holds under both readings" : "still open for your team") + `</div>`;
   }).join("");
-  if (!catches && !sens) return `<p class="note">No corrections and no source disagreements.</p>`;
-  return (catches ? `<h3>Agent catches</h3>${catches}` : "")
+  const head = `<h3>Double-checks (${list.length})</h3>`;
+  if (!catches && !sens) return `${head}<p class="note">No double-checks and no source disagreements.</p>`;
+  return head + catches
     + (sens ? `<h3>Source disagreements</h3>${sens}` : "");
 }
 
@@ -725,7 +723,7 @@ function feedHtml(events, started) {
   }).join("")}</ul>`;
 }
 
-function renderHood(report) {
+function renderTrace(report) {
   const models = (report.model_trace || []).map((t) =>
     `<tr><td>${esc(t.role)}</td><td>${esc(String(t.model || "").replace(/^nvidia\//, ""))}${t.escalated_from ? " ↑" : ""}</td>`
     + `<td>${esc(t.receipt_id || "")}</td><td>${esc(t.latency_ms ?? "")}</td></tr>`).join("");
@@ -737,48 +735,32 @@ function renderHood(report) {
     + `${r.duration_ms !== undefined ? `, ${Math.round(r.duration_ms)} ms` : ""}`
     + `${r.total_tokens_saved ? `, ${r.total_tokens_saved} tokens saved` : ""}</li>`).join("");
   const claims = (report.findings || []).reduce((a, f) => a + (f.evidence || []).length, 0);
-  return `<h3>Model trace</h3>`
+  return `<h3>How this was built</h3>`
+    + `<h4>Model trace</h4>`
     + (models ? `<table class="flips-table"><thead><tr><th>Role</th><th>Model</th><th>Receipt</th><th>ms</th></tr></thead><tbody>${models}</tbody></table>` : `<p class="note">No model calls.</p>`)
-    + `<h3>Data trace</h3>`
+    + `<h4>Data trace</h4>`
     + (data ? `<table class="flips-table"><thead><tr><th>Backend</th><th>Status</th><th>Rows</th></tr></thead><tbody>${data}</tbody></table>` : `<p class="note">No queries.</p>`)
-    + `<h3>Agent timeline</h3>${feedHtml(report.events, null)}`
-    + `<h3>Markovian runs</h3>`
+    + `<h4>Markovian runs</h4>`
     + (markovian ? `<ul class="openq">${markovian}</ul><p class="note">${stats.markovian_chunks ?? 0} chunks, ${stats.markovian_tokens_saved ?? 0} tokens saved.</p>` : `<p class="note">No Markovian runs.</p>`)
-    + `<h3>World Model</h3><p class="note">${claims} evidence claims across ${(report.findings || []).length} findings, ${(report.conflicts || []).length} conflict(s), ${(report.needs_confirmation || []).length} open objection(s).</p>`
+    + `<h4>World Model</h4><p class="note">${claims} evidence claims across ${(report.findings || []).length} findings, ${(report.conflicts || []).length} conflict(s), ${(report.needs_confirmation || []).length} open objection(s).</p>`
     + `<p class="note">${esc(report.disclaimer || "")}</p>`;
 }
 
-function buildTabs() {
-  const bar = $("tablist");
-  if (bar.children.length) return;
-  bar.innerHTML = TABS.map(([id, label], i) =>
-    `<button type="button" class="tab" role="tab" id="tab-${id}" aria-selected="${i === 0}" aria-controls="page-${id}" tabindex="${i === 0 ? 0 : -1}">${esc(label)}</button>`).join("");
-  const tabs = [...bar.querySelectorAll("[role=tab]")];
-  const select = (tab, focus) => {
-    tabs.forEach((t) => {
-      const on = t === tab;
-      t.setAttribute("aria-selected", String(on));
-      t.tabIndex = on ? 0 : -1;
-      document.querySelector(`#${t.getAttribute("aria-controls")}`).hidden = !on;
-    });
-    if (focus) tab.focus();
-  };
-  bar.addEventListener("click", (ev) => {
-    const tab = ev.target.closest("[role=tab]");
-    if (tab) select(tab, false);
-  });
-  bar.addEventListener("keydown", (ev) => {
-    const i = tabs.indexOf(document.activeElement);
-    if (i === -1) return;
-    let n = null;
-    if (ev.key === "ArrowRight") n = (i + 1) % tabs.length;
-    else if (ev.key === "ArrowLeft") n = (i - 1 + tabs.length) % tabs.length;
-    else if (ev.key === "Home") n = 0;
-    else if (ev.key === "End") n = tabs.length - 1;
-    if (n !== null) { ev.preventDefault(); select(tabs[n], true); }
-  });
-  bar._select = (id) => select(bar.querySelector(`#tab-${id}`) || tabs[0], false);
+function renderTimeline(report) {
+  return `<h3>Agent timeline</h3>${feedHtml(report.events, null)}`;
 }
+
+function openChecked(section) {
+  const box = $("disclosure-checked");
+  if (box) box.open = true;
+  const el = document.querySelector(`[data-demo="${section === "trace" ? "trace" : "catches"}"]`);
+  el?.scrollIntoView({ block: "nearest", behavior: reduced() ? "auto" : "smooth" });
+}
+
+window.SiteWhy = {
+  selectSite: (name) => selectSite(name),
+  openChecked,
+};
 
 function showErrorCard(title, message) {
   state.currentReport = null;
@@ -792,13 +774,16 @@ function showErrorCard(title, message) {
   $("banner-project").textContent = "";
   $("print-site").textContent = "";
   $("print-disc").textContent = "";
-  $("page-answer").innerHTML = `<div class="decisive"><h3>${esc(title)}</h3>`
+  $("decisive-first").innerHTML = `<div class="decisive"><h3>${esc(title)}</h3>`
     + `<p class="result-line">${esc(message)}</p>`
     + `<p class="note">Try a different address, or pick a site from the portfolio.</p></div>`;
-  for (const id of ["flips", "caught", "rules", "hood"]) $(`page-${id}`).innerHTML = "";
-  buildTabs();
-  $("tablist")._select("answer");
-  updateScrollCue();
+  $("flips-top").innerHTML = "";
+  $("why-rest").innerHTML = "";
+  $("checked-catches").innerHTML = "";
+  $("checked-rules").innerHTML = "";
+  $("checked-trace").innerHTML = "";
+  renderTelemetryFallback();
+  $("checked-timeline").innerHTML = "";
 }
 
 function showReport(report, ctx, fly) {
@@ -813,21 +798,24 @@ function showReport(report, ctx, fly) {
   $("banner-project").textContent = projectLine(report);
   $("print-site").textContent = projectLine(report);
   $("print-disc").textContent = report.disclaimer || "";
-  $("page-answer").innerHTML = renderAnswer(report);
-  $("page-flips").innerHTML = renderFlips(report);
-  $("page-caught").innerHTML = renderCaught(report);
-  $("page-rules").innerHTML = renderRules(report);
-  $("page-hood").innerHTML = renderHood(report);
-  buildTabs();
-  $("tablist")._select("answer");
+  const decisive = (report.explanation || {}).decisive || [];
+  $("decisive-first").innerHTML = decisive.length
+    ? decisiveCard(decisive[0], report, true)
+    : `<div class="decisive" data-demo="decisive"><p class="note">No decisive rules.</p></div>`;
+  $("flips-top").innerHTML = renderFlipsTop(report);
+  const rest = decisive.slice(1).map((d) => decisiveCard(d, report, false)).join("");
+  $("why-rest").innerHTML = rest + renderFlipsRest(report) + openQuestionsHtml(report);
+  $("checked-catches").innerHTML = renderCaught(report);
+  $("checked-rules").innerHTML = `<h3>All rules</h3>` + renderRules(report);
+  $("checked-trace").innerHTML = renderTrace(report);
+  renderTelemetry(report);
+  $("checked-timeline").innerHTML = renderTimeline(report);
   const chip = $("map-chip");
   chip.textContent = chipText(report);
   chip.hidden = false;
   renderOverlays(report, ctx);
   if (ctx?.google_maps_url) showMapFallbackCoords(report, ctx);
   renderLamps(report);
-  renderTelemetry(report);
-  updateScrollCue();
   if (!fly) state.map?.setView([report.jurisdiction.lat, report.jurisdiction.lon], 12, { animate: false });
 }
 
@@ -967,9 +955,6 @@ $("download-json")?.addEventListener("click", () => {
 
 $("print-brief")?.addEventListener("click", () => window.print());
 
-document.querySelector(".statusboard")?.addEventListener("scroll", updateScrollCue, { passive: true });
-addEventListener("resize", updateScrollCue);
-
 async function boot() {
   if (matchMedia("(max-width: 1179px)").matches) $("portfolio-details").removeAttribute("open");
   try {
@@ -977,6 +962,7 @@ async function boot() {
     state.sampleMode = !!status.sample_mode;
     if (status.sample_mode) {
       $("run-btn").disabled = true;
+      $("screen-details").removeAttribute("open");
       $("form-status").textContent = "Live runs are off in sample mode — pick a site from the portfolio.";
     }
   } catch { /* status optional; submit surfaces errors */ }

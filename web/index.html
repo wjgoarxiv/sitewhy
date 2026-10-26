@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
 <title>SiteWhy HQ — data center site screening</title>
 <link rel="stylesheet" href="/vendor/leaflet/leaflet.css">
 <link rel="stylesheet" href="/app.css">
@@ -21,22 +22,25 @@
     </div>
     <section aria-labelledby="screen-h">
       <h2 id="screen-h">Screen</h2>
-      <form id="run-form">
-        <div class="field grow"><label class="label" for="address">Site address</label>
-          <input id="address" name="address" required value="13820 Pennsylvania Ave, Hagerstown, MD 21742" autocomplete="street-address"></div>
-        <div class="field"><label class="label" for="mw">IT load (MW)</label>
-          <input id="mw" name="mw" type="number" min="1" max="10000" step="1" value="300" required></div>
-        <div class="field"><label class="label" for="permits">Permits submitted</label>
-          <select id="permits" name="permits"><option value="">Unknown</option><option value="no">No</option><option value="yes">Yes</option></select></div>
-        <button id="run-btn" type="submit">Screen site</button>
-      </form>
-      <p class="status" id="form-status" aria-live="polite"></p>
+      <details id="screen-details" open>
+        <summary>Screen a new address</summary>
+        <form id="run-form">
+          <div class="field grow"><label class="label" for="address">Site address</label>
+            <input id="address" name="address" required value="13820 Pennsylvania Ave, Hagerstown, MD 21742" autocomplete="street-address"></div>
+          <div class="field"><label class="label" for="mw">IT load (MW)</label>
+            <input id="mw" name="mw" type="number" min="1" max="10000" step="1" value="300" required></div>
+          <div class="field"><label class="label" for="permits">Permits submitted</label>
+            <select id="permits" name="permits"><option value="">Unknown</option><option value="no">No</option><option value="yes">Yes</option></select></div>
+          <button id="run-btn" type="submit">Screen site</button>
+        </form>
+        <p class="status" id="form-status" aria-live="polite"></p>
+      </details>
     </section>
     <section aria-labelledby="portfolio-h">
       <h2 id="portfolio-h">Portfolio</h2>
       <details id="portfolio-details" open>
         <summary>Showcase sites</summary>
-        <ul class="portfolio" id="portfolio"></ul>
+        <ul class="portfolio" id="portfolio" data-demo="picker"></ul>
       </details>
       <details id="live-details" open hidden>
         <summary>Your screenings</summary>
@@ -46,44 +50,12 @@
     </section>
   </header>
   <main class="center">
-    <section class="map-wrap" aria-label="Site map">
-      <div id="map"></div>
-      <p class="chip" id="map-chip" hidden></p>
-      <div class="map-fallback" id="map-fallback" hidden>
-        <p>Map tiles unavailable — <span id="fallback-coords"></span></p>
-      </div>
-      <p class="map-note" id="map-note" hidden></p>
-    </section>
-    <div class="statusboard">
-      <section aria-labelledby="lamps-h">
-        <h2 id="lamps-h">Site status</h2>
-        <ul class="lamps" id="lamps"></ul>
-      </section>
-      <section aria-labelledby="telemetry-h">
-        <h2 id="telemetry-h">Telemetry</h2>
-        <dl class="tiles" id="telemetry"></dl>
-      </section>
-      <p class="scroll-cue" id="scroll-cue" hidden>More below</p>
-      <details class="legend-details" id="legend-details">
-        <summary>Lamp legend</summary>
-        <ul class="legend" id="legend">
-          <li><span class="dot fatal" aria-hidden="true"></span>Fatal — stop, a decisive rule applies</li>
-          <li><span class="dot major" aria-hidden="true"></span>Major — needs a condition or waiver</li>
-          <li><span class="dot minor" aria-hidden="true"></span><span class="dot clear legend-inline" aria-hidden="true"></span>Minor or clear — no blocking rule</li>
-          <li><span class="dot unknown" aria-hidden="true"></span>Unknown — not yet evaluated</li>
-          <li><span class="dot not_modelled" aria-hidden="true"></span>Not modelled — out of scope</li>
-        </ul>
-      </details>
-    </div>
-  </main>
-  <aside class="report" aria-label="Report">
-    <h2>Report</h2>
     <div id="guide" hidden>
       <p class="guide-lede">Screen a data center site in three steps.</p>
       <ol class="guide-steps">
         <li><strong>Pick a site</strong> — choose from the portfolio, type an address, or click the map.</li>
         <li><strong>Read the answer</strong> — the banner gives the verdict and the decisive rule.</li>
-        <li><strong>Check why</strong> — open the tabs for the evidence chain, flips and agent catches.</li>
+        <li><strong>Check why</strong> — open the sections below for the evidence chain, flips and double-checks.</li>
       </ol>
       <p><button type="button" class="try-btn" id="guide-try">Try: Washington County, MD (No-go)</button></p>
       <dl class="glossary" id="guide-glossary"></dl>
@@ -93,30 +65,68 @@
       <p>Pick a site from the portfolio.</p>
     </div>
     <div id="report-view" hidden>
-      <div class="print-head" aria-hidden="true">
-        <p class="print-site" id="print-site"></p>
-      </div>
-      <div class="banner" id="banner">
+      <div class="banner" id="banner" data-demo="banner">
         <p class="verdict-line"><span class="dot" id="banner-dot" aria-hidden="true"></span><span id="banner-verdict"></span></p>
         <p class="headline" id="banner-headline"></p>
         <p class="project-line" id="banner-project"></p>
-        <div class="report-actions">
-          <button type="button" id="copy-link">Copy link</button>
-          <button type="button" id="download-json">Download report (JSON)</button>
-          <button type="button" id="print-brief">Print brief</button>
-        </div>
+        <details class="share-menu" id="share-menu">
+          <summary>Share</summary>
+          <div class="share-items">
+            <button type="button" id="copy-link">Copy link</button>
+            <button type="button" id="download-json">Download report (JSON)</button>
+            <button type="button" id="print-brief">Print brief</button>
+          </div>
+        </details>
         <p class="status" id="copy-status" aria-live="polite"></p>
       </div>
-      <div class="tabs" role="tablist" aria-label="Report sections" id="tablist"></div>
-      <section class="tabpage" id="page-answer" role="tabpanel" aria-labelledby="tab-answer" tabindex="0"></section>
-      <section class="tabpage" id="page-flips" role="tabpanel" aria-labelledby="tab-flips" tabindex="0" hidden></section>
-      <section class="tabpage" id="page-caught" role="tabpanel" aria-labelledby="tab-caught" tabindex="0" hidden></section>
-      <section class="tabpage" id="page-rules" role="tabpanel" aria-labelledby="tab-rules" tabindex="0" hidden></section>
-      <section class="tabpage" id="page-hood" role="tabpanel" aria-labelledby="tab-hood" tabindex="0" hidden></section>
+      <div class="answer-first">
+        <div id="decisive-first"></div>
+        <div id="flips-top"></div>
+      </div>
+      <section class="map-wrap" data-demo="map" aria-label="Site map">
+        <div id="map"></div>
+        <p class="chip" id="map-chip" hidden></p>
+        <div class="map-fallback" id="map-fallback" hidden>
+          <p>Map tiles unavailable — <span id="fallback-coords"></span></p>
+        </div>
+        <p class="map-note" id="map-note" hidden></p>
+      </section>
+      <section class="layers" data-demo="layers" aria-labelledby="layers-h">
+        <h2 id="layers-h">Layer results</h2>
+        <ul class="lamps" id="lamps"></ul>
+        <details class="legend-details" id="legend-details">
+          <summary>Status key</summary>
+          <ul class="legend" id="legend">
+            <li><span class="dot fatal" aria-hidden="true"></span>Stop — a decisive rule applies</li>
+            <li><span class="dot major" aria-hidden="true"></span>Needs a fix — applies, but a condition or waiver may resolve it</li>
+            <li><span class="dot minor" aria-hidden="true"></span><span class="dot clear legend-inline" aria-hidden="true"></span>Noted or clear — no blocking rule</li>
+            <li><span class="dot unknown" aria-hidden="true"></span>Not checked — not yet evaluated</li>
+            <li><span class="dot not_modelled" aria-hidden="true"></span>Out of scope</li>
+          </ul>
+        </details>
+      </section>
+      <details class="disclosure" id="disclosure-why">
+        <summary>Why</summary>
+        <div id="why-rest"></div>
+      </details>
+      <details class="disclosure" id="disclosure-checked" data-demo="checked">
+        <summary>How it was checked</summary>
+        <div id="checked-catches" data-demo="catches"></div>
+        <div id="checked-rules"></div>
+        <div id="checked-trace" data-demo="trace"></div>
+        <div id="checked-stats">
+          <h3>Run stats</h3>
+          <dl class="tiles" id="telemetry"></dl>
+        </div>
+        <div id="checked-timeline"></div>
+      </details>
+      <div class="print-head" aria-hidden="true">
+        <p class="print-site" id="print-site"></p>
+      </div>
       <p class="print-disc" id="print-disc"></p>
     </div>
     <p class="status" id="run-status" aria-live="polite"></p>
-  </aside>
+  </main>
 </div>
 <noscript><p>SiteWhy HQ needs JavaScript for the map and live data.</p></noscript>
 <script src="/vendor/leaflet/leaflet.js"></script>
