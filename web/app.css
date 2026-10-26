@@ -76,10 +76,12 @@ summary:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--accen
 .dot.go { background: var(--ok); border-color: var(--ok); }
 .dot.needs_confirmation { background: var(--grey); border-color: var(--grey); }
 
-.map-wrap { position: relative; height: 320px; background: var(--map-ground); border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }
+.map-wrap { position: relative; height: 320px; background: var(--map-ground); border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; isolation: isolate; }
+html:has(body.demo-running), body.demo-running .center { scroll-padding-bottom: 180px; }
+body.demo-running .center { padding-bottom: 180px; }
 @media (min-width: 1180px) { .map-wrap { height: 400px; } }
 #map { position: absolute; inset: 0; background: var(--map-ground); font: inherit; }
-.chip { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); z-index: 600;
+.chip { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); z-index: 800;
   max-width: min(92%, 640px); margin: 0; padding: 8px 16px; border-radius: 4px;
   background: var(--bg); color: var(--ink); border: 1px solid var(--rule);
   font-size: 14px; line-height: 1.5; text-align: center; pointer-events: none; }
@@ -246,7 +248,7 @@ summary:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--accen
 .basemaps input { width: 18px; height: 18px; accent-color: var(--accent); }
 .tile { min-width: 0; }
 .tile dd { overflow-wrap: anywhere; }
-.city-label { background: none; border: 0; box-shadow: none; color: var(--accent-ink);
+.city-label { background: none; border: 0; box-shadow: none; color: var(--ink);
   font: 600 12px var(--sans); text-shadow: 0 1px 2px #000, 0 0 4px #000; }
 .city-label::before { display: none; }
 .site-pin { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }

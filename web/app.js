@@ -81,6 +81,7 @@ async function bootPortfolio() {
   state.rows = rows;
   renderPortfolio();
   renderDots();
+  if (location.hash === "#/demo") return;
   const hash = parseHash();
   if (hash) {
     await restoreHash(hash);
@@ -480,7 +481,8 @@ function glossAttrs(term) {
 
 function gradeChip(grade) {
   const g = LAMP_WORD[grade] ? grade : "info";
-  return `<span class="tag"${glossAttrs(LAMP_WORD[g])}>${esc(LAMP_WORD[g])}</span>`;
+  const word = LAMP_WORD[g] || "Info";
+  return `<span class="tag"${glossAttrs(word)}>${esc(word)}</span>`;
 }
 
 function sourceLink(url, provenance) {
@@ -733,7 +735,7 @@ function renderTrace(report) {
   const markovian = (report.markovian_runs || []).map((r) =>
     `<li>Run ${esc(String(r.id || "").slice(0, 8))}: ${esc(r.status || "done")}`
     + `${r.duration_ms !== undefined ? `, ${Math.round(r.duration_ms)} ms` : ""}`
-    + `${r.total_tokens_saved ? `, ${r.total_tokens_saved} tokens saved` : ""}</li>`).join("");
+    + `${r.total_tokens_saved ? `, ${esc(String(r.total_tokens_saved))} tokens saved` : ""}</li>`).join("");
   const claims = (report.findings || []).reduce((a, f) => a + (f.evidence || []).length, 0);
   return `<h3>How this was built</h3>`
     + `<h4>Model trace</h4>`
@@ -741,7 +743,7 @@ function renderTrace(report) {
     + `<h4>Data trace</h4>`
     + (data ? `<table class="flips-table"><thead><tr><th>Backend</th><th>Status</th><th>Rows</th></tr></thead><tbody>${data}</tbody></table>` : `<p class="note">No queries.</p>`)
     + `<h4>Markovian runs</h4>`
-    + (markovian ? `<ul class="openq">${markovian}</ul><p class="note">${stats.markovian_chunks ?? 0} chunks, ${stats.markovian_tokens_saved ?? 0} tokens saved.</p>` : `<p class="note">No Markovian runs.</p>`)
+    + (markovian ? `<ul class="openq">${markovian}</ul><p class="note">${esc(String(stats.markovian_chunks ?? 0))} chunks, ${esc(String(stats.markovian_tokens_saved ?? 0))} tokens saved.</p>` : `<p class="note">No Markovian runs.</p>`)
     + `<h4>World Model</h4><p class="note">${claims} evidence claims across ${(report.findings || []).length} findings, ${(report.conflicts || []).length} conflict(s), ${(report.needs_confirmation || []).length} open objection(s).</p>`
     + `<p class="note">${esc(report.disclaimer || "")}</p>`;
 }
