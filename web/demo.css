@@ -1,5 +1,3 @@
-/* Demo roll caption bar and spotlight. Uses app tokens so the
- * Midnight Ops theme (Todo 1) flows through with no changes here. */
 #demo-roll {
   width: 100%;
   font: 600 14px var(--sans);
@@ -16,7 +14,7 @@
 
 .demo-spot {
   outline: 3px solid var(--accent);
-  outline-offset: 3px;
+  outline-offset: -3px;
   border-radius: 4px;
 }
 @media (prefers-reduced-motion: no-preference) {

@@ -1,12 +1,3 @@
-/* SiteWhy HQ demo roll — scripted step tour over the showcase samples.
- * Todo 3, option A from .litclaude/evidence/ui-crucible/demo.md.
- *
- * Contract: drives the page ONLY through [data-demo="…"] anchors and
- * window.SiteWhy.selectSite / window.SiteWhy.openChecked. Until those
- * land (Todo 2), every lookup is guarded — a missing anchor or global
- * skips the highlight and keeps the caption going.
- * Network: only GET /samples/* (SAMPLE_MODE-safe, no POST /runs).
- */
 (() => {
   "use strict";
 
@@ -47,31 +38,31 @@
     return report;
   }
 
-  /* Captions are template strings filled from loaded report fields.
-   * Nothing is hard-coded; every value has a fallback so no caption
-   * can ever contain "undefined" or "null". */
   const captions = {
-    picker: (r) =>
-      `${num(r.project?.mw)} MW at ${shortAddr(r.project?.address)} screens ${verdictWord(r)} — this is the roll's spine.`,
+    picker: (r) => {
+      const mw = Number(r.project?.mw);
+      const load = Number.isFinite(mw) ? `${Math.round(mw)} MW at ` : "";
+      return `${load}${shortAddr(r.project?.address)} screens ${verdictWord(r)} — this is the roll's spine.`;
+    },
     banner: (r) =>
       `Verdict up top: ${txt(r.explanation?.headline, "the headline states the verdict and the decisive rule")}.`,
     map: (r) => {
-      const county = txt(r.jurisdiction?.county_name, "the county");
-      const place = r.jurisdiction?.place;
-      return place
-        ? `Inside ${place}, the ${county} pause does not reach this lot.`
-        : `This lot sits in unincorporated ${county}, so the county pause reaches it.`;
+      const chip = document.querySelector('[data-demo="map"] .chip');
+      const rendered = String(chip?.textContent || "").trim();
+      if (rendered) return rendered;
+      const j = r.jurisdiction || {};
+      return `${txt(j.county_name, "the county")} · ${txt(j.iso, "its grid")}`;
     },
     decisive: (r) => {
-      const ev = r.findings?.[0]?.evidence?.[0];
-      return `“${clip(ev?.quote, 140) || "the decisive rule cites its source line"}” — recorded as ${txt(ev?.verification, "checked")}.`;
+      const fact = r.explanation?.decisive?.[0]?.fact;
+      if (!fact?.quote) return "The decisive card states the rule and its source.";
+      return `“${clip(fact.quote, 140)}” — recorded as ${txt(fact.verification, "checked")}.`;
     },
     catches: (r) => {
       const c = r.explanation?.catches?.[0];
+      if (!c) return "No double-checks were needed on this run.";
       const t = clip(c.text, 130);
-      return c
-        ? `A second agent (${txt(c.actor, "reviewer")}, ${txt(c.kind, "check").replace(/_/g, " ")}) flagged this run: ${t}${t.endsWith(".") ? "" : "."}`
-        : "No double-checks were needed on this run.";
+      return `A second agent (${txt(c.actor, "reviewer")}, ${txt(c.kind, "check").replace(/_/g, " ")}) flagged this run: ${t}${t.endsWith(".") ? "" : "."}`;
     },
     trace: (r) => {
       const m = r.model_trace?.[0];
@@ -89,12 +80,7 @@
       `${shortAddr(a.project?.address)} screens ${verdictWord(a)} under ${txt(a.jurisdiction?.iso, "its grid")}; ` +
       `${shortAddr(b.project?.address)} screens ${verdictWord(b)} under ${txt(b.jurisdiction?.iso, "its grid")} — same engine, different grids.`,
   };
-  function num(mw) {
-    const n = Number(mw);
-    return Number.isFinite(n) ? String(Math.round(n)) : "This site";
-  }
 
-  /* Eight steps, ~9 s each: about 72 s total, inside the 90 s budget. */
   const STEPS = [
     { site: SPINE, anchor: "picker", caption: captions.picker },
     { site: SPINE, anchor: "banner", caption: captions.banner },
@@ -105,47 +91,14 @@
     { site: SPINE, anchor: "flips", caption: captions.flips },
     { site: BREADTH_ERCOT, anchor: "banner", breadth: true, caption: null },
   ];
+  const LAST = STEPS.length - 1;
 
   function openChecked(section) {
-    try {
-      if (window.SiteWhy && typeof window.SiteWhy.openChecked === "function") {
-        window.SiteWhy.openChecked(section);
-        return;
-      }
-    } catch { /* guarded: fall through to legacy tabs */ }
-    try {
-      const bar = $("tablist");
-      const legacy = section === "catches" ? "caught" : "hood";
-      if (bar && bar._select) bar._select(legacy);
-      else $(`tab-${legacy}`)?.click();
-    } catch { /* missing tabs: skip, keep caption */ }
-  }
-
-  function waitForReport(timeoutMs) {
-    const deadline = Date.now() + timeoutMs;
-    return new Promise((resolve) => {
-      const poll = () => {
-        const ready =
-          txt($("banner-headline")?.textContent, "") !== "" ||
-          ($("map-chip") && !$("map-chip").hidden);
-        if (ready || Date.now() > deadline) resolve();
-        else setTimeout(poll, 250);
-      };
-      poll();
-    });
+    window.SiteWhy?.openChecked?.(section);
   }
 
   async function navigate(site) {
-    try {
-      if (window.SiteWhy && typeof window.SiteWhy.selectSite === "function") {
-        await window.SiteWhy.selectSite(site);
-        return;
-      }
-    } catch { /* guarded: fall through to hash driving */ }
-    if (location.hash !== `#/site/${encodeURIComponent(site)}`) {
-      location.hash = `#/site/${encodeURIComponent(site)}`;
-    }
-    await waitForReport(8000);
+    await window.SiteWhy.selectSite(site);
   }
 
   function highlight(anchor) {
@@ -157,10 +110,14 @@
     } catch {
       el = null;
     }
-    if (!el) return false; // missing anchor: skip highlight, keep caption
+    if (!el) return false;
+    try {
+      const closed = el.closest("details:not([open])");
+      if (closed) closed.open = true;
+    } catch { /* skip */ }
     el.classList.add("demo-spot");
     try {
-      el.scrollIntoView({ block: "nearest", behavior: reducedMotion() ? "auto" : "smooth" });
+      el.scrollIntoView({ block: "center", behavior: reducedMotion() ? "auto" : "smooth" });
     } catch { /* skip */ }
     return true;
   }
@@ -176,10 +133,13 @@
     paused: false,
     index: 0,
     timer: 0,
+    epoch: 0,
     savedHash: "",
     savedFocus: null,
+    endHash: "",
     log: [],
   };
+  const alive = (epoch) => epoch === demo.epoch && demo.running;
 
   function buildBar() {
     if ($("demo-bar")) return;
@@ -222,50 +182,82 @@
     if (pauseBtn) pauseBtn.textContent = demo.paused ? "Resume" : "Pause";
   }
 
-  function armTimer() {
+  function armTimer(epoch) {
     clearTimeout(demo.timer);
-    if (!demo.running || demo.paused) return;
-    demo.timer = setTimeout(() => void move(1), STEP_MS);
+    if (!alive(epoch) || demo.paused) return;
+    if (demo.index >= LAST) demo.timer = setTimeout(() => exit(), STEP_MS);
+    else demo.timer = setTimeout(() => void move(1), STEP_MS);
   }
 
-  async function show(i) {
-    demo.index = Math.max(0, Math.min(STEPS.length - 1, i));
+  function restoreAfterStale() {
+    if (!demo.running && demo.endHash && location.hash !== demo.endHash) {
+      location.hash = demo.endHash;
+    }
+  }
+
+  async function show(i, epoch) {
+    if (!alive(epoch)) return;
+    demo.index = Math.max(0, Math.min(LAST, i));
     const step = STEPS[demo.index];
     let caption = "The demo roll is playing.";
     try {
       if (step.breadth) {
         const [a, b] = await Promise.all([fetchReport(BREADTH_GO), fetchReport(BREADTH_ERCOT)]);
+        if (!alive(epoch)) {
+          restoreAfterStale();
+          return;
+        }
         await navigate(BREADTH_ERCOT);
+        if (!alive(epoch)) {
+          restoreAfterStale();
+          return;
+        }
         caption = captions.breadth(a, b);
       } else {
-        const report = await fetchReport(step.site);
         if (step.checked) openChecked(step.checked);
+        const report = await fetchReport(step.site);
+        if (!alive(epoch)) {
+          restoreAfterStale();
+          return;
+        }
         await navigate(step.site);
+        if (!alive(epoch)) {
+          restoreAfterStale();
+          return;
+        }
         caption = step.caption(report);
       }
     } catch {
       caption = "This stop is unavailable offline — the roll continues.";
+    }
+    if (!alive(epoch)) {
+      restoreAfterStale();
+      return;
     }
     const highlighted = highlight(step.anchor);
     demo.log.push({ step: demo.index, anchor: step.anchor, highlighted, caption });
     const capEl = $("demo-caption");
     if (capEl) capEl.textContent = caption;
     paint();
-    armTimer();
+    armTimer(epoch);
   }
 
   function move(d) {
     if (!demo.running) return Promise.resolve();
-    return show(demo.index + d).then(() => {
-      if (demo.index >= STEPS.length - 1 && d > 0) exit();
-    });
+    if (d > 0 && demo.index >= LAST) {
+      exit();
+      return Promise.resolve();
+    }
+    const epoch = ++demo.epoch;
+    clearTimeout(demo.timer);
+    return show(demo.index + d, epoch);
   }
 
   function togglePause() {
     if (!demo.running) return;
     demo.paused = !demo.paused;
     paint();
-    armTimer();
+    armTimer(demo.epoch);
   }
 
   function pause() {
@@ -275,14 +267,16 @@
   async function start() {
     if (demo.running) return;
     buildBar();
+    const epoch = ++demo.epoch;
     demo.running = true;
     demo.paused = false;
     demo.log = [];
     demo.savedHash = location.hash;
     demo.savedFocus = document.activeElement;
+    document.body.classList.add("demo-running");
     const bar = $("demo-bar");
     if (bar) bar.hidden = false;
-    await show(0);
+    await show(0, epoch);
     const capEl = $("demo-caption");
     if (capEl && capEl.focus) {
       capEl.setAttribute("tabindex", "-1");
@@ -294,19 +288,16 @@
 
   function exit() {
     if (!demo.running) return;
+    demo.epoch += 1;
     demo.running = false;
     demo.paused = false;
     clearTimeout(demo.timer);
     clearSpot();
+    document.body.classList.remove("demo-running");
     const bar = $("demo-bar");
     if (bar) bar.hidden = true;
-    // Ending on #/demo would restart the roll via the hash listener,
-    // so a #/demo start ends on the spine report instead.
-    const endHash =
-      demo.savedHash && demo.savedHash !== "#/demo"
-        ? demo.savedHash
-        : `#/site/${SPINE}`;
-    if (location.hash !== endHash) location.hash = endHash;
+    demo.endHash = demo.savedHash === "#/demo" ? `#/site/${SPINE}` : demo.savedHash;
+    if (location.hash !== demo.endHash) location.hash = demo.endHash;
     try {
       if (demo.savedFocus && demo.savedFocus.focus) demo.savedFocus.focus({ preventScroll: true });
     } catch { /* skip */ }
@@ -317,7 +308,7 @@
     (ev) => {
       if (!demo.running) return;
       if (ev.target && ev.target.closest && ev.target.closest("#demo-bar")) return;
-      pause(); // any click outside the caption bar pauses, never fights input
+      pause();
     },
     true,
   );
@@ -327,7 +318,11 @@
     if (ev.key === "Escape") {
       ev.preventDefault();
       exit();
-    } else if (ev.key === " ") {
+      return;
+    }
+    const t = ev.target;
+    if (t && t.closest && (t.closest("input, textarea, select") || t.closest("#demo-bar button"))) return;
+    if (ev.key === " ") {
       ev.preventDefault();
       togglePause();
     } else if (ev.key === "ArrowRight") {
