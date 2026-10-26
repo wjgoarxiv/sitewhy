@@ -1,1 +1,154 @@
-/* SiteWhy chain module */
+/* SiteWhy why-chain module (Todo 9): four linked N1 cards. */
+#why-chain {
+  min-width: 0;
+}
+
+.chain-row {
+  display: flex;
+  align-items: stretch;
+}
+
+.chain-card {
+  flex: 1 1 0;
+  min-width: 0;
+  background: var(--panel);
+  border: 3px solid var(--ink);
+  border-radius: 0;
+  box-shadow: 5px 5px 0 var(--shadow);
+  padding: 10px 12px;
+  overflow-wrap: anywhere;
+}
+
+.chain-arrow {
+  flex: none;
+  align-self: center;
+  padding: 0 6px;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.chain-arrow::before {
+  content: "\2192";
+}
+
+.chain-label {
+  font: 600 11px/1.3 var(--mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  margin: 0 0 6px;
+}
+
+.chain-verdict {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.chain-verdict .dot {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  border-radius: 0;
+  border: 2px solid var(--ink);
+}
+
+.chain-title {
+  margin: 0;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.chain-meta {
+  margin: 4px 0 0;
+  font: 12px var(--mono);
+  color: var(--ink-2);
+}
+
+.chain-quote {
+  margin: 0;
+  font-size: 14px;
+}
+
+.chain-src {
+  margin: 0;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.chain-missing {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.chain-why {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
+.chain-more {
+  margin-top: 8px;
+  font: 600 13px var(--sans);
+  color: var(--ink);
+  background: var(--panel);
+  border: 3px solid var(--ink);
+  border-radius: 0;
+  box-shadow: 5px 5px 0 var(--shadow);
+  padding: 8px 12px;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+.chain-more:active {
+  transform: translateY(1px);
+}
+
+.chain-hot {
+  outline: 4px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (max-width: 767px) {
+  .chain-row {
+    flex-direction: column;
+  }
+
+  .chain-arrow {
+    padding: 2px 0;
+  }
+
+  .chain-arrow::before {
+    content: "\2193";
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #why-chain *,
+  #why-chain *::before,
+  #why-chain *::after {
+    transition: none;
+    animation: none;
+  }
+}
+
+@media print {
+  .chain-row {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .chain-card {
+    box-shadow: none;
+  }
+
+  .chain-arrow,
+  .chain-more {
+    display: none;
+  }
+}
