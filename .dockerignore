@@ -1,0 +1,17 @@
+.git
+.env
+.env.*
+!.env.example
+keys
+.litclaude/
+.litmuse/
+submission/video
+logs/
+HANDOFF.md
+scripts/fetch_warm.py
+.venv
+__pycache__
+*.pyc
+.pytest_cache
+.ruff_cache
+.DS_Store
