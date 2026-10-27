@@ -907,6 +907,7 @@ function runningRow(addressLabel, mw) {
 
 async function pollRun(runId, request) {
   const started = Date.now();
+  const limitMs = (300 + 60) * 1000;
   let seen = 0, flown = false;
   for (;;) {
     const s = await api(`/runs/${runId}`);
@@ -926,6 +927,7 @@ async function pollRun(runId, request) {
     }
     if (s.status === "done") return s.report;
     if (s.status === "error") throw new Error(s.error || "run failed");
+    if (Date.now() - started > limitMs) throw new Error("The run did not finish in time — try again");
     await new Promise((res) => setTimeout(res, 1500));
   }
 }
@@ -938,6 +940,7 @@ async function submitRun(body, addressLabel) {
     const res = await fetch("/runs", {
       method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body),
     });
+    if (res.status === 409) throw new Error("Another screening is running (409)");
     const data = await res.json();
     if (!res.ok) throw new Error(data.detail || res.statusText);
     const report = await pollRun(data.run_id, body);
@@ -956,9 +959,16 @@ async function submitRun(body, addressLabel) {
     showReport(report, ctx, true);
   } catch (err) {
     $("running-row")?.remove();
-    const msg = err.message.includes("503") || err.message.includes("SAMPLE_MODE")
-      ? "Live runs are off in sample mode — pick a site from the portfolio."
-      : `Could not screen: ${err.message}`;
+    let msg;
+    if (err.message.includes("503") || err.message.includes("SAMPLE_MODE")) {
+      msg = "Live runs are off in sample mode — pick a site from the portfolio.";
+    } else if (err.message.includes("409")) {
+      msg = "Another screening is running. Wait for it to finish and try again.";
+    } else if (err.message.includes("did not finish in time")) {
+      msg = "The run did not finish in time — try again";
+    } else {
+      msg = `Could not screen: ${err.message}`;
+    }
     $("form-status").textContent = msg;
     showErrorCard("Screening failed", msg);
   } finally { $("run-btn").disabled = false; $("run-status").textContent = ""; }

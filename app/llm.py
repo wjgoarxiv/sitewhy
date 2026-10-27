@@ -48,6 +48,10 @@ class ProviderError(RuntimeError):
     pass
 
 
+class DeadlineExceeded(RuntimeError):
+    pass
+
+
 class SampleMissError(RuntimeError):
     pass
 
@@ -76,6 +80,7 @@ class ModelRouter:
         rpm: int = 30,
         sleep: Callable[[float], None] = time.sleep,
         clock: Callable[[], float] = time.monotonic,
+        deadline: float | None = None,
     ):
         self.settings = settings
         self.client = client or httpx.Client(timeout=180)
@@ -83,9 +88,18 @@ class ModelRouter:
         self.interval = 60.0 / rpm
         self.sleep = sleep
         self.clock = clock
+        self.deadline = deadline
+        self.deadline_start: float | None = None
         self._next_ok = 0.0
         self._started = 0.0
         self.trace: list[dict] = []
+
+    def _check_deadline(self) -> None:
+        if self.deadline is None:
+            return
+        start = self.deadline_start if self.deadline_start is not None else 0.0
+        if self.clock() - start >= self.deadline:
+            raise DeadlineExceeded(f"model call exceeded the {self.deadline:g}s limit")
 
     def _headers(self) -> dict:
         return {
@@ -120,6 +134,7 @@ class ModelRouter:
     def _post(self, payload: dict) -> dict:
         url = f"{self.settings.nightshift_base_url}/chat/completions"
         for attempt in range(MAX_ATTEMPTS):
+            self._check_deadline()
             self._throttle()
             self._started = self.clock()
             try:
@@ -173,6 +188,7 @@ class ModelRouter:
                 if payload["model"] != LIGHTNING:
                     raise
                 # Lightning intermittently returns an empty completion; escalate once.
+                self._check_deadline()
                 payload = {**payload, "model": ULTRA}
                 data = self._post(payload)
                 escalated_from = LIGHTNING

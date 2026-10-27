@@ -15,6 +15,8 @@ DEFAULT_NIGHTSHIFT_TOKEN_FILE = (
     Path.home() / "Library/Application Support/ai.meterless.nightshift.m1m4/runtime-token"
 )
 
+RUN_DEADLINE_S = 300
+
 
 @dataclass(frozen=True)
 class Settings:

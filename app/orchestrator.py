@@ -9,6 +9,7 @@ Every step writes to a per-run Meterless World Model whose JSONL log is the trac
 
 import json
 import re
+import time
 import uuid
 from dataclasses import asdict
 from datetime import UTC, date, datetime, timedelta
@@ -16,7 +17,9 @@ from pathlib import Path
 
 from app.agents import Adjudicator, CountyInvestigator, Critic, Planner
 from app.applicability import Project, moratorium_applies
+from app.config import RUN_DEADLINE_S
 from app.layers import evaluate_rule, load_county_sources, load_rules
+from app.llm import DeadlineExceeded
 from app.screen import DISCLAIMER, VERDICTS, Screener
 from app.worldmodel import WorldModel
 
@@ -130,6 +133,8 @@ class Orchestrator:
         max_rounds: int = 2,
         max_retries: int = 2,
         as_of: date | None = None,
+        deadline: float | None = None,
+        clock=None,
     ):
         self.resolver = resolver
         self.harness = harness
@@ -139,6 +144,8 @@ class Orchestrator:
         self.max_rounds = max_rounds
         self.max_retries = max_retries
         self.as_of = as_of
+        self.deadline = RUN_DEADLINE_S if deadline is None else deadline
+        self.clock = clock or time.monotonic
         self.planner = Planner(router)
         self.investigator = CountyInvestigator(router)
         self.adjudicator = Adjudicator(router)
@@ -175,14 +182,26 @@ class Orchestrator:
                 self._event(0, "evidence_verifier", "fetch_failed", f"{s['url']}: {doc['error']}")
         return docs
 
-    def _investigate(self, rule: dict, questions: list[str], round_: int) -> None:
+    def _limit_label(self) -> str:
+        if self.deadline >= 60 and self.deadline % 60 == 0:
+            return f"{int(self.deadline // 60)}-minute"
+        return f"{self.deadline:g}-second"
+
+    def _expired(self) -> bool:
+        return self.clock() - self._start >= self.deadline
+
+    def _investigate(self, rule: dict, questions: list[str], round_: int) -> bool:
+        if self._expired():
+            return False
         sources = self._sources_for(rule["id"])
         if not sources:
             self._event(round_, "county_investigator", "skipped", f"{rule['id']}: no sources")
-            return
+            return True
         feedback = ""
         zero_fact_attempt = False
         for attempt in range(1, self.max_retries + 2):
+            if self._expired():
+                return False
             step = "plan" if attempt == self.max_retries + 1 and zero_fact_attempt else "extract"
             if step == "plan":
                 self._event(
@@ -232,7 +251,7 @@ class Orchestrator:
                 },
             )
             if facts and not failed:
-                return
+                return True
             if attempt <= self.max_retries:
                 if failed:
                     feedback = (
@@ -245,6 +264,7 @@ class Orchestrator:
                         "of facts FIRST, then the [STATE_CHECKPOINT] block."
                     )
                 self._event(round_, "evidence_verifier", "retry_requested", feedback[:300])
+        return True
 
     def _record_fact(self, rule: dict, fact: dict, check: dict, round_: int) -> None:
         wm, src = self.world, self._src("county_investigator", round_)
@@ -464,6 +484,49 @@ class Orchestrator:
 
     # -- main loop -------------------------------------------------------
 
+    def _markovian_summary(self) -> list:
+        return [
+            {k: v for k, v in asdict(r).items() if k not in {"chunks", "output"}}
+            for r in self.investigator.runs
+        ]
+
+    def _timeout_report(self, stage: str, ctx: dict, findings: list) -> dict:
+        text = f"Run stopped at the {self._limit_label()} limit before {stage}"
+        self._event(self.max_rounds, "system", "timeout", text)
+        report = {
+            "run_id": ctx["run_id"],
+            "project": ctx["project_p"],
+            "jurisdiction": ctx["jurisdiction_d"],
+            "verdict": "needs_confirmation",
+            "why": text,
+            "findings": findings,
+            "state_watch": [],
+            "site": ctx["site"],
+            "needs_confirmation": [
+                {
+                    "rule_id": "run",
+                    "type": "timeout",
+                    "text": text,
+                    "question": "Re-run; partial findings are listed below.",
+                    "blocking": True,
+                }
+            ],
+            "conflicts": self.world.conflicts(),
+            "events": self.events,
+            "model_trace": self.router.trace[ctx["model_start"]:],
+            "data_trace": self.harness.trace[ctx["data_start"]:],
+            "markovian_runs": self._markovian_summary(),
+            "worldmodel_log": str(ctx["run_dir"] / "worldmodel.jsonl"),
+            "disclaimer": DISCLAIMER,
+        }
+        from app.explain import enrich
+
+        report = enrich(report)
+        (ctx["run_dir"] / "report.json").write_text(
+            json.dumps(report, indent=1, default=str)
+        )
+        return report
+
     def run(
         self,
         address: str | None = None,
@@ -476,6 +539,10 @@ class Orchestrator:
     ) -> dict:
         run_id = run_id or new_run_id()
         self.on_event = on_event
+        self._start = self.clock()
+        self.investigator.start_run()
+        self.router.deadline = self.deadline
+        self.router.deadline_start = self._start
         run_dir = self.runs_dir / run_id
         self.world = WorldModel(log_path=run_dir / "worldmodel.jsonl")
         self.events: list[dict] = []
@@ -615,30 +682,56 @@ class Orchestrator:
         tasks = self.planner.plan(site, rule_briefs) if local else []
         self._event(1, "planner", "tasks", tasks)
         by_id = {r["id"]: r for r in local}
+        ctx = {
+            "run_id": run_id,
+            "project_p": {"address": address, "mw": mw,
+                          "permits_submitted": permits_submitted},
+            "jurisdiction_d": j.to_dict(),
+            "site": site,
+            "model_start": model_start,
+            "data_start": data_start,
+            "run_dir": run_dir,
+        }
         objections: list[dict] = []
         draft, findings = {}, []
         for round_ in range(1, self.max_rounds + 1):
-            for t in tasks:
-                self._investigate(by_id[t["rule_id"]], t["questions"], round_)
-            findings = self._findings(local, curated, project, site)
-            self._event(
-                round_,
-                "applicability",
-                "computed",
-                [{k: f[k] for k in ("rule_id", "applies", "reason")} for f in findings],
-            )
-            draft = self.adjudicator.adjudicate(site, findings, objections)
-            self._event(
-                round_,
-                "adjudicator",
-                "draft",
-                {"verdict": draft.get("verdict"), "grades": draft.get("grades")},
-            )
-            for o in self.world.open_objections():
-                self.world.resolve_objection(
-                    o["id"], f"re-examined in round {round_}", self._src("critic", round_)
+            if self._expired():
+                return self._timeout_report(f"round {round_}", ctx, findings)
+            try:
+                for t in tasks:
+                    if not self._investigate(by_id[t["rule_id"]], t["questions"], round_):
+                        return self._timeout_report(
+                            f"investigation of {t['rule_id']}", ctx, findings
+                        )
+                findings = self._findings(local, curated, project, site)
+                self._event(
+                    round_,
+                    "applicability",
+                    "computed",
+                    [{k: f[k] for k in ("rule_id", "applies", "reason")} for f in findings],
                 )
-            objections = self.critic.review(site, draft, findings, self.world.conflicts())
+                if self._expired():
+                    return self._timeout_report(
+                        f"adjudication in round {round_}", ctx, findings
+                    )
+                draft = self.adjudicator.adjudicate(site, findings, objections)
+                self._event(
+                    round_,
+                    "adjudicator",
+                    "draft",
+                    {"verdict": draft.get("verdict"), "grades": draft.get("grades")},
+                )
+                for o in self.world.open_objections():
+                    self.world.resolve_objection(
+                        o["id"], f"re-examined in round {round_}", self._src("critic", round_)
+                    )
+                if self._expired():
+                    return self._timeout_report(
+                        f"critique in round {round_}", ctx, findings
+                    )
+                objections = self.critic.review(site, draft, findings, self.world.conflicts())
+            except DeadlineExceeded:
+                return self._timeout_report(f"round {round_}", ctx, findings)
             for o in objections:
                 target = by_id[o["rule_id"]]["entity"] if o["rule_id"] in by_id else None
                 if target is None:
@@ -696,10 +789,7 @@ class Orchestrator:
             "events": self.events,
             "model_trace": self.router.trace[model_start:],
             "data_trace": self.harness.trace[data_start:],
-            "markovian_runs": [
-                {k: v for k, v in asdict(r).items() if k not in {"chunks", "output"}}
-                for r in self.investigator.runs
-            ],
+            "markovian_runs": self._markovian_summary(),
             "worldmodel_log": str(run_dir / "worldmodel.jsonl"),
             "disclaimer": DISCLAIMER,
         }

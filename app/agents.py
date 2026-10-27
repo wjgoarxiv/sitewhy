@@ -89,6 +89,10 @@ class CountyInvestigator:
         self._raw.append(out.text)
         return {"text": out.text}
 
+    def start_run(self) -> None:
+        """A new screening run: drop the previous run's Markovian runs."""
+        self.runs = []
+
     def investigate(
         self,
         rule: dict,

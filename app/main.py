@@ -59,6 +59,7 @@ def create_app(
     app = FastAPI(title="SiteWhy")
     runs: dict[str, dict] = {}
     run_lock = threading.Lock()
+    state_lock = threading.Lock()
     runs_dir = Path(runs_dir) if runs_dir is not None else RUNS_DIR
 
     @cache
@@ -108,11 +109,12 @@ def create_app(
             raise HTTPException(status_code=422, detail=str(exc)) from exc
 
     def execute(run_id: str, req: RunRequest) -> None:
-        state = runs[run_id]
-        with run_lock:
+        try:
+            with state_lock:
+                state = runs[run_id]
             try:
                 if req.address is not None:
-                    state["report"] = get_orchestrator().run(
+                    report = get_orchestrator().run(
                         req.address,
                         req.mw,
                         permits_submitted=req.permits_submitted,
@@ -120,7 +122,7 @@ def create_app(
                         on_event=state["events"].append,
                     )
                 else:
-                    state["report"] = get_orchestrator().run(
+                    report = get_orchestrator().run(
                         None,
                         req.mw,
                         permits_submitted=req.permits_submitted,
@@ -129,18 +131,27 @@ def create_app(
                         lat=req.lat,
                         lon=req.lon,
                     )
-                state["status"] = "done"
+                with state_lock:
+                    state["report"] = report
+                    state["status"] = "done"
             except UnresolvedAddressError as exc:
-                state.update(status="error", error=str(exc))
+                with state_lock:
+                    state.update(status="error", error=str(exc))
             except Exception as exc:  # noqa: BLE001 - surfaced to the UI, run thread must not die
-                state.update(status="error", error=f"{type(exc).__name__}: {exc}"[:500])
+                with state_lock:
+                    state.update(status="error", error=f"{type(exc).__name__}: {exc}"[:500])
+        finally:
+            run_lock.release()
 
     @app.post("/runs", status_code=202)
     def start_run(req: RunRequest) -> dict:
         if settings.sample_mode:
             raise HTTPException(503, "SAMPLE_MODE is on: live runs are disabled; open a sample")
+        if not run_lock.acquire(blocking=False):
+            raise HTTPException(409, "A screening is already running")
         run_id = new_run_id()
-        runs[run_id] = {"status": "running", "events": [], "request": req.model_dump()}
+        with state_lock:
+            runs[run_id] = {"status": "running", "events": [], "request": req.model_dump()}
         threading.Thread(target=execute, args=(run_id, req), daemon=True).start()
         return {"run_id": run_id}
 
@@ -149,7 +160,9 @@ def create_app(
         if not RUN_ID_RE.match(run_id):
             raise HTTPException(404, "unknown run")
         if run_id in runs:
-            return {"run_id": run_id, **runs[run_id]}
+            with state_lock:
+                state = dict(runs[run_id])
+            return {"run_id": run_id, **state}
         path = runs_dir / run_id / "report.json"
         if not path.is_file():
             raise HTTPException(404, "unknown run")
