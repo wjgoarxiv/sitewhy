@@ -67,6 +67,71 @@
     } catch { /* private mode: session only */ }
   }
 
+  const WIDTH_KEY = "sitewhy-rail-width";
+  const RAIL_MIN = 220;
+  const RAIL_MAX = 480;
+  const RAIL_DEFAULT = 280;
+  const clampWidth = (w) => Math.max(RAIL_MIN, Math.min(RAIL_MAX, Math.round(w)));
+
+  function setRailWidth(w, save) {
+    const shell = document.querySelector(".shell");
+    if (!shell) return;
+    const width = clampWidth(w);
+    shell.style.setProperty("--rail-w", `${width}px`);
+    document.querySelector(".rail-resizer")?.setAttribute("aria-valuenow", String(width));
+    if (save) {
+      try { localStorage.setItem(WIDTH_KEY, String(width)); } catch { /* private mode: session only */ }
+    }
+  }
+
+  // Drag handle on the rail's right edge (desktop grid only; CSS hides it otherwise).
+  function ensureResizer() {
+    const shell = document.querySelector(".shell");
+    if (!shell || shell.querySelector(".rail-resizer")) return;
+    const handle = document.createElement("div");
+    handle.className = "rail-resizer";
+    handle.tabIndex = 0;
+    handle.setAttribute("role", "separator");
+    handle.setAttribute("aria-orientation", "vertical");
+    handle.setAttribute("aria-label", "Resize sidebar (arrow keys, double-click to reset)");
+    handle.setAttribute("aria-valuemin", String(RAIL_MIN));
+    handle.setAttribute("aria-valuemax", String(RAIL_MAX));
+    shell.appendChild(handle);
+    const current = () => document.querySelector(".rail")?.getBoundingClientRect().width || RAIL_DEFAULT;
+    handle.addEventListener("pointerdown", (e) => {
+      if (isCollapsed()) return;
+      e.preventDefault();
+      handle.setPointerCapture(e.pointerId);
+      shell.classList.add("rail-resizing");
+      const left = shell.getBoundingClientRect().left;
+      const move = (ev) => setRailWidth(ev.clientX - left, false);
+      const up = () => {
+        handle.removeEventListener("pointermove", move);
+        handle.removeEventListener("pointerup", up);
+        handle.removeEventListener("pointercancel", up);
+        shell.classList.remove("rail-resizing");
+        setRailWidth(current(), true);
+      };
+      handle.addEventListener("pointermove", move);
+      handle.addEventListener("pointerup", up);
+      handle.addEventListener("pointercancel", up);
+    });
+    handle.addEventListener("keydown", (e) => {
+      if (isCollapsed()) return;
+      const step = e.shiftKey ? 48 : 16;
+      if (e.key === "ArrowLeft") setRailWidth(current() - step, true);
+      else if (e.key === "ArrowRight") setRailWidth(current() + step, true);
+      else if (e.key === "Home") setRailWidth(RAIL_MIN, true);
+      else if (e.key === "End") setRailWidth(RAIL_MAX, true);
+      else return;
+      e.preventDefault();
+    });
+    handle.addEventListener("dblclick", () => setRailWidth(RAIL_DEFAULT, true));
+    let saved = RAIL_DEFAULT;
+    try { saved = Number(localStorage.getItem(WIDTH_KEY)) || RAIL_DEFAULT; } catch { /* default */ }
+    setRailWidth(saved, false);
+  }
+
   function readCollapsed() {
     try {
       return localStorage.getItem(COLLAPSE_KEY) === "1";
@@ -189,6 +254,7 @@
   function init() {
     ensureNav();
     applyCollapsed(readCollapsed());
+    ensureResizer();
     rescan();
     document.addEventListener("sitewhy:report", () => {
       if (window.requestAnimationFrame) window.requestAnimationFrame(rescan);

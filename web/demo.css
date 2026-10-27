@@ -13,13 +13,39 @@
 }
 #demo-roll:active { transform: translate(2px, 2px); box-shadow: 3px 3px 0 var(--shadow, #111111); }
 
+/* Spotlight: thick accent frame, a step tag above it, and a page-wide scrim drawn by the
+   element's own shadow (no overlay node, so Leaflet keeps pointer events). */
 .demo-spot {
-  outline: 3px solid var(--accent);
-  outline-offset: -3px;
+  position: relative;
+  z-index: 70;
+  outline: 6px solid var(--accent);
+  outline-offset: 4px;
   border-radius: 0;
+  box-shadow: 0 0 0 4px var(--ink), 0 0 0 9999px rgba(17, 17, 17, 0.45);
+}
+.demo-spot[data-demo-tag]::before {
+  content: attr(data-demo-tag);
+  position: absolute;
+  top: -42px;
+  left: -10px;
+  z-index: 1001;
+  padding: 4px 10px;
+  font: 900 13px var(--sans);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--accent);
+  border: 3px solid var(--ink);
+  box-shadow: 3px 3px 0 var(--ink);
+  white-space: nowrap;
+  pointer-events: none;
 }
 @media (prefers-reduced-motion: no-preference) {
-  .demo-spot { transition: outline-color 0.2s ease-in; }
+  .demo-spot { animation: demo-spot-in 0.45s ease-out; }
+}
+@keyframes demo-spot-in {
+  0% { outline-offset: 18px; outline-color: transparent; }
+  100% { outline-offset: 4px; outline-color: var(--accent); }
 }
 
 body.demo-running [data-demo],
@@ -183,6 +209,7 @@ body.demo-running .rail section {
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .demo-spot { animation: none; }
   .demo-spot, .demo-progress > span,
   body.demo-running [data-demo],
   body.demo-running .rail section { transition: none; }

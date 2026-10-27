@@ -1,9 +1,9 @@
 (() => {
   "use strict";
 
-  const STEP_MS = 9000;
-  const INTRO_MS = 6000;
-  const OUTRO_MS = 9000;
+  const STEP_MS = 6000;
+  const INTRO_MS = 4000;
+  const OUTRO_MS = 6000;
   const SPEEDS = [1, 1.5, 2];
   const SPINE = "md-washington-county-unincorporated";
   const BREADTH_GO = "az-tucson-pima";
@@ -59,12 +59,12 @@
     "the satellite map with the jurisdiction overlay",
     "the evidence card with the ordinance quote",
     "the double-checks card",
-    "the model and data receipts",
+    "the agent lanes: who ran each step, on which model",
     "the sensitivity table",
     "a different site under a different grid",
   ];
 
-  const INTRO_TITLE = "A 90-second tour of how SiteWhy decides";
+  const INTRO_TITLE = "A 60-second tour of how SiteWhy decides";
   const INTRO_LINE = "8 stops · auto-advances · Space pauses · Esc exits";
   const INTRO_LOOK = "the how-it-works strip at the top";
   const OUTRO_LINE = "That's SiteWhy: verdict, the rule behind it, and the agents that checked it.";
@@ -89,14 +89,14 @@
     decisive: (r) => {
       const fact = r.explanation?.decisive?.[0]?.fact;
       if (!fact?.quote) return "This is the single rule that decides the verdict — no verified quote on this run.";
-      return `This is the single rule that decides the verdict: “${clip(fact.quote, 140)}” — recorded as ${txt(fact.verification, "checked")}.`;
+      return `The one rule that decides it: “${clip(fact.quote, 90)}” — ${txt(fact.verification, "checked")}.`;
     },
     catches: (r) => {
       const all = r.explanation?.catches || [];
       const rank = (k) => ({ source_conflict: 0, unsupported_link: 1, correction: 2, conflict: 3 })[k] ?? (k === "retry" ? 9 : 5);
       const c = all.slice().sort((a, b) => rank(a.kind) - rank(b.kind))[0];
       if (!c) return "No double-checks were needed on this run.";
-      const t = clip(c.text, 130);
+      const t = clip(c.text, 90);
       return `A second agent (${txt(c.actor, "reviewer")}, ${txt(c.kind, "check").replace(/_/g, " ")}) flagged this run: ${t}${/[.…]$/.test(t) ? "" : "."}`;
     },
     trace: (r) => {
@@ -108,7 +108,7 @@
     flips: (r) => {
       const f = r.explanation?.flips?.[0];
       return f
-        ? `One change rewrites the answer: ${clip(f.change, 110)} reads ${txt(f.estimated_verdict, "differently")}.`
+        ? `One change rewrites the answer: ${clip(f.change, 80)} reads ${txt(f.estimated_verdict, "differently")}.`
         : "No single change flips this answer.";
     },
     breadth: (a, b) =>
@@ -122,7 +122,7 @@
     { site: SPINE, anchor: "map", caption: captions.map },
     { site: SPINE, anchor: "decisive", caption: captions.decisive },
     { site: SPINE, anchor: "catches", checked: "catches", caption: captions.catches },
-    { site: SPINE, anchor: "trace", checked: "trace", caption: captions.trace },
+    { site: SPINE, anchor: "lanes", caption: captions.trace },
     { site: SPINE, anchor: "flips", caption: captions.flips },
     { site: BREADTH_ERCOT, anchor: "banner", breadth: true, caption: null },
   ];
@@ -136,7 +136,7 @@
     await window.SiteWhy.selectSite(site);
   }
 
-  function highlight(anchor) {
+  function highlight(anchor, tag) {
     clearSpot();
     if (!anchor) return false;
     let el = null;
@@ -151,6 +151,7 @@
       if (closed) closed.open = true;
     } catch { /* skip */ }
     el.classList.add("demo-spot");
+    if (tag) el.setAttribute("data-demo-tag", tag);
     try {
       el.scrollIntoView({ block: "center", behavior: reducedMotion() ? "auto" : "smooth" });
     } catch { /* skip */ }
@@ -159,7 +160,10 @@
 
   function clearSpot() {
     try {
-      document.querySelectorAll(".demo-spot").forEach((el) => el.classList.remove("demo-spot"));
+      document.querySelectorAll(".demo-spot").forEach((el) => {
+        el.classList.remove("demo-spot");
+        el.removeAttribute("data-demo-tag");
+      });
     } catch { /* skip */ }
   }
 
@@ -185,13 +189,13 @@
           el.style.opacity = "";
           el.classList.remove("demo-dim");
         } else {
-          el.style.opacity = "0.35";
+          el.style.opacity = "0.2";
           el.classList.add("demo-dim");
         }
       });
       document.querySelectorAll(".rail section").forEach((el) => {
         const keep = !!target && (el === target || el.contains(target));
-        el.style.opacity = keep ? "" : "0.35";
+        el.style.opacity = keep ? "" : "0.2";
       });
     } catch { /* skip */ }
   }
@@ -444,7 +448,7 @@
     demo.phase = "intro";
     demo.index = 0;
     const anchor = "how";
-    const highlighted = highlight(anchor);
+    const highlighted = highlight(anchor, "How SiteWhy works");
     applyDim(highlighted ? anchor : null);
     const why = `${INTRO_TITLE} — ${INTRO_LINE}.`;
     paintCaption(INTRO_LOOK, why);
@@ -494,7 +498,7 @@
       return;
     }
     const look = LOOKS[demo.index] || "";
-    const highlighted = highlight(step.anchor);
+    const highlighted = highlight(step.anchor, `${demo.index + 1} · ${TITLES[demo.index]}`);
     let chainEl = null;
     if (step.anchor === "decisive") {
       try {
@@ -503,12 +507,8 @@
         chainEl = null;
       }
     }
+    // The chain stays bright beside the decisive card but gets no second spotlight (one scrim only).
     applyDim(step.anchor, chainEl);
-    if (chainEl) {
-      try {
-        chainEl.classList.add("demo-spot");
-      } catch { /* skip */ }
-    }
     paintCaption(look, why);
     pushLog({ phase: "step", step: demo.index, anchor: step.anchor, highlighted, look, why });
     paint();

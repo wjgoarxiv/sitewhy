@@ -107,6 +107,7 @@
     var trace = Array.isArray(report.model_trace) ? report.model_trace : [];
     var sec = document.createElement("section");
     sec.id = "agent-lanes";
+    sec.setAttribute("data-demo", "lanes");
     sec.setAttribute("aria-labelledby", "agent-lanes-h");
     sec.innerHTML = '<h2 id="agent-lanes-h">Who did the work</h2>'
       + summaryHtml(trace)
