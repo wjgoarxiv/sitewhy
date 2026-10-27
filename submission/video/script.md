@@ -13,7 +13,7 @@ Pipeline (all files in this folder):
 audio/*.aiff) · `bash mux.sh OUT COVER_OUT FINAL.mp4`. Motion layer: [fx.js](./fx.js); engine: [stage.mjs](./stage.mjs);
 terminal card for the Zetaris beat: [terminal.html](./terminal.html). `architecture.html` is not used in v2:
 the HQ's own "Where AI is used" panel (six chips that light up during a run) replaces the old architecture card.
-Narration: `say -v Samantha -r 185`, one aiff per line, placed at the cue time `record.mjs` logs for each line.
+Narration: recorded with `say -v Samantha -r 185` at the cue time `record.mjs` logs for each line; the final cut replaces each line with a VoiceStudio (OmniVoice, voice design "female, young adult, american accent", seed 42) rendering placed at the same start time.
 
 Recording setup: a SAMPLE_MODE server on port 8030 (`SAMPLE_MODE=true uv run uvicorn app.main:app --port 8030`),
 never port 8000. The streamed run is a real `POST /runs` against that server: in SAMPLE_MODE the model answers are

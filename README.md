@@ -39,7 +39,7 @@ Every screening hands back four things: the verdict, the rule that decides it qu
 
 The 3:02 narrated demo plays right here:
 
-https://github.com/user-attachments/assets/be00c388-8424-462f-ad70-bf472b78f5d2
+https://github.com/user-attachments/assets/f4ca6188-7628-4a15-bc97-087f78cca516
 
 The full-quality 1080p file is in the repository: [`submission/video/OAH2026-SiteWhy-ExplainWhy-Demo.mp4`](submission/video/OAH2026-SiteWhy-ExplainWhy-Demo.mp4) (27 MB, download). The clip below is the in-app guided tour.
 
