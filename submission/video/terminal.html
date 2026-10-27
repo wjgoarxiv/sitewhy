@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>terminal</title>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:#0b0f14; color:#d7e3ee; font:30px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+         width:1920px; height:1080px; display:flex; flex-direction:column; }
+  #bar { background:#131c26; color:#9fb0c3; font-size:26px; padding:14px 28px;
+         border-bottom:2px solid #2a3a4f; white-space:nowrap; overflow:hidden; }
+  #bar b { color:#f5b942; }
+  #term { flex:1; padding:28px 36px; overflow:hidden; white-space:pre-wrap; word-break:break-word; }
+  .cmd { color:#57c785; }
+  .agent { color:#5aa9ff; }
+  .hot { color:#f5b942; }
+  .dim { color:#8a99ab; }
+  .verdict { color:#f5b942; font-weight:bold; }
+</style>
+</head>
+<body>
+<div id="bar"><b>●</b> <span id="title">terminal</span></div>
+<div id="term"></div>
+<script>
+  window.__termDone = false;
+  const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+  function paint(line) {
+    const el = document.getElementById("term");
+    const div = document.createElement("div");
+    if (/^\$ /.test(line)) div.innerHTML = '<span class="cmd">' + esc(line) + "</span>";
+    else if (/critic|objection|round 2|targeted_tasks|re-investigat/i.test(line))
+      div.innerHTML = '<span class="hot">' + esc(line) + "</span>";
+    else if (/verdict:|PASS|violation|receipt|nemotron/i.test(line))
+      div.innerHTML = '<span class="verdict">' + esc(line) + "</span>";
+    else if (/^\[/.test(line)) div.innerHTML = '<span class="agent">' + esc(line) + "</span>";
+    else div.innerHTML = '<span class="dim">' + esc(line) + "</span>";
+    el.appendChild(div);
+  }
+  window.termRun = async (mode, title, lines) => {
+    window.__termDone = false;
+    document.getElementById("title").textContent = title;
+    document.getElementById("term").innerHTML = "";
+    for (const line of lines) {
+      paint(line);
+      if (mode === "play") await new Promise((r) => setTimeout(r, 45));
+    }
+    window.__termDone = true;
+  };
+</script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+title|L01|Three hundred twenty-one moratoria block data centers across thirty-two states.
+title|L02|Developers need one answer: is this site blocked, and why?
+arch|L03|SiteWhy screens a site and proves why, rule by rule.
+arch|L04|Planner, investigators, verifier, adjudicator, and critic check each other.
+washington-decisive|L05|Outside Hagerstown, the county moratorium applies. Verdict: No-go.
+washington-decisive|L06|One verified quote decides it, with the math on screen.
+hagerstown-flip|L07|Two miles away, inside city limits, the same rule falls silent.
+hagerstown-flip|L08|Same county, different answer. That is the scope flip.
+tour|L09|The verifier caught the duration: one-eighty days became one-eighty-two.
+critic-trace|L10|The critic rejected six months: the dataset says twelve.
+critic-trace|L11|The planner sent round two. That is agents changing work.
+live-run|L12|A real run, from an input file. Watch the agents hand off.
+live-run|L13|Thirty-two trace lines, seven roles, verdict: No-go.
+lanes|L14|Every call names its model and receipt; Zetaris rows back the data.
+abilene50|L15|At fifty megawatts, two Texas findings flip to no.
+abilene50|L16|Same engine, new answer. That is input changing output.
+usl|L17|One semantic layer joins moratoria, bills, and curated rules.
+usl|L18|Data-quality rule: passed, zero violations.
+flips|L19|What would change it, the evidence chain, and a recorded-run badge.
+outro|L20|SiteWhy: not which rules exist, but which apply to your site.

@@ -23,6 +23,9 @@ __pycache__/
 data/cache/
 logs/
 
+# demo video deliverable (stays local; upload separately)
+submission/video/*.mp4
+
 # fetched source documents (re-fetchable cache)
 data/sources/
 data/llm_cache/
