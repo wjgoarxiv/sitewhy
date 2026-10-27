@@ -30,7 +30,7 @@ https://github.com/wjgoarxiv/sitewhy
 
 ## 5. Demo video (1–4 minutes)
 
-https://github.com/wjgoarxiv/sitewhy/blob/master/submission/video/OAH2026-SiteWhy-ExplainWhy-Demo.mp4 (3:27, 1080p, with narration; the file is committed in the public repository and linked from the README). Test the link in a private browser window before submitting.
+https://github.com/wjgoarxiv/sitewhy#-demo-video (3:27, with narration; the video plays inline on the public README, no login needed; the full-quality 1080p MP4 is committed at `submission/video/OAH2026-SiteWhy-ExplainWhy-Demo.mp4`). Test the link in a private browser window before submitting.
 
 ## 6. Slide deck
 
@@ -59,5 +59,5 @@ Not used.
 ## Remaining steps (user)
 
 1. Done 2026-10-27: repository public at https://github.com/wjgoarxiv/sitewhy (master = 2b2cda0). Open it once in a logged-out window.
-2. The mp4 is committed in the repository and linked from the README "Demo video" section. Open the link in a private window and confirm it plays with audio; keep the local copy as a backup.
+2. The video plays inline in the README "Demo video" section (checked logged-out on 2026-10-28) and the 1080p MP4 is committed in the repository. Open the link in a private window and confirm it plays with audio; keep the local copy as a backup.
 3. Fill in the team fields, paste sections 1–9, attach or link the deck, submit, and save the confirmation.
