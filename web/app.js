@@ -620,7 +620,20 @@ async function selectLive(id, fly) {
   showReport(report, ctx, fly);
 }
 
-function projectLine(report) {
+function recordedBadge(report) {
+  if (!state.selected || state.selected.kind !== "showcase") return "";
+  const at = ((report.events || [])[0] || {}).at || "";
+  let d = at ? new Date(at) : null;
+  if (!d || Number.isNaN(d.getTime())) {
+    const m = String(report.run_id || "").match(/^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})Z/);
+    d = m ? new Date(Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4], +m[5], +m[6])) : null;
+  }
+  if (!d || Number.isNaN(d.getTime())) return "";
+  const pad = (n) => String(n).padStart(2, "0");
+  return `Recorded run · ${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())} ${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())} UTC`;
+}
+
+function projectLine(report, opts = {}) {
   const j = report.jurisdiction || {};
   const p = report.project || {};
   const asOf = report.explanation?.site?.as_of || "";
@@ -628,7 +641,16 @@ function projectLine(report) {
   if (j.county_name) bits.push(`${j.county_name}${j.state ? `, ${j.state}` : ""}`);
   if (j.iso) bits.push(j.iso);
   if (asOf) bits.push(`as of ${asOf}`);
-  return bits.filter(Boolean).join(" · ");
+  const base = bits.filter(Boolean).join(" · ");
+  if (opts.badge === false) return base;
+  const badge = recordedBadge(report);
+  return badge ? `${base} · ${badge}` : base;
+}
+
+function projectLineHtml(report) {
+  const base = esc(projectLine(report, { badge: false }));
+  const badge = recordedBadge(report);
+  return badge ? `${base} · <span class="recorded-badge">${esc(badge)}</span>` : base;
 }
 
 function decisiveCard(d, report, demo) {
@@ -839,8 +861,8 @@ function showReport(report, ctx, fly) {
   $("banner-dot").className = `dot ${verdictClass(report.verdict)}`;
   $("banner-verdict").textContent = VERDICT_TEXT[report.verdict] || report.verdict;
   $("banner-headline").innerHTML = headlineHtml(report);
-  $("banner-project").textContent = projectLine(report);
-  $("print-site").textContent = projectLine(report);
+  $("banner-project").innerHTML = projectLineHtml(report);
+  $("print-site").textContent = projectLine(report, { badge: false });
   $("print-disc").textContent = report.disclaimer || "";
   const decisive = (report.explanation || {}).decisive || [];
   $("decisive-first").innerHTML = decisive.length
@@ -900,7 +922,7 @@ async function pollRun(runId, request) {
         }
       }
       const ago = Math.round((Date.now() - started) / 1000);
-      $("run-status").innerHTML = `Screening… ${ago} s · about 3–4 minutes${feedHtml(events, started)}`;
+      $("run-status").innerHTML = `Screening… ${ago} s · about 5–8 minutes${feedHtml(events, started)}`;
     }
     if (s.status === "done") return s.report;
     if (s.status === "error") throw new Error(s.error || "run failed");

@@ -172,6 +172,8 @@ body.demo-running .center { padding-bottom: 180px; }
 .verdict-line .dot { width: 18px; height: 18px; border-radius: 0; border: 2px solid var(--ink); flex: none; }
 .headline { font-size: 15px; margin: 0 0 8px; line-height: 1.5; max-width: 60ch; }
 .project-line { font: 12px var(--mono); color: var(--ink-2); margin: 0 0 8px; overflow-wrap: anywhere; }
+.recorded-badge { display: inline-block; border: 2px solid var(--ink); border-radius: 0;
+  background: var(--panel); color: var(--ink); font: 12px var(--mono); padding: 2px 6px; white-space: nowrap; }
 .answer-first > div:empty, .disclosure > div:empty { display: none; }
 .decisive { border: 3px solid var(--ink); border-radius: 0; box-shadow: 5px 5px 0 var(--shadow);
   padding: 12px; margin-bottom: 12px; background: var(--panel); }
@@ -256,6 +258,7 @@ mark { background: var(--highlight); color: var(--ink); padding: 0 3px; }
   .print-disc { font-size: 12px; margin-top: 16px; }
   body { font-size: 12px; }
   .banner, .decisive, .catch, .ev-item { break-inside: avoid; }
+  .recorded-badge { display: none; }
 }
 
 .leaflet-container { font: inherit; background: var(--map-ground); }
