@@ -64,7 +64,7 @@
     "a different site under a different grid",
   ];
 
-  const INTRO_TITLE = "A 75-second tour of how SiteWhy decides";
+  const INTRO_TITLE = "A 90-second tour of how SiteWhy decides";
   const INTRO_LINE = "8 stops · auto-advances · Space pauses · Esc exits";
   const INTRO_LOOK = "the how-it-works strip at the top";
   const OUTRO_LINE = "That's SiteWhy: verdict, the rule behind it, and the agents that checked it.";

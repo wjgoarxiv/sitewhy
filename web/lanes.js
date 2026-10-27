@@ -100,8 +100,8 @@
   }
 
   function render(report) {
-    if (!report) return;
     document.getElementById("agent-lanes")?.remove();
+    if (!report) return;
     var layers = document.querySelector("section.layers");
     if (!layers) return;
     var trace = Array.isArray(report.model_trace) ? report.model_trace : [];

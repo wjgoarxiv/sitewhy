@@ -154,6 +154,8 @@
       { root, rootMargin: "-20% 0px -70% 0px", threshold: 0 },
     );
     items.forEach((it) => {
+      // chain/lanes sections are recreated per report, so re-resolve before observing.
+      it.el = document.querySelector(it.sel);
       if (it.el) observer.observe(it.el);
     });
   }

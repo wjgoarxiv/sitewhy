@@ -716,7 +716,7 @@ function renderRules(report) {
   const watch = (report.state_watch || []).map((w) =>
     `<div class="watch-row"><strong>${esc(w.title || w.policy_action_id || "State action")}</strong>`
     + `<span class="tag">dataset, not verified</span><br>${esc(w.key_provisions || w.status || "")}`
-    + (w.primary_source_url ? ` · <a href="${esc(w.primary_source_url)}" target="_blank" rel="noopener">source</a>` : "")
+    + (/^https?:\/\//i.test(String(w.primary_source_url || "")) ? ` · <a href="${esc(w.primary_source_url)}" target="_blank" rel="noopener">source</a>` : "")
     + `</div>`).join("");
   return (rows || `<p class="note">No rules in scope.</p>`)
     + (watch ? `<h3>State watch list</h3>${watch}` : "");
@@ -827,6 +827,7 @@ function showErrorCard(title, message) {
   $("checked-trace").innerHTML = "";
   renderTelemetryFallback();
   $("checked-timeline").innerHTML = "";
+  document.dispatchEvent(new CustomEvent("sitewhy:report", { detail: { report: null, ctx: null } }));
 }
 
 function showReport(report, ctx, fly) {
@@ -855,12 +856,16 @@ function showReport(report, ctx, fly) {
   const chip = $("map-chip");
   chip.textContent = chipText(report);
   chip.hidden = false;
-  renderOverlays(report, ctx);
-  if (ctx?.google_maps_url) showMapFallbackCoords(report, ctx);
   renderLamps(report);
-  if (!fly) state.map?.setView([report.jurisdiction.lat, report.jurisdiction.lon], 12, { animate: false });
-  // Add-on modules (nav, palette, chain, lanes, settings) re-render from this event.
-  document.dispatchEvent(new CustomEvent("sitewhy:report", { detail: { report, ctx: ctx || null } }));
+  try {
+    renderOverlays(report, ctx);
+    if (ctx?.google_maps_url) showMapFallbackCoords(report, ctx);
+    const j = report.jurisdiction || {};
+    if (!fly && Number.isFinite(j.lat) && Number.isFinite(j.lon)) state.map?.setView([j.lat, j.lon], 12, { animate: false });
+  } finally {
+    // Add-on modules (nav, palette, chain, lanes, settings) re-render from this event, even if the map step fails.
+    document.dispatchEvent(new CustomEvent("sitewhy:report", { detail: { report, ctx: ctx || null } }));
+  }
 }
 
 function showMapFallbackCoords(report, ctx) {

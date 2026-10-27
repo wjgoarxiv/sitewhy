@@ -96,18 +96,19 @@
   function quoteCard(ev) {
     if (!ev || !ev.quote) {
       return '<div class="chain-card" tabindex="0" data-chain="quote">'
-        + '<p class="chain-label">Verified quote</p><p class="chain-missing">—</p>'
-        + '<p class="chain-why">No verified quote for this rule.</p></div>';
+        + '<p class="chain-label">Source says</p><p class="chain-missing">—</p>'
+        + '<p class="chain-why">No quote for this rule.</p></div>';
     }
     var meta = ev.verification ? String(ev.verification) : "";
+    var label = ev.verification === "verified" ? "Verified quote" : "Source says (unverified)";
     return '<div class="chain-card" tabindex="0" data-chain="quote">'
-      + '<p class="chain-label">Verified quote</p>'
+      + '<p class="chain-label">' + label + '</p>'
       + '<p class="chain-quote">“' + esc(clip(ev.quote, 160)) + "”</p>"
       + (meta ? '<p class="chain-meta">' + esc(meta) + "</p>" : "") + "</div>";
   }
 
   function sourceCard(ev) {
-    if (!ev || !ev.url) {
+    if (!ev || !/^https?:\/\//i.test(String(ev.url || ""))) {
       return '<div class="chain-card" tabindex="0" data-chain="source">'
         + '<p class="chain-label">Source</p><p class="chain-missing">—</p>'
         + '<p class="chain-why">No source link for this quote.</p></div>';

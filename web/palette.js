@@ -409,6 +409,11 @@
   function init() {
     ensureDom();
     ensureRailButton();
+    // A tour can start from the #/demo hash while the palette is open; close it then.
+    if (typeof MutationObserver !== "undefined") {
+      new MutationObserver(() => { if (demoRunning()) close(); })
+        .observe(document.body, { attributes: true, attributeFilter: ["class"] });
+    }
   }
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);
