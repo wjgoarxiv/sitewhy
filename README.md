@@ -1,6 +1,6 @@
 <div align="center">
 
-<a href="submission/video/OAH2026-SiteWhy-ExplainWhy-Demo.mp4">
+<a href="#-demo-video">
   <picture>
     <source media="(prefers-reduced-motion: reduce)" srcset="docs/img/cover-poster.png">
     <img src="docs/img/cover.webp" alt="SiteWhy cover: investigation dots lap four rings labelled county, grid, state and federal, and each pass through the gate lights the next cell of an evidence ledger under the SiteWhy name" width="100%">
@@ -16,7 +16,7 @@ Check a US data center site against the rules that can block it, and see exactly
 [![Track 2](https://img.shields.io/badge/Track_2-The_Agent_That_Can_Explain_Why-111111?style=flat-square)](#-what-sitewhy-does)
 [![NVIDIA Nemotron](https://img.shields.io/badge/NVIDIA-Nemotron-76B900?style=flat-square&logo=nvidia&logoColor=white)](#-sponsor-tech)
 [![Meterless Nightshift](https://img.shields.io/badge/AI_provider-Meterless_Nightshift-ff6a3d?style=flat-square)](#-sponsor-tech)
-[![Zetaris](https://img.shields.io/badge/data_layer-Zetaris-1f6feb?style=flat-square)](#-zetaris-unified-semantic-layer)
+[![Zetaris](https://img.shields.io/badge/data_layer-Zetaris-1f6feb?style=flat-square)](#%EF%B8%8F-zetaris-unified-semantic-layer)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-3776AB?style=flat-square&logo=python&logoColor=white)](#-dependencies)
 
 [Demo video](#-demo-video) · [Quick start](#-quick-start) · [How it works](#-how-it-works) · [Sponsor tech](#-sponsor-tech) · [Examples](#-examples-and-traces) · [Limitations](#%EF%B8%8F-limitations)
@@ -29,7 +29,11 @@ SiteWhy takes a US address and an IT load in megawatts and checks the site again
 
 ## 🎬 Demo video
 
-**[▶ Watch the 3:27 narrated demo](submission/video/OAH2026-SiteWhy-ExplainWhy-Demo.mp4)** (MP4, 1080p, in this repository). The clip below is the in-app guided tour.
+The 3:27 narrated demo plays right here:
+
+https://github.com/user-attachments/assets/cef82d69-4834-4f73-8ea2-21d3640ec152
+
+The full-quality 1080p file is in the repository: [`submission/video/OAH2026-SiteWhy-ExplainWhy-Demo.mp4`](submission/video/OAH2026-SiteWhy-ExplainWhy-Demo.mp4) (14 MB, download). The clip below is the in-app guided tour.
 
 <p align="center">
   <img src="docs/img/demo.gif" alt="SiteWhy guided tour: a no-go verdict for unincorporated Washington County, the verified moratorium quote, the why chain and the agent lanes" width="90%">
