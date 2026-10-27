@@ -1,0 +1,267 @@
+{
+  "queries": [
+    {
+      "name": "active_with_context",
+      "sql": "SELECT moratorium_id, state_abbrev, jurisdiction, enacted_status, state_bill_count, state_bills_enacted, federal_rules, state_rules, county_source_count FROM SITEWHY.usl_site_screen WHERE enacted_status IN ('active', 'extended') ORDER BY state_abbrev, jurisdiction LIMIT 10",
+      "row_count": 10,
+      "rows": [
+        {
+          "moratorium_id": "al-anniston-2026",
+          "state_abbrev": "AL",
+          "jurisdiction": "Anniston",
+          "enacted_status": "active",
+          "state_bill_count": "4",
+          "state_bills_enacted": "2",
+          "federal_rules": "federal-title-v-major-source",
+          "state_rules": "",
+          "county_source_count": "0"
+        },
+        {
+          "moratorium_id": "al-calera-2026",
+          "state_abbrev": "AL",
+          "jurisdiction": "Calera",
+          "enacted_status": "active",
+          "state_bill_count": "4",
+          "state_bills_enacted": "2",
+          "federal_rules": "federal-title-v-major-source",
+          "state_rules": "",
+          "county_source_count": "0"
+        },
+        {
+          "moratorium_id": "al-chelsea-2026",
+          "state_abbrev": "AL",
+          "jurisdiction": "Chelsea",
+          "enacted_status": "active",
+          "state_bill_count": "4",
+          "state_bills_enacted": "2",
+          "federal_rules": "federal-title-v-major-source",
+          "state_rules": "",
+          "county_source_count": "0"
+        },
+        {
+          "moratorium_id": "al-cullman-2026",
+          "state_abbrev": "AL",
+          "jurisdiction": "Cullman",
+          "enacted_status": "active",
+          "state_bill_count": "4",
+          "state_bills_enacted": "2",
+          "federal_rules": "federal-title-v-major-source",
+          "state_rules": "",
+          "county_source_count": "0"
+        },
+        {
+          "moratorium_id": "al-fairfield-2026",
+          "state_abbrev": "AL",
+          "jurisdiction": "Fairfield",
+          "enacted_status": "active",
+          "state_bill_count": "4",
+          "state_bills_enacted": "2",
+          "federal_rules": "federal-title-v-major-source",
+          "state_rules": "",
+          "county_source_count": "0"
+        },
+        {
+          "moratorium_id": "al-foley-2026",
+          "state_abbrev": "AL",
+          "jurisdiction": "Foley",
+          "enacted_status": "active",
+          "state_bill_count": "4",
+          "state_bills_enacted": "2",
+          "federal_rules": "federal-title-v-major-source",
+          "state_rules": "",
+          "county_source_count": "0"
+        },
+        {
+          "moratorium_id": "al-fort-payne-2026",
+          "state_abbrev": "AL",
+          "jurisdiction": "Fort Payne",
+          "enacted_status": "active",
+          "state_bill_count": "4",
+          "state_bills_enacted": "2",
+          "federal_rules": "federal-title-v-major-source",
+          "state_rules": "",
+          "county_source_count": "0"
+        },
+        {
+          "moratorium_id": "al-harpersville-2026",
+          "state_abbrev": "AL",
+          "jurisdiction": "Harpersville",
+          "enacted_status": "active",
+          "state_bill_count": "4",
+          "state_bills_enacted": "2",
+          "federal_rules": "federal-title-v-major-source",
+          "state_rules": "",
+          "county_source_count": "0"
+        },
+        {
+          "moratorium_id": "al-helena-2026",
+          "state_abbrev": "AL",
+          "jurisdiction": "Helena",
+          "enacted_status": "active",
+          "state_bill_count": "4",
+          "state_bills_enacted": "2",
+          "federal_rules": "federal-title-v-major-source",
+          "state_rules": "",
+          "county_source_count": "0"
+        },
+        {
+          "moratorium_id": "al-homewood-2026",
+          "state_abbrev": "AL",
+          "jurisdiction": "Homewood",
+          "enacted_status": "active",
+          "state_bill_count": "4",
+          "state_bills_enacted": "2",
+          "federal_rules": "federal-title-v-major-source",
+          "state_rules": "",
+          "county_source_count": "0"
+        }
+      ]
+    },
+    {
+      "name": "washington_scope_flip",
+      "sql": "SELECT moratorium_id, jurisdiction, enacted_status, state_bill_count, federal_rules, county_source_count FROM SITEWHY.usl_site_screen WHERE moratorium_id LIKE '%washington%' ORDER BY moratorium_id",
+      "row_count": 9,
+      "rows": [
+        {
+          "moratorium_id": "co-washington-county-2023",
+          "jurisdiction": "Washington County",
+          "enacted_status": "active",
+          "state_bill_count": "4",
+          "federal_rules": "federal-title-v-major-source",
+          "county_source_count": "0"
+        },
+        {
+          "moratorium_id": "fl-washington-county-2026",
+          "jurisdiction": "Washington County",
+          "enacted_status": "active",
+          "state_bill_count": "6",
+          "federal_rules": "federal-title-v-major-source",
+          "county_source_count": "0"
+        },
+        {
+          "moratorium_id": "md-washington-county-2026",
+          "jurisdiction": "Washington County",
+          "enacted_status": "active",
+          "state_bill_count": "13",
+          "federal_rules": "federal-title-v-major-source",
+          "county_source_count": "2"
+        },
+        {
+          "moratorium_id": "mi-washington-township-2026",
+          "jurisdiction": "Washington Township (Macomb County)",
+          "enacted_status": "active",
+          "state_bill_count": "14",
+          "federal_rules": "federal-title-v-major-source",
+          "county_source_count": "0"
+        },
+        {
+          "moratorium_id": "oh-washington-township-2025",
+          "jurisdiction": "Washington Township (Franklin County)",
+          "enacted_status": "extended",
+          "state_bill_count": "12",
+          "federal_rules": "federal-title-v-major-source",
+          "county_source_count": "0"
+        },
+        {
+          "moratorium_id": "oh-washington-township-montgomery-county-2026",
+          "jurisdiction": "Washington Township (Montgomery County)",
+          "enacted_status": "active",
+          "state_bill_count": "12",
+          "federal_rules": "federal-title-v-major-source",
+          "county_source_count": "0"
+        },
+        {
+          "moratorium_id": "oh-washington-township-pickaway-county-2026",
+          "jurisdiction": "Washington Township (Pickaway County)",
+          "enacted_status": "active",
+          "state_bill_count": "12",
+          "federal_rules": "federal-title-v-major-source",
+          "county_source_count": "0"
+        },
+        {
+          "moratorium_id": "oh-washington-township-stark-county-2026",
+          "jurisdiction": "Washington Township (Stark County)",
+          "enacted_status": "active",
+          "state_bill_count": "12",
+          "federal_rules": "federal-title-v-major-source",
+          "county_source_count": "0"
+        },
+        {
+          "moratorium_id": "tn-washington-county-2026",
+          "jurisdiction": "Washington County",
+          "enacted_status": "active",
+          "state_bill_count": "9",
+          "federal_rules": "federal-title-v-major-source",
+          "county_source_count": "0"
+        }
+      ]
+    },
+    {
+      "name": "texas_ercot_rules",
+      "sql": "SELECT moratorium_id, jurisdiction, state_bill_count, state_rules FROM SITEWHY.usl_site_screen WHERE state_abbrev = 'TX' AND state_rules <> '' ORDER BY moratorium_id LIMIT 10",
+      "row_count": 10,
+      "rows": [
+        {
+          "moratorium_id": "tx-austin-county-2026",
+          "jurisdiction": "Austin County",
+          "state_bill_count": "11",
+          "state_rules": "tx-ercot-data-center-audit-2026|tx-sb6-large-load"
+        },
+        {
+          "moratorium_id": "tx-brownsville-undated",
+          "jurisdiction": "Brownsville",
+          "state_bill_count": "11",
+          "state_rules": "tx-ercot-data-center-audit-2026|tx-sb6-large-load"
+        },
+        {
+          "moratorium_id": "tx-denton-undated",
+          "jurisdiction": "Denton",
+          "state_bill_count": "11",
+          "state_rules": "tx-ercot-data-center-audit-2026|tx-sb6-large-load"
+        },
+        {
+          "moratorium_id": "tx-fort-worth-undated",
+          "jurisdiction": "Fort Worth",
+          "state_bill_count": "11",
+          "state_rules": "tx-ercot-data-center-audit-2026|tx-sb6-large-load"
+        },
+        {
+          "moratorium_id": "tx-harlingen-2026",
+          "jurisdiction": "Harlingen",
+          "state_bill_count": "11",
+          "state_rules": "tx-ercot-data-center-audit-2026|tx-sb6-large-load"
+        },
+        {
+          "moratorium_id": "tx-hays-county-2026",
+          "jurisdiction": "Hays County",
+          "state_bill_count": "11",
+          "state_rules": "tx-ercot-data-center-audit-2026|tx-sb6-large-load"
+        },
+        {
+          "moratorium_id": "tx-hill-county-2026",
+          "jurisdiction": "Hill County",
+          "state_bill_count": "11",
+          "state_rules": "tx-ercot-data-center-audit-2026|tx-sb6-large-load"
+        },
+        {
+          "moratorium_id": "tx-lavon-2026",
+          "jurisdiction": "Lavon",
+          "state_bill_count": "11",
+          "state_rules": "tx-ercot-data-center-audit-2026|tx-sb6-large-load"
+        },
+        {
+          "moratorium_id": "tx-league-city-2024",
+          "jurisdiction": "League City",
+          "state_bill_count": "11",
+          "state_rules": "tx-ercot-data-center-audit-2026|tx-sb6-large-load"
+        },
+        {
+          "moratorium_id": "tx-lubbock-undated",
+          "jurisdiction": "Lubbock",
+          "state_bill_count": "11",
+          "state_rules": "tx-ercot-data-center-audit-2026|tx-sb6-large-load"
+        }
+      ]
+    }
+  ]
+}

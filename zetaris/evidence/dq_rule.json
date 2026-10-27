@@ -1,0 +1,7 @@
+{
+  "name": "null_join_keys",
+  "sql": "SELECT moratorium_id, state_abbrev FROM SITEWHY.usl_site_screen WHERE moratorium_id IS NULL OR moratorium_id = '' OR state_abbrev IS NULL OR state_abbrev = ''",
+  "violation_count": 0,
+  "violations": [],
+  "passed": true
+}

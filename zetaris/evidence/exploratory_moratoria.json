@@ -1,0 +1,96 @@
+{
+  "source": "moratoria",
+  "queries": [
+    {
+      "name": "counts_by_status",
+      "sql": "SELECT enacted_status, COUNT(*) AS n FROM SITEWHY.moratoria GROUP BY enacted_status ORDER BY n DESC",
+      "row_count": 6,
+      "rows": [
+        {
+          "enacted_status": "active",
+          "n": "897"
+        },
+        {
+          "enacted_status": "extended",
+          "n": "166"
+        },
+        {
+          "enacted_status": "replaced",
+          "n": "93"
+        },
+        {
+          "enacted_status": "pending",
+          "n": "77"
+        },
+        {
+          "enacted_status": "expired",
+          "n": "50"
+        },
+        {
+          "enacted_status": "rescinded",
+          "n": "8"
+        }
+      ]
+    },
+    {
+      "name": "top_active_states",
+      "sql": "SELECT state_abbrev, COUNT(*) AS n FROM SITEWHY.moratoria WHERE enacted_status IN ('active', 'extended') GROUP BY state_abbrev ORDER BY n DESC LIMIT 10",
+      "row_count": 10,
+      "rows": [
+        {
+          "state_abbrev": "OH",
+          "n": "149"
+        },
+        {
+          "state_abbrev": "MI",
+          "n": "131"
+        },
+        {
+          "state_abbrev": "NY",
+          "n": "111"
+        },
+        {
+          "state_abbrev": "NC",
+          "n": "57"
+        },
+        {
+          "state_abbrev": "IA",
+          "n": "52"
+        },
+        {
+          "state_abbrev": "GA",
+          "n": "50"
+        },
+        {
+          "state_abbrev": "WI",
+          "n": "38"
+        },
+        {
+          "state_abbrev": "TN",
+          "n": "37"
+        },
+        {
+          "state_abbrev": "KY",
+          "n": "30"
+        },
+        {
+          "state_abbrev": "WA",
+          "n": "30"
+        }
+      ]
+    },
+    {
+      "name": "washington_county_md",
+      "sql": "SELECT moratorium_id, jurisdiction, enacted_status, current_end_date_iso FROM SITEWHY.moratoria WHERE moratorium_id LIKE 'md-washington%'",
+      "row_count": 1,
+      "rows": [
+        {
+          "moratorium_id": "md-washington-county-2026",
+          "jurisdiction": "Washington County",
+          "enacted_status": "active",
+          "current_end_date_iso": ""
+        }
+      ]
+    }
+  ]
+}

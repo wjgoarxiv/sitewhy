@@ -1,0 +1,63 @@
+{
+  "source": "curated_rules",
+  "queries": [
+    {
+      "name": "counts_by_layer",
+      "sql": "SELECT layer, COUNT(*) AS n FROM SITEWHY.curated_rules GROUP BY layer ORDER BY n DESC",
+      "row_count": 3,
+      "rows": [
+        {
+          "layer": "federal",
+          "n": "1"
+        },
+        {
+          "layer": "state",
+          "n": "1"
+        },
+        {
+          "layer": "iso_rto",
+          "n": "1"
+        }
+      ]
+    },
+    {
+      "name": "all_rules",
+      "sql": "SELECT rule_id, layer, title FROM SITEWHY.curated_rules ORDER BY rule_id",
+      "row_count": 3,
+      "rows": [
+        {
+          "rule_id": "federal-title-v-major-source",
+          "layer": "federal",
+          "title": "Clean Air Act Title V operating permit (major source)"
+        },
+        {
+          "rule_id": "tx-ercot-data-center-audit-2026",
+          "layer": "state",
+          "title": "Texas Governor's data center interconnection audit (ERCOT)"
+        },
+        {
+          "rule_id": "tx-sb6-large-load",
+          "layer": "iso_rto",
+          "title": "Texas SB 6 large load interconnection standards (ERCOT)"
+        }
+      ]
+    },
+    {
+      "name": "ercot_scoped_rules",
+      "sql": "SELECT rule_id, title, mw_threshold FROM SITEWHY.curated_rules WHERE scope_iso = 'ERCOT' ORDER BY rule_id",
+      "row_count": 2,
+      "rows": [
+        {
+          "rule_id": "tx-ercot-data-center-audit-2026",
+          "title": "Texas Governor's data center interconnection audit (ERCOT)",
+          "mw_threshold": "75"
+        },
+        {
+          "rule_id": "tx-sb6-large-load",
+          "title": "Texas SB 6 large load interconnection standards (ERCOT)",
+          "mw_threshold": "75"
+        }
+      ]
+    }
+  ]
+}

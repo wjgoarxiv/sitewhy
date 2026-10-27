@@ -1,0 +1,157 @@
+{
+  "source": "state_legislation",
+  "queries": [
+    {
+      "name": "counts_by_bill_status",
+      "sql": "SELECT bill_status_category, COUNT(*) AS n FROM SITEWHY.state_legislation GROUP BY bill_status_category ORDER BY n DESC",
+      "row_count": 9,
+      "rows": [
+        {
+          "bill_status_category": "failed_died",
+          "n": "234"
+        },
+        {
+          "bill_status_category": "enacted",
+          "n": "85"
+        },
+        {
+          "bill_status_category": "in_committee",
+          "n": "76"
+        },
+        {
+          "bill_status_category": "passed_one_chamber",
+          "n": "21"
+        },
+        {
+          "bill_status_category": "vetoed",
+          "n": "9"
+        },
+        {
+          "bill_status_category": "carried_over",
+          "n": "7"
+        },
+        {
+          "bill_status_category": "passed_both_chambers",
+          "n": "4"
+        },
+        {
+          "bill_status_category": "withdrawn",
+          "n": "3"
+        },
+        {
+          "bill_status_category": "unknown",
+          "n": "1"
+        }
+      ]
+    },
+    {
+      "name": "texas_bills",
+      "sql": "SELECT bill, bill_status_category, last_action_date_iso FROM SITEWHY.state_legislation WHERE state_abbrev = 'TX' ORDER BY bill",
+      "row_count": 11,
+      "rows": [
+        {
+          "bill": "Governor Abbott August 3, 2026 Data Center Audit Directive",
+          "bill_status_category": "unknown",
+          "last_action_date_iso": "2026-08-03"
+        },
+        {
+          "bill": "HB 2482 / SB 1265 / SB 1143 (88R, 2023)",
+          "bill_status_category": "failed_died",
+          "last_action_date_iso": "2023-03-27"
+        },
+        {
+          "bill": "HB 3104 (88R, 2023)",
+          "bill_status_category": "failed_died",
+          "last_action_date_iso": "2023-05-28"
+        },
+        {
+          "bill": "HB 3970 (89R, 2025)",
+          "bill_status_category": "failed_died",
+          "last_action_date_iso": "2025-05-15"
+        },
+        {
+          "bill": "HB 5588 (89R, 2025)",
+          "bill_status_category": "failed_died",
+          "last_action_date_iso": "2025-04-07"
+        },
+        {
+          "bill": "SB 1929 (88R, 2023)",
+          "bill_status_category": "enacted",
+          "last_action_date_iso": "2023-06-09"
+        },
+        {
+          "bill": "SB 1942 (89R, 2025)",
+          "bill_status_category": "failed_died",
+          "last_action_date_iso": "2025-03-17"
+        },
+        {
+          "bill": "SB 2222 (89R, 2025)",
+          "bill_status_category": "failed_died",
+          "last_action_date_iso": "2025-03-25"
+        },
+        {
+          "bill": "SB 2888 (89R, 2025)",
+          "bill_status_category": "failed_died",
+          "last_action_date_iso": "2025-04-07"
+        },
+        {
+          "bill": "SB 6 (89R, 2025)",
+          "bill_status_category": "enacted",
+          "last_action_date_iso": "2025-06-20"
+        },
+        {
+          "bill": "SJR 72 (89R, 2025)",
+          "bill_status_category": "failed_died",
+          "last_action_date_iso": "2025-03-25"
+        }
+      ]
+    },
+    {
+      "name": "enacted_by_state",
+      "sql": "SELECT state_abbrev, COUNT(*) AS n FROM SITEWHY.state_legislation WHERE bill_status_category = 'enacted' GROUP BY state_abbrev ORDER BY n DESC LIMIT 10",
+      "row_count": 10,
+      "rows": [
+        {
+          "state_abbrev": "IA",
+          "n": "5"
+        },
+        {
+          "state_abbrev": "AR",
+          "n": "5"
+        },
+        {
+          "state_abbrev": "VA",
+          "n": "4"
+        },
+        {
+          "state_abbrev": "UT",
+          "n": "4"
+        },
+        {
+          "state_abbrev": "NV",
+          "n": "3"
+        },
+        {
+          "state_abbrev": "NJ",
+          "n": "3"
+        },
+        {
+          "state_abbrev": "KY",
+          "n": "3"
+        },
+        {
+          "state_abbrev": "WY",
+          "n": "3"
+        },
+        {
+          "state_abbrev": "ID",
+          "n": "3"
+        },
+        {
+          "state_abbrev": "NE",
+          "n": "3"
+        }
+      ]
+    }
+  ]
+}

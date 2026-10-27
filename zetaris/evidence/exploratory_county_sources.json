@@ -1,0 +1,45 @@
+{
+  "source": "county_sources",
+  "queries": [
+    {
+      "name": "counts_by_moratorium",
+      "sql": "SELECT moratorium_id, COUNT(*) AS n FROM SITEWHY.county_sources GROUP BY moratorium_id ORDER BY moratorium_id",
+      "row_count": 2,
+      "rows": [
+        {
+          "moratorium_id": "az-pima-county-2026",
+          "n": "1"
+        },
+        {
+          "moratorium_id": "md-washington-county-2026",
+          "n": "2"
+        }
+      ]
+    },
+    {
+      "name": "all_sources",
+      "sql": "SELECT moratorium_id, title FROM SITEWHY.county_sources ORDER BY moratorium_id",
+      "row_count": 3,
+      "rows": [
+        {
+          "moratorium_id": "az-pima-county-2026",
+          "title": "KJZZ, 2026-09-23: Pima County passes 120-day moratorium"
+        },
+        {
+          "moratorium_id": "md-washington-county-2026",
+          "title": "Washington County, MD press release, 2026-07-01"
+        },
+        {
+          "moratorium_id": "md-washington-county-2026",
+          "title": "Washington County, MD draft moratorium ordinance (PDF)"
+        }
+      ]
+    },
+    {
+      "name": "orphan_sources",
+      "sql": "SELECT c.moratorium_id, c.title FROM SITEWHY.county_sources c LEFT JOIN SITEWHY.moratoria m ON c.moratorium_id = m.moratorium_id WHERE m.moratorium_id IS NULL",
+      "row_count": 0,
+      "rows": []
+    }
+  ]
+}
