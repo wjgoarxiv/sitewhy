@@ -53,7 +53,8 @@ h2 { font-size: 13px; font-family: var(--mono); font-weight: 600; text-transform
   .center { display: contents; }
   .brand { order: 1; padding: 20px 16px 0; }
   .shell #demo-roll { order: 2; margin: 0 16px; width: auto; }
-  #how, #report-empty, #report-view { order: 3; padding: 0 16px; margin: 0 auto; max-width: 920px; width: 100%; }
+  #report-empty, #report-view { order: 3; padding: 0 16px; margin: 0 auto; max-width: 920px; width: 100%; }
+  #how { order: 3; width: calc(100% - 32px); max-width: 888px; margin: 0 auto 16px; }
   .rail .rail-tools { order: 1; padding: 8px 16px 0; width: 100%; }
   .rail section[aria-labelledby="portfolio-h"] { order: 4; padding: 0 16px; max-width: 920px; width: 100%; margin: 0 auto; }
   .rail section[aria-labelledby="screen-h"] { order: 5; padding: 0 16px; max-width: 920px; width: 100%; margin: 0 auto; }
