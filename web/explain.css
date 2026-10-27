@@ -1,0 +1,92 @@
+/* SiteWhy explainer: what you get + where AI is used, and the provenance chips in the report.
+ * Reuses the app.css tokens: cream ground, 3px ink borders, offset shadows, mono uppercase labels. */
+
+/* The wrapper keeps id="how" (layout order, demo tour anchor); the panel inside carries the look. */
+#how.explainer-wrap { border: 0; box-shadow: none; background: none; padding: 0; }
+.explainer { border: 3px solid var(--ink); background: var(--panel); box-shadow: 5px 5px 0 var(--shadow); padding: 12px; }
+
+.ex-head { display: flex; align-items: center; gap: 12px; }
+h2.ex-title { margin: 0; padding: 0; border: 0; flex: none; }
+.ex-oneline { flex: 1 1 auto; min-width: 0; margin: 0; font-size: 13px; color: var(--ink-2); overflow-wrap: anywhere; }
+.explainer-wrap[data-collapsed="false"] .ex-oneline { display: none; }
+.ex-toggle { margin-left: auto; flex: none; font: 600 12px var(--mono); letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--ink); background: var(--panel); border: 3px solid var(--ink); border-radius: 0;
+  padding: 4px 12px; min-width: 64px; min-height: 44px; cursor: pointer; }
+.ex-toggle:active { transform: translateY(1px); }
+.ex-body[hidden] { display: none; }
+
+.ex-halves { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 16px; margin-top: 12px; }
+@media (max-width: 899px) { .ex-halves { grid-template-columns: minmax(0, 1fr); } }
+.ex-half { min-width: 0; }
+.ex-h { display: flex; align-items: center; min-height: 32px; margin: 0 0 12px; padding-bottom: 6px; border-bottom: 3px solid var(--ink);
+  font: 600 13px/1.3 var(--mono); text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-2); }
+
+.ex-tiles { list-style: none; counter-reset: ex-tile; margin: 0; padding: 0; display: grid; gap: 8px; }
+.ex-tile { counter-increment: ex-tile; position: relative; display: flex; flex-direction: column; gap: 2px;
+  padding: 6px 8px 6px 44px; background: var(--bg); border: 2px solid var(--ink); min-width: 0; overflow-wrap: anywhere; }
+.ex-tile::before { content: counter(ex-tile); position: absolute; left: 8px; top: 8px; width: 24px; height: 24px;
+  display: flex; align-items: center; justify-content: center; background: var(--ink); color: var(--bg); font: 700 13px var(--sans); }
+.ex-tile strong { font-size: 14px; }
+.ex-tile span { font-size: 13px; color: var(--ink-2); }
+.ex-eg { align-self: flex-start; margin-top: 2px; padding: 0 4px; background: var(--highlight); color: var(--ink);
+  font: 12px/1.5 var(--mono); overflow-wrap: anywhere; }
+
+.ex-pipeline { list-style: none; margin: 0; padding: 12px 0 0; display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px 20px; }
+.ex-step { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 4px;
+  padding: 12px 8px 8px; min-width: 0; border: 3px solid var(--ink); overflow-wrap: anywhere;
+  transition: background-color 0.15s, opacity 0.15s; }
+.ex-step[data-kind="ai"] { background: #EAF4EB; }
+.ex-step[data-kind="code"] { background: var(--panel-2); border-style: dashed; }
+.ex-step:not(:nth-child(3n))::before { content: "→"; position: absolute; right: -19px; top: 50%;
+  transform: translateY(-50%); font: 900 16px var(--sans); }
+.ex-num { position: absolute; top: -13px; left: 8px; width: 22px; height: 22px; display: flex;
+  align-items: center; justify-content: center; background: var(--ink); color: var(--bg); font: 700 13px var(--sans); }
+.ex-role { font-weight: 800; font-size: 14px; line-height: 1.25; }
+.ex-who { font: 700 10px/1.4 var(--mono); letter-spacing: 0.04em; text-transform: uppercase;
+  padding: 1px 6px; border: 2px solid var(--ink); }
+.ex-step[data-kind="ai"] .ex-who { background: var(--mist); color: var(--mist-ink); border-color: var(--mist); }
+.ex-step[data-kind="code"] .ex-who { background: #DDDDDD; color: #222222; border-color: var(--grey); }
+.ex-job { font-size: 12px; line-height: 1.4; color: var(--ink-2); }
+.ex-readout { font: 11px/1.35 var(--mono); color: var(--ink); }
+.ex-readout:empty { display: none; }
+
+.ex-step[data-state="active"] { background: var(--highlight); box-shadow: 4px 4px 0 var(--accent);
+  outline: 3px solid var(--ink); outline-offset: 3px; animation: ex-march 0.9s ease-in-out infinite; }
+@keyframes ex-march { 50% { outline-offset: 7px; } }
+.ex-step[data-state="done"]::after { content: "✓"; position: absolute; top: -13px; right: 8px; width: 22px; height: 22px;
+  display: flex; align-items: center; justify-content: center; background: var(--ok); color: #FFFFFF;
+  border: 2px solid var(--ink); font: 900 13px var(--sans); }
+.ex-step[data-state="skipped"] { opacity: 0.55; }
+.ex-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.ex-round { display: inline-block; margin-left: 8px; padding: 1px 6px; vertical-align: middle;
+  background: var(--accent); color: var(--accent-ink); border: 2px solid var(--ink); font: 700 11px var(--mono); }
+.ex-round[hidden] { display: none; }
+.ex-caption { min-height: 1.5em; margin: 10px 0 0; font: 12px/1.4 var(--mono); overflow-wrap: anywhere; }
+.ex-replay { margin-top: 8px; padding: 8px 16px; min-height: 44px; cursor: pointer; font: 600 13px var(--sans);
+  color: var(--ink); background: var(--panel); border: 3px solid var(--ink); border-radius: 0; box-shadow: 4px 4px 0 var(--shadow); }
+.ex-replay:active { transform: translate(1px, 1px); box-shadow: 3px 3px 0 var(--shadow); }
+.ex-replay:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
+.ex-foot { margin: 12px 0 0; padding-top: 8px; border-top: 2px solid var(--ink);
+  font: 12px var(--mono); color: var(--ink-2); overflow-wrap: anywhere; }
+
+@media (max-width: 520px) {
+  .ex-pipeline { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ex-step::before { display: none; }
+}
+
+/* Provenance chips added to the report after it renders. */
+.prov-row { margin: 0 0 8px; }
+.prov-chip { display: inline-block; margin: 6px 6px 0 0; padding: 1px 6px; max-width: 100%;
+  font: 11px/1.5 var(--mono); color: var(--ink); background: var(--panel-2); border: 2px solid var(--ink); overflow-wrap: anywhere; }
+.prov-row .prov-chip { margin-top: 0; }
+.rule-line .prov-chip, .check-line .prov-chip { margin: 0 0 0 8px; }
+.prov-chip[data-prov="ai"] { background: #EAF4EB; border-color: var(--mist); }
+.prov-chip[data-prov="code"] { border-style: dashed; }
+
+@media print { .explainer-wrap { display: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .ex-step { transition: none; }
+  .ex-step[data-state="active"] { animation: none; }
+}

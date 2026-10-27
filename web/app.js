@@ -915,6 +915,7 @@ async function pollRun(runId, request) {
     const events = s.events || [];
     if (events.length > seen) {
       seen = events.length;
+      document.dispatchEvent(new CustomEvent("sitewhy:events", { detail: { events, runId } }));
       const resolved = events.find((e) => e.action === "resolved");
       if (resolved && !flown) {
         flown = true;
@@ -937,6 +938,7 @@ async function submitRun(body, addressLabel) {
   $("run-btn").disabled = true;
   $("form-status").textContent = "Screening…";
   runningRow(addressLabel, body.mw);
+  document.dispatchEvent(new CustomEvent("sitewhy:run-start", { detail: { body } }));
   try {
     const res = await fetch("/runs", {
       method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body),
@@ -972,7 +974,11 @@ async function submitRun(body, addressLabel) {
     }
     $("form-status").textContent = msg;
     showErrorCard("Screening failed", msg);
-  } finally { $("run-btn").disabled = false; $("run-status").textContent = ""; }
+  } finally {
+    $("run-btn").disabled = false;
+    $("run-status").textContent = "";
+    document.dispatchEvent(new CustomEvent("sitewhy:run-end"));
+  }
 }
 
 $("run-form").addEventListener("submit", (ev) => {

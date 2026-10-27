@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="/chain.css">
 <link rel="stylesheet" href="/lanes.css">
 <link rel="stylesheet" href="/settings.css">
+<link rel="stylesheet" href="/explain.css">
 </head>
 <body>
 <div class="shell">
@@ -53,13 +54,86 @@
     </section>
   </header>
   <main class="center">
-    <section id="how" data-ui-moment data-demo="how" aria-label="How SiteWhy works">
-      <ol class="how-steps">
-        <li>Pick a site or enter an address</li>
-        <li>AI agents check federal, state, grid and county rules where modelled</li>
-        <li>Get a verdict with cited, verified sources</li>
-      </ol>
-      <p class="how-sponsor">Powered by NVIDIA Nemotron via Nightshift · data in Zetaris · Meterless engines</p>
+    <section id="how" class="explainer-wrap" data-ui-moment data-demo="how" aria-label="How SiteWhy works">
+      <div id="explainer" class="explainer" data-demo="explainer">
+        <div class="ex-head">
+          <h2 class="ex-title" id="ex-title">How SiteWhy works</h2>
+          <p class="ex-oneline" id="ex-oneline">AI reads and writes; code verifies and computes.</p>
+          <button type="button" id="ex-toggle" class="ex-toggle" aria-expanded="true" aria-controls="ex-body">Hide</button>
+        </div>
+        <div id="ex-body" class="ex-body">
+          <div class="ex-halves">
+            <section class="ex-half ex-get" aria-labelledby="ex-get-h">
+              <h3 class="ex-h" id="ex-get-h">What you get</h3>
+              <ol class="ex-tiles">
+                <li class="ex-tile" data-tile="verdict"><strong>Verdict</strong>
+                  <span>Go, conditional or no-go for this site at this load.</span></li>
+                <li class="ex-tile" data-tile="rule"><strong>The deciding rule</strong>
+                  <span>Quoted word for word from its source, with the link.</span></li>
+                <li class="ex-tile" data-tile="math"><strong>The math</strong>
+                  <span>The threshold check, computed by code.</span>
+                  <code class="ex-eg">e.g. 1,067 tpy ≥ 100 tpy</code></li>
+                <li class="ex-tile" data-tile="flips"><strong>What would change it</strong>
+                  <span>The flips: the change that moves the verdict.</span>
+                  <code class="ex-eg">e.g. at 25 MW instead of 300 MW → go</code></li>
+              </ol>
+            </section>
+            <section class="ex-half ex-ai" aria-labelledby="ex-ai-h">
+              <h3 class="ex-h" id="ex-ai-h">Where AI is used <span class="ex-round" id="ex-round" hidden>Round 2</span></h3>
+              <ol class="ex-pipeline" id="ex-pipeline" data-demo="pipeline">
+                <li class="ex-step" data-step="planner" data-role="planner" data-kind="ai" data-state="idle">
+                  <span class="ex-num" aria-hidden="true">1</span>
+                  <span class="ex-role">Planner</span>
+                  <span class="ex-who">AI · Nemotron Ultra</span>
+                  <span class="ex-job">Plans what to check.</span>
+                  <span class="ex-readout" aria-hidden="true"></span><span class="ex-sr"></span>
+                </li>
+                <li class="ex-step" data-step="investigator" data-role="county_investigator" data-kind="ai" data-state="idle"
+                    title="If Lightning fails or returns no facts, Nemotron Ultra re-extracts.">
+                  <span class="ex-num" aria-hidden="true">2</span>
+                  <span class="ex-role">County investigator</span>
+                  <span class="ex-who">AI · Nemotron Lightning</span>
+                  <span class="ex-job">Reads county sources and pulls out rules with quotes.</span>
+                  <span class="ex-readout" aria-hidden="true"></span><span class="ex-sr"></span>
+                </li>
+                <li class="ex-step" data-step="verifier" data-role="evidence_verifier" data-kind="code" data-state="idle"
+                    title="Case, spacing and curly quotes are normalised; nothing is fuzzy-matched and no model decides.">
+                  <span class="ex-num" aria-hidden="true">3</span>
+                  <span class="ex-role">Evidence verifier</span>
+                  <span class="ex-who">Code · Python</span>
+                  <span class="ex-job">Checks every quote word for word against the source.</span>
+                  <span class="ex-readout" aria-hidden="true"></span><span class="ex-sr"></span>
+                </li>
+                <li class="ex-step" data-step="rulecheck" data-role="applicability" data-kind="code" data-state="idle">
+                  <span class="ex-num" aria-hidden="true">4</span>
+                  <span class="ex-role">Rule check</span>
+                  <span class="ex-who">Code · Python</span>
+                  <span class="ex-job">Does the threshold and date math.</span>
+                  <span class="ex-readout" aria-hidden="true"></span><span class="ex-sr"></span>
+                </li>
+                <li class="ex-step" data-step="adjudicator" data-role="adjudicator" data-kind="ai" data-state="idle"
+                    title="Code then guards the draft: for example, a no-go needs a verified fatal rule.">
+                  <span class="ex-num" aria-hidden="true">5</span>
+                  <span class="ex-role">Adjudicator</span>
+                  <span class="ex-who">AI · Nemotron Ultra</span>
+                  <span class="ex-job">Writes the verdict and why-chain.</span>
+                  <span class="ex-readout" aria-hidden="true"></span><span class="ex-sr"></span>
+                </li>
+                <li class="ex-step" data-step="critic" data-role="critic" data-kind="ai" data-state="idle">
+                  <span class="ex-num" aria-hidden="true">6</span>
+                  <span class="ex-role">Critic</span>
+                  <span class="ex-who">AI · Nemotron Ultra</span>
+                  <span class="ex-job">Challenges it and can send work back for a second round.</span>
+                  <span class="ex-readout" aria-hidden="true"></span><span class="ex-sr"></span>
+                </li>
+              </ol>
+              <p class="ex-caption" id="ex-caption" role="status" aria-live="polite"></p>
+              <button type="button" id="ex-replay" class="ex-replay" disabled>Replay how this verdict was built</button>
+            </section>
+          </div>
+          <p class="ex-foot">Every model call goes through Meterless Nightshift · reference data from Zetaris</p>
+        </div>
+      </div>
     </section>
     <div id="report-empty">
       <p>Pick a site from the portfolio.</p>
@@ -138,5 +212,7 @@
 <script src="/chain.js"></script>
 <script src="/lanes.js"></script>
 <script src="/settings.js"></script>
+<script src="/explain-logic.js"></script>
+<script src="/explain.js"></script>
 </body>
 </html>
