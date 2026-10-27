@@ -82,7 +82,7 @@ layout: table-insight
 
 | Layer | Choice |
 |---|---|
-| App | FastAPI and uvicorn; SAMPLE_MODE serves the recorded showcase reports |
+| App | FastAPI and uvicorn; SAMPLE_MODE runs the real agents on cached model responses, sources and geocodes, no keys, Zetaris or Nightshift needed |
 | Data | Zetaris SITEWHY tables; DuckDB serves the same SQL when unreachable |
 | AI provider | Meterless Nightshift for every model call, with a per-request receipt |
 | Models | Nemotron Lightning 30B for extraction and verification; Nemotron Ultra 550B for planning and critique |
@@ -92,7 +92,8 @@ layout: table-insight
 
 - One run at a time; a run past its 5-minute deadline returns a partial needs_confirmation report instead of hanging.
 - No local GPU needed; Python 3.12 with uv.
-- Source: README; app/llm.py STEP_MODELS; app/data.py
+- Programmatic entry: python run.py --input input_examples/<site>.json --sample, with per-event traces in logs/*.jsonl.
+- Source: README; app/llm.py STEP_MODELS; app/data.py; run.py
 ---
 
 ---
@@ -145,7 +146,7 @@ layout: kpi-row
 
 | Ground truth sites | Seeded critic faults | Recorded samples | Test suite |
 |---|---|---|---|
-| 3 / 3 | 3 / 3 | 5 | 169 passed |
+| 3 / 3 | 3 / 3 | 5 | 171 passed |
 | Washington MD, Abilene TX, Tucson AZ | fatal-pima, title-v, washington-exemption | 4 at 300 MW plus Abilene at 50 MW | pytest, 27 Oct 2026 |
 
 > data/eval/results.json; samples/*.json; pytest run 2026-10-27
@@ -153,7 +154,6 @@ layout: kpi-row
 - Markovian saved 0 tokens on current sources; the engine and its accounting are implemented and tested.
 - Seed rules are curated with runtime-verified quotes; autonomous rule discovery is roadmap.
 - Coverage is modelled for Texas and ERCOT plus two counties; other states get a federal-only report with an explicit scope note.
-- The same pytest run shows 2 failures from in-progress sample-mode work in another lane, outside this deck.
 - Source: data/eval/results.json; README limitations
 ---
 
