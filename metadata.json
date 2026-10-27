@@ -1,0 +1,36 @@
+{
+  "name": "SiteWhy",
+  "tagline": "Check a US data center site against the rules that can block it — and see why.",
+  "track": "Track 2",
+  "description": "US data center site regulatory screener that explains why each rule applies: deterministic applicability, verified quotes, computed flips and a critic loop.",
+  "sponsor_tech": {
+    "primary_ai_provider": "Meterless Nightshift",
+    "nvidia_models": [
+      "nvidia/nemotron-3.5-lightning-30b-a3b",
+      "nvidia/nemotron-3-ultra-550b-a55b"
+    ],
+    "nvidia_usage": "Lightning handles extraction, classification and quote-support verification; Ultra handles planning, synthesis and critique (app/llm.py STEP_MODELS). Every call goes through Nightshift with per-request model and receipt in model_trace.",
+    "meterless_engines": [
+      "World Model",
+      "Markovian"
+    ],
+    "meterless_usage": "World Model (app/worldmodel.py) is the shared provenance-stamped rule/evidence graph with a per-run JSONL audit log; Markovian (app/markovian.py) drives the county investigation loop.",
+    "data_layer": "Zetaris",
+    "zetaris_usage": "SITEWHY.moratoria (1,291 rows) and state legislation (440 rows) queried per run; DuckDB serves the same SQL when Zetaris is unreachable."
+  },
+  "setup": {
+    "quickstart": "SAMPLE_MODE=true uv run uvicorn app.main:app --port 8000",
+    "config": ".env.example (keys live in ~/.hackathon-keys.env, never committed)"
+  },
+  "pre_existing": {
+    "data": [
+      "Moratorium Nation dataset (CC-BY-4.0)",
+      "state legislation CSV (CC-BY-4.0)",
+      "U.S. EIA Form 861 subset, Census geocoder/TIGERweb, HIFLD transmission lines (public domain)"
+    ],
+    "specs": [
+      "Meterless World Model and Markovian engine specs (Apache-2.0)"
+    ],
+    "code": "none"
+  }
+}

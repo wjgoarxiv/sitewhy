@@ -9,4 +9,4 @@
 | `geo/context/` (transmission) | Homeland Infrastructure Foundation-Level Data (HIFLD), Electric Power Transmission Lines, https://services1.arcgis.com/Hp6G80Pky0om7QvQ/arcgis/rest/services/Electric_Power_Transmission_Lines/FeatureServer/0 | Public domain (U.S. Government work) |
 | map basemap (satellite) | Esri World Imagery, https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x} | Esri proprietary; attribution required ("Esri, Maxar, Earthstar Geographics") |
 | map basemap (streets) | OpenStreetMap tile layer, https://tile.openstreetmap.org/{z}/{x}/{y}.png | ODbL 1.0; attribution "© OpenStreetMap contributors" |
-| map basemap (dark) | CARTO dark basemap, https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png | CARTO + OpenStreetMap contributors attribution |
+| map basemap (dark) | Esri Dark Gray Canvas, https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x} | Esri proprietary; attribution "Esri, HERE, Garmin, © OpenStreetMap contributors" |
