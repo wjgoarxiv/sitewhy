@@ -27,6 +27,14 @@ Check a US data center site against the rules that can block it, and see exactly
 
 SiteWhy takes a US address and an IT load in megawatts and checks the site against federal, state, grid and county rules. It returns a go, conditional or no-go verdict, and every verdict comes with the verified rule text, the applicability math and the changes that would flip the answer. It is a screening tool for early site triage; it gives no legal advice.
 
+## 👀 At a glance
+
+<p align="center">
+  <img src="docs/img/screen-explainer.jpg" alt="The HQ explainer panel: what you get (verdict, the deciding rule quoted word for word, the math, what would change it) and where AI is used (Planner, County investigator, Adjudicator and Critic on Nemotron; Evidence verifier and Rule check in Python)" width="90%">
+</p>
+
+Every screening hands back four things: the verdict, the rule that decides it quoted word for word, the math behind it, and what would change the answer. The green steps are Nemotron calls through Meterless Nightshift. The dashed steps are plain Python, so the quote check and the threshold math stay deterministic. During a run the pipeline lights up step by step, and "Replay how this verdict was built" plays a finished report's own trace back.
+
 ## 🎬 Demo video
 
 The 3:27 narrated demo plays right here:
@@ -87,7 +95,7 @@ Listing tools such as Acres.com, Cherre DataCenter Intel, LightBox, Transect and
 
 <table>
   <tr>
-    <td width="33%"><img src="docs/img/screen-no-go.jpg" alt="No-go verdict for unincorporated Washington County with the verified six-month moratorium quote"></td>
+    <td width="33%"><img src="docs/img/screen-no-go.jpg" alt="No-go verdict for unincorporated Washington County with the verified six-month moratorium quote, tagged as pulled by Nemotron Lightning and verified by code, and the date check tagged as computed by code"></td>
     <td width="33%"><img src="docs/img/screen-flip.jpg" alt="Conditional verdict for Hagerstown city with the Title V threshold math and the 25 MW flip"></td>
     <td width="33%"><img src="docs/img/screen-model-trace.jpg" alt="Model trace listing each agent role, the Nemotron model it used, the Nightshift receipt and latency"></td>
   </tr>
