@@ -69,9 +69,15 @@ def test_samples_list_and_fetch(tmp_path):
     assert c.get("/samples/..%2Fsecrets").status_code == 404
 
 
-def test_sample_mode_disables_live_runs(tmp_path):
+def test_sample_mode_runs_posts_through_orchestrator(tmp_path):
     c = client(tmp_path, Settings(sample_mode=True))
-    assert c.post("/runs", json={"address": "x", "mw": 300}).status_code == 503
+    run_id = c.post("/runs", json={"address": "x", "mw": 300}).json()["run_id"]
+    for _ in range(50):
+        state = c.get(f"/runs/{run_id}").json()
+        if state["status"] != "running":
+            break
+        time.sleep(0.02)
+    assert state["status"] == "done"
     assert c.get("/samples").status_code == 200
 
 
