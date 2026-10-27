@@ -93,6 +93,7 @@ layout: table-insight
 - One run at a time; a run past its deadline returns a partial needs_confirmation report instead of hanging.
 - No local GPU needed; Python 3.12 with uv.
 - Programmatic entry: python run.py --input input_examples/<site>.json --sample, with per-event traces in logs/*.jsonl.
+- Run with Docker: docker build -t sitewhy . && docker run -p 8000:8000 sitewhy.
 - Source: README; app/llm.py STEP_MODELS; app/data.py; run.py
 ---
 
@@ -112,7 +113,7 @@ layout: kpi-row
 - The USL is a separate scripted artifact, materialized because plain views do not persist on this instance — evidence the same joins hold, not yet on the agent path.
 - Meterless Nightshift is the primary AI provider; model and compute receipt per request appear in the UI agent lanes.
 - World Model shared provenance log with a per-run JSONL audit; Markovian chunked county loop, conformance-tested, with 0 tokens saved on current single-chunk sources.
-- Cursor: <to confirm>
+- Cursor: Dockerfile written in a Cursor Agent CLI session (30d5b90); rest built with Claude Code.
 - Source: app/screen.py; app/orchestrator.py; zetaris/evidence/registration.json, run.json, dq_rule.json
 ---
 

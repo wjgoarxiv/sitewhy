@@ -1,5 +1,7 @@
 # Demo video script — SiteWhy (Track: The Agent That Can Explain Why)
 
+Narration says 'investigators' loosely; only the county investigator calls a model.
+
 Final file: `OAH2026-SiteWhy-ExplainWhy-Demo.mp4` · 1920×1080 · h264+aac · target 2:30–3:30.
 Narration: `say -v Samantha -r 185` (one aiff per line, mixed at shot times via `mux.sh`).
 Recorder: [record.mjs](./record.mjs) · cards: [architecture.html](./architecture.html) ·
@@ -24,7 +26,7 @@ flip yes → no; Title V still decides, verdict stays Conditional).
 | # | Time | Shot (URL / anchor) | Narration (≤ 14 words) | Rule 6.1 |
 |---|------|---------------------|------------------------|----------|
 | 1 | 0:04–0:15 | Title `architecture.html#title` | "Three hundred twenty-one moratoria block data centers across thirty-two states." / "Developers need one answer: is this site blocked, and why?" | problem, user |
-| 2 | 0:15–0:33 | Architecture `architecture.html#arch` | "SiteWhy screens a site and proves why, rule by rule." / "Planner, investigators, verifier, adjudicator, and critic check each other." | workflow, how the agent solves it |
+| 2 | 0:15–0:33 | Architecture `architecture.html#arch` | "SiteWhy screens a site and proves why, rule by rule." / "Planner, county investigator (model) + rule evaluators (federal/state/grid, curated YAML), verifier, adjudicator, and critic check each other." | workflow, how the agent solves it |
 | 3 | 0:33–0:54 | `#/site/md-washington-county-unincorporated` decisive + Recorded-run badge | "Outside Hagerstown, the county moratorium applies. Verdict: No-go." / "One verified quote decides it, with the math on screen." | key features, final output |
 | 4 | 0:54–1:06 | `#/site/md-hagerstown-city` banner | "Two miles away, inside city limits, the same rule falls silent." / "Same county, different answer. That is the scope flip." | key features (applicability) |
 | 5 | 1:06–1:36 | `#/demo` tour at 2×, catches card | "The verifier caught the duration: one-eighty days became one-eighty-two." | collaboration, feedback loop |
