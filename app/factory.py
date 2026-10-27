@@ -1,6 +1,6 @@
 """Wire the live components: Zetaris (DuckDB fallback), Census, Nightshift, fetcher."""
 
-from app.config import Settings, load_settings
+from app.config import SAMPLE_MODE_AS_OF, Settings, load_settings
 from app.data import DuckDbHarness, FallbackHarness, HarnessError, ZetarisHarness
 from app.evidence import EvidenceFetcher
 from app.geo import Resolver
@@ -24,5 +24,7 @@ def build_harness(settings: Settings) -> FallbackHarness:
 def build_orchestrator(settings: Settings | None = None) -> Orchestrator:
     settings = settings or load_settings()
     return Orchestrator(
-        Resolver(), build_harness(settings), ModelRouter(settings), EvidenceFetcher()
+        Resolver(sample_mode=settings.sample_mode),
+        build_harness(settings), ModelRouter(settings), EvidenceFetcher(),
+        as_of=SAMPLE_MODE_AS_OF if settings.sample_mode else None,
     )

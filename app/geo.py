@@ -104,9 +104,15 @@ def _county_key(name: str) -> str:
 
 
 class Resolver:
-    def __init__(self, client: httpx.Client | None = None, cache_dir: Path = DEFAULT_CACHE_DIR):
+    def __init__(
+        self,
+        client: httpx.Client | None = None,
+        cache_dir: Path = DEFAULT_CACHE_DIR,
+        sample_mode: bool = False,
+    ):
         self.client = client or httpx.Client(timeout=60)
         self.cache_dir = Path(cache_dir)
+        self.sample_mode = sample_mode
         self.utilities = _load_utilities()
 
     def _geocode(self, address: str) -> dict:
@@ -114,6 +120,11 @@ class Resolver:
         cache = self.cache_dir / f"census-{key}.json"
         if cache.is_file():
             return json.loads(cache.read_text())
+        if self.sample_mode:
+            raise UnresolvedAddressError(
+                f"Address {address!r} is not in the sample-mode geocode cache "
+                "(SAMPLE_MODE serves only cached inputs; see input_examples/)."
+            )
         resp = self.client.get(CENSUS_URL, params={**CENSUS_PARAMS, "address": address})
         resp.raise_for_status()
         data = resp.json()
@@ -181,6 +192,11 @@ class Resolver:
         cache = self.cache_dir / f"census-{key}.json"
         if cache.is_file():
             data = json.loads(cache.read_text())
+        elif self.sample_mode:
+            raise UnresolvedAddressError(
+                f"Coordinates ({lat}, {lon}) are not in the sample-mode geocode cache "
+                "(SAMPLE_MODE serves only cached inputs; see input_examples/)."
+            )
         else:
             resp = self.client.get(COORDS_URL, params={**COORDS_PARAMS, "x": lon, "y": lat})
             resp.raise_for_status()

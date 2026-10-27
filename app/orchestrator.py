@@ -538,6 +538,7 @@ class Orchestrator:
         lon: float | None = None,
     ) -> dict:
         run_id = run_id or new_run_id()
+        mw = float(mw)
         self.on_event = on_event
         self._start = self.clock()
         self.investigator.start_run()

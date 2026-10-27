@@ -55,7 +55,7 @@ def create_app(
     runs_dir: Path | None = None,
 ) -> FastAPI:
     settings = settings or load_settings()
-    resolver = resolver or Resolver()
+    resolver = resolver or Resolver(sample_mode=settings.sample_mode)
     app = FastAPI(title="SiteWhy")
     runs: dict[str, dict] = {}
     run_lock = threading.Lock()
@@ -145,8 +145,6 @@ def create_app(
 
     @app.post("/runs", status_code=202)
     def start_run(req: RunRequest) -> dict:
-        if settings.sample_mode:
-            raise HTTPException(503, "SAMPLE_MODE is on: live runs are disabled; open a sample")
         if not run_lock.acquire(blocking=False):
             raise HTTPException(409, "A screening is already running")
         run_id = new_run_id()

@@ -8,6 +8,7 @@ Nightshift writes, so it is never copied anywhere.
 import os
 from collections.abc import Mapping
 from dataclasses import dataclass
+from datetime import date
 from pathlib import Path
 
 DEFAULT_KEYS_FILE = Path.home() / ".hackathon-keys.env"
@@ -16,6 +17,11 @@ DEFAULT_NIGHTSHIFT_TOKEN_FILE = (
 )
 
 RUN_DEADLINE_S = 300
+
+# Date the committed sample-mode caches were recorded. Sample-mode runs pin
+# `as_of` to this date so LLM cache keys (which embed the site) match.
+# Re-record the caches if this ever changes.
+SAMPLE_MODE_AS_OF = date(2026, 10, 26)
 
 
 @dataclass(frozen=True)
