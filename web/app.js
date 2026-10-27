@@ -173,8 +173,9 @@ function ensureMap(lat, lon) {
   const streets = L.tileLayer(tileUrl("https://tile.openstreetmap.org/{z}/{x}/{y}.png"), {
     maxZoom: 19, attribution: "© OpenStreetMap contributors",
   });
-  const dark = L.tileLayer(tileUrl("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"), {
-    maxZoom: 20, subdomains: "abcd", attribution: "© OpenStreetMap contributors © CARTO",
+  // Esri Dark Gray Canvas: keyless, unlike CARTO dark_all, which now stamps an "API key required" watermark.
+  const dark = L.tileLayer(tileUrl("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"), {
+    maxZoom: 19, maxNativeZoom: 16, attribution: "Esri, HERE, Garmin, © OpenStreetMap contributors",
   });
   state.map = L.map("map", {
     center: [lat, lon], zoom: 12, layers: [esri], zoomControl: false,
