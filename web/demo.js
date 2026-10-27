@@ -4,6 +4,7 @@
   const STEP_MS = 9000;
   const INTRO_MS = 6000;
   const OUTRO_MS = 9000;
+  const SPEEDS = [1, 1.5, 2];
   const SPINE = "md-washington-county-unincorporated";
   const BREADTH_GO = "az-tucson-pima";
   const BREADTH_ERCOT = "tx-abilene-ercot";
@@ -172,13 +173,15 @@
   }
 
   // No overlay element, so Leaflet keeps receiving pointer events.
-  function applyDim(anchor) {
+  function applyDim(anchor, extra) {
     const target = targetEl(anchor);
     try {
       document.querySelectorAll("[data-demo]").forEach((el) => {
         const keep =
           !!target && (el === target || el.contains(target) || target.contains(el));
-        if (keep) {
+        const keepExtra =
+          !!extra && (el === extra || el.contains(extra) || extra.contains(el));
+        if (keep || keepExtra) {
           el.style.opacity = "";
           el.classList.remove("demo-dim");
         } else {
@@ -209,6 +212,11 @@
     index: 0,
     timer: 0,
     epoch: 0,
+    speed: 1,
+    deadline: 0,
+    next: null,
+    pausedAt: 0,
+    etaTimer: 0,
     savedHash: "",
     savedFocus: null,
     endHash: "",
@@ -225,13 +233,18 @@
     bar.setAttribute("aria-label", "Demo roll");
     const railBtns = TITLES.map(
       (t, i) =>
-        `<button type="button" class="demo-rail-btn" data-i="${i}" data-state="upcoming">${t}</button>`,
+        `<button type="button" class="demo-rail-btn" data-i="${i}" data-state="upcoming"><span class="demo-seg" aria-hidden="true"></span>${t}</button>`,
+    ).join("");
+    const speedBtns = SPEEDS.map(
+      (s) =>
+        `<button type="button" data-speed="${s}" aria-pressed="${s === demo.speed}">${s}×</button>`,
     ).join("");
     bar.innerHTML =
       `<div class="demo-progress" role="progressbar" aria-label="Demo roll progress" ` +
       `aria-valuemin="1" aria-valuemax="${STEPS.length}" aria-valuenow="1"><span></span></div>` +
       `<nav class="demo-rail" aria-label="Tour stops">${railBtns}</nav>` +
-      `<p class="demo-step" id="demo-step"></p>` +
+      `<p class="demo-step" id="demo-step"><span id="demo-step-text"></span><span id="demo-paused-badge" hidden>Paused</span></p>` +
+      `<p class="demo-eta" id="demo-eta"></p>` +
       `<div class="demo-caption" id="demo-caption" aria-live="polite" tabindex="-1">` +
       `<p class="demo-look"><strong>LOOK:</strong> <span id="demo-look"></span></p>` +
       `<p class="demo-why"><strong>WHY IT MATTERS:</strong> <span id="demo-why"></span></p>` +
@@ -240,12 +253,17 @@
       `<button type="button" id="demo-pause">Pause</button>` +
       `<button type="button" id="demo-back">Back</button>` +
       `<button type="button" id="demo-next">Next</button>` +
+      `<span class="demo-speed" role="group" aria-label="Tour speed">${speedBtns}</span>` +
       `<button type="button" id="demo-try" hidden>${OUTRO_CTA}</button>` +
       `<button type="button" id="demo-exit">Exit</button>` +
-      `</div>`;
+      `</div>` +
+      `<p class="demo-keys">Space pause · ← → step · Esc exit</p>`;
     document.body.appendChild(bar);
     bar.querySelectorAll(".demo-rail-btn").forEach((b) =>
       b.addEventListener("click", () => jump(Number(b.dataset.i))),
+    );
+    bar.querySelectorAll("[data-speed]").forEach((b) =>
+      b.addEventListener("click", () => setSpeed(Number(b.dataset.speed))),
     );
     $("demo-pause").addEventListener("click", () => togglePause());
     $("demo-back").addEventListener("click", () => move(-1));
@@ -277,16 +295,18 @@
   }
 
   function paint() {
-    const stepEl = $("demo-step");
+    const stepText = $("demo-step-text");
     const bar = $("demo-bar");
-    if (!stepEl || !bar) return;
+    if (!stepText || !bar) return;
     if (demo.phase === "intro") {
-      stepEl.textContent = `Intro · ${TITLES.length} stops`;
+      stepText.textContent = `Intro · ${TITLES.length} stops`;
     } else if (demo.phase === "outro") {
-      stepEl.textContent = `Outro · ${OUTRO_CTA}`;
+      stepText.textContent = `Outro · ${OUTRO_CTA}`;
     } else {
-      stepEl.textContent = `Step ${demo.index + 1} of ${STEPS.length} · ${TITLES[demo.index]}`;
+      stepText.textContent = `Step ${demo.index + 1} of ${STEPS.length} · ${TITLES[demo.index]}`;
     }
+    const badge = $("demo-paused-badge");
+    if (badge) badge.hidden = !demo.paused;
     const progress = bar.querySelector(".demo-progress");
     if (progress) {
       const now =
@@ -297,10 +317,81 @@
       if (fill) fill.style.width = `${frac * 100}%`;
     }
     paintRail();
+    paintSpeed();
+    paintEta();
     const pauseBtn = $("demo-pause");
     if (pauseBtn) pauseBtn.textContent = demo.paused ? "Resume" : "Pause";
     const tryBtn = $("demo-try");
     if (tryBtn) tryBtn.hidden = demo.phase !== "outro";
+  }
+
+  function paintSpeed() {
+    document.querySelectorAll("#demo-bar [data-speed]").forEach((b) => {
+      if (Number(b.dataset.speed) === demo.speed) b.setAttribute("aria-pressed", "true");
+      else b.setAttribute("aria-pressed", "false");
+    });
+  }
+
+  function fmtClock(totalSeconds) {
+    const s = Math.max(0, Math.ceil(totalSeconds));
+    return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")} left`;
+  }
+
+  function phasesAfter1xMs() {
+    if (demo.phase === "intro") return STEPS.length * STEP_MS + OUTRO_MS;
+    if (demo.phase === "outro") return 0;
+    return (LAST - demo.index) * STEP_MS + OUTRO_MS;
+  }
+
+  function currentPhase1xMs() {
+    if (demo.phase === "intro") return INTRO_MS;
+    if (demo.phase === "outro") return OUTRO_MS;
+    return STEP_MS;
+  }
+
+  function paintEta() {
+    const el = $("demo-eta");
+    if (!el) return;
+    if (!demo.running || demo.phase === "idle") {
+      el.textContent = "";
+      return;
+    }
+    const now = Date.now();
+    const ref = demo.paused ? demo.pausedAt : now;
+    const currentLeftMs =
+      demo.deadline > 0 ? Math.max(0, demo.deadline - ref) : currentPhase1xMs() / demo.speed;
+    el.textContent = fmtClock((currentLeftMs + phasesAfter1xMs() / demo.speed) / 1000);
+  }
+
+  function loadSpeed() {
+    try {
+      const s = Number(localStorage.getItem("sitewhy-demo-speed"));
+      if (s === 1 || s === 1.5 || s === 2) demo.speed = s;
+    } catch { /* private mode keeps 1× */ }
+  }
+
+  function setSpeed(s) {
+    if (s !== 1 && s !== 1.5 && s !== 2) return;
+    if (s !== demo.speed && demo.running && !demo.paused && demo.next) {
+      const now = Date.now();
+      const left = Math.max(0, demo.deadline - now);
+      const scaled = (left * demo.speed) / s;
+      demo.speed = s;
+      try {
+        localStorage.setItem("sitewhy-demo-speed", String(s));
+      } catch { /* private mode: session only */ }
+      clearTimeout(demo.timer);
+      demo.deadline = now + scaled;
+      const next = demo.next;
+      demo.timer = setTimeout(next, scaled);
+    } else {
+      demo.speed = s;
+      try {
+        localStorage.setItem("sitewhy-demo-speed", String(s));
+      } catch { /* private mode: session only */ }
+    }
+    paintSpeed();
+    paintEta();
   }
 
   function pushLog(entry) {
@@ -320,10 +411,26 @@
   function armTimer(epoch) {
     clearTimeout(demo.timer);
     if (!alive(epoch) || demo.paused) return;
-    if (demo.phase === "intro") demo.timer = setTimeout(() => move(1), INTRO_MS);
-    else if (demo.phase === "outro") demo.timer = setTimeout(() => exit(), OUTRO_MS);
-    else if (demo.index >= LAST) demo.timer = setTimeout(() => move(1), STEP_MS);
-    else demo.timer = setTimeout(() => void move(1), STEP_MS);
+    let wait;
+    let next;
+    if (demo.phase === "intro") {
+      wait = INTRO_MS;
+      next = () => move(1);
+    } else if (demo.phase === "outro") {
+      wait = OUTRO_MS;
+      next = () => exit();
+    } else if (demo.index >= LAST) {
+      wait = STEP_MS;
+      next = () => move(1);
+    } else {
+      wait = STEP_MS;
+      next = () => void move(1);
+    }
+    const ms = wait / demo.speed;
+    demo.deadline = Date.now() + ms;
+    demo.next = next;
+    demo.timer = setTimeout(next, ms);
+    paintEta();
   }
 
   function restoreAfterStale() {
@@ -388,7 +495,20 @@
     }
     const look = LOOKS[demo.index] || "";
     const highlighted = highlight(step.anchor);
-    applyDim(step.anchor);
+    let chainEl = null;
+    if (step.anchor === "decisive") {
+      try {
+        chainEl = document.querySelector('[data-demo="chain"]');
+      } catch {
+        chainEl = null;
+      }
+    }
+    applyDim(step.anchor, chainEl);
+    if (chainEl) {
+      try {
+        chainEl.classList.add("demo-spot");
+      } catch { /* skip */ }
+    }
     paintCaption(look, why);
     pushLog({ phase: "step", step: demo.index, anchor: step.anchor, highlighted, look, why });
     paint();
@@ -414,6 +534,8 @@
     }
     const epoch = ++demo.epoch;
     clearTimeout(demo.timer);
+    demo.deadline = 0;
+    demo.next = null;
     if (demo.phase === "intro") {
       return showStep(d > 0 ? 0 : 0, epoch);
     }
@@ -433,12 +555,15 @@
     if (!demo.running) return;
     const epoch = ++demo.epoch;
     clearTimeout(demo.timer);
+    demo.deadline = 0;
+    demo.next = null;
     void showStep(i, epoch);
   }
 
   function togglePause() {
     if (!demo.running) return;
     demo.paused = !demo.paused;
+    if (demo.paused) demo.pausedAt = Date.now();
     paint();
     armTimer(demo.epoch);
   }
@@ -449,12 +574,17 @@
 
   async function start() {
     if (demo.running) return;
+    loadSpeed();
     buildBar();
     const epoch = ++demo.epoch;
     demo.running = true;
     demo.paused = false;
     demo.phase = "intro";
     demo.log = [];
+    demo.deadline = 0;
+    demo.next = null;
+    clearInterval(demo.etaTimer);
+    demo.etaTimer = setInterval(paintEta, 1000);
     demo.savedHash = location.hash;
     demo.savedFocus = document.activeElement;
     document.body.classList.add("demo-running");
@@ -491,9 +621,14 @@
     demo.running = false;
     demo.paused = false;
     demo.phase = "idle";
+    demo.deadline = 0;
+    demo.next = null;
     clearTimeout(demo.timer);
+    clearInterval(demo.etaTimer);
+    demo.etaTimer = 0;
     clearSpot();
     clearDim();
+    paintEta();
     document.body.classList.remove("demo-running");
     const bar = $("demo-bar");
     if (bar) bar.hidden = true;
@@ -550,8 +685,9 @@
   window.SiteWhyDemo = {
     start,
     exit,
+    setSpeed,
     get state() {
-      return { running: demo.running, paused: demo.paused, phase: demo.phase, index: demo.index, log: demo.log.slice() };
+      return { running: demo.running, paused: demo.paused, phase: demo.phase, index: demo.index, speed: demo.speed, log: demo.log.slice() };
     },
   };
 
