@@ -46,7 +46,7 @@ layout: image-split
 
 - **Verdict** go, conditional or no-go for a US address plus IT load, with the verified rule text, the applicability math, and what would change the answer.
 - **Track** The Agent That Can Explain Why: every verdict traces to a quote plus arithmetic, never to a completion alone.
-- **Scope** federal Title V, a 1,291-entry moratorium dataset, Texas and ERCOT state and grid rules, verified county ordinances for Washington County MD and Pima County AZ.
+- **Scope** federal Title V, a 1,291-entry moratorium dataset, Texas and ERCOT state and grid rules from curated YAML, county sources (draft ordinance, press release, news article) with verbatim-verified quotes.
 - A screening tool, not legal advice.
 - Source: README; samples/*.json
 ---
@@ -56,19 +56,19 @@ layout: process
 
 ## Agent workflow as a loop, not a chain
 
-- **1. Plan** the planner drafts targeted tasks per layer on Nemotron Ultra
+- **1. Plan** the planner drafts targeted county investigation tasks on Nemotron Ultra (planning)
   (1) Input: site, MW, jurisdiction match, prior critic objections
-  (2) Output: federal, state and county investigator tasks
-- **2. Investigate** layer investigators gather candidate rules with quoted text
-  (1) Lightning extraction; the county loop uses Markovian chunked reasoning
-  (2) Output: candidate rules with quotes and source locators
-- **3. Verify** deterministic quote check plus Lightning verify_support, retry at most twice
+  (2) Output: per-rule questions for the county investigator; federal, state and grid rules come from curated YAML evaluated in code
+- **2. Investigate** the county investigator reads primary sources
+  (1) Lightning extraction only, Markovian chunk chain; quotes verbatim
+  (2) Output: facts with verbatim quotes and source locators
+- **3. Verify** deterministic verbatim quote matching in code, retry at most twice
   (1) Unverifiable claims become needs_confirmation, never fatal verdicts
   (2) Output: verified, not_found or unsupported per claim
 - **4. Decide** Python applicability decides yes or no; the adjudicator drafts the verdict
-  (1) The adjudicator runs on Nemotron Ultra
+  (1) The adjudicator synthesizes on Nemotron Ultra
   (2) Output: draft verdict with the why-chain and the flips table
-- **5. Critic and trace** red-team objections loop back to the planner for round 2
+- **5. Critic and trace** red-team objections (critique) loop back to the planner for round 2
   (1) New investigator and verifier passes target the objections; every message is a typed event in the World Model log
   (2) Unresolved objections become needs_confirmation; UI lanes show the model and receipt per request
 - Real loop in Washington County MD: the critic rejected the draft six-month expiry, round 2 re-investigated, and the expiry ships as needs_confirmation.
@@ -85,12 +85,12 @@ layout: table-insight
 | App | FastAPI and uvicorn; SAMPLE_MODE runs the real agents on cached model responses, sources and geocodes, no keys, Zetaris or Nightshift needed |
 | Data | Zetaris SITEWHY tables; DuckDB serves the same SQL when unreachable |
 | AI provider | Meterless Nightshift for every model call, with a per-request receipt |
-| Models | Nemotron Lightning 30B for extraction and verification; Nemotron Ultra 550B for planning and critique |
+| Models | Nemotron Lightning 30B for county extraction; Nemotron Ultra 550B for planning, synthesis and critique |
 | Engines | World Model provenance log; Markovian county reasoning loop |
 
 > Stack as shipped, October 2026
 
-- One run at a time; a run past its 5-minute deadline returns a partial needs_confirmation report instead of hanging.
+- One run at a time; a run past its deadline returns a partial needs_confirmation report instead of hanging.
 - No local GPU needed; Python 3.12 with uv.
 - Programmatic entry: python run.py --input input_examples/<site>.json --sample, with per-event traces in logs/*.jsonl.
 - Source: README; app/llm.py STEP_MODELS; app/data.py; run.py
@@ -101,18 +101,19 @@ layout: kpi-row
 
 ## Zetaris and Meterless integration
 
-| USL rows | Source tables | USL and quality queries |
+| Runtime tables | USL artifact rows | USL and quality queries |
 |---|---|---|
-| 1,291 | 4 | 3 plus 1 PASS |
-| usl_site_screen, materialized join | moratoria 1,291; legislation 440; curated rules 3; county sources 3 | 12 exploratory plus 3 USL queries; null_join_keys 0 violations |
+| moratoria plus state_legislation | 1,291 | 3 plus 1 PASS |
+| queried by the agents at run time | usl_site_screen from 4 seed tables, scripted | 12 exploratory plus 3 USL queries; null_join_keys 0 violations |
 
-> zetaris/usl.sql and zetaris/evidence/, committed f0f2b9b
+> app/screen.py, app/orchestrator.py; zetaris/usl.sql and zetaris/evidence/, committed f0f2b9b
 
-- Zetaris is the data layer: 4 seed tables registered from data/seed CSVs join jurisdiction to moratoria, bills and curated rules in usl_site_screen, materialized because plain views do not persist on this instance; DuckDB serves the same SQL when unreachable.
+- Zetaris is the data layer: the agents query SITEWHY.moratoria and SITEWHY.state_legislation at run time; DuckDB serves the same SQL when Zetaris is unreachable.
+- The USL is a separate scripted artifact, materialized because plain views do not persist on this instance — evidence the same joins hold, not yet on the agent path.
 - Meterless Nightshift is the primary AI provider; model and compute receipt per request appear in the UI agent lanes.
 - World Model shared provenance log with a per-run JSONL audit; Markovian chunked county loop, conformance-tested, with 0 tokens saved on current single-chunk sources.
 - Cursor: <to confirm>
-- Source: zetaris/usl.sql; zetaris/evidence/registration.json, run.json, dq_rule.json; zetaris/REFLECTION.md
+- Source: app/screen.py; app/orchestrator.py; zetaris/evidence/registration.json, run.json, dq_rule.json
 ---
 
 ---
@@ -154,7 +155,8 @@ layout: kpi-row
 - Markovian saved 0 tokens on current sources; the engine and its accounting are implemented and tested.
 - Seed rules are curated with runtime-verified quotes; autonomous rule discovery is roadmap.
 - Coverage is modelled for Texas and ERCOT plus two counties; other states get a federal-only report with an explicit scope note.
-- Source: data/eval/results.json; README limitations
+- Sample mode replays recorded model answers while the agent logic runs for real.
+- Source: data/eval/results.json; README limitations; app/llm.py cache replay
 ---
 
 ---
@@ -191,7 +193,7 @@ layout: image-split
 ![Model trace: role, Nemotron model, compute receipt and latency per call | Source: app screenshot, 27 Oct 2026, 1440x810](img/deck-lanes.jpg)
 
 - **Trace** each row names the agent role, the Nemotron model, the compute receipt and the latency.
-- **Roles** Lightning handles extraction and verification; Ultra handles planning, synthesis and critique.
+- **Roles** Lightning handles county extraction; code verifies quotes verbatim; Ultra handles planning, synthesis and critique.
 - 30 traced calls across 5 samples: 18 Ultra and 12 Lightning.
 - Source: samples/*.json model_trace; README evaluation
 ---
