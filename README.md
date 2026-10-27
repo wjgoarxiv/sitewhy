@@ -31,7 +31,7 @@ flowchart LR
     P --> RE[Rule evaluators: federal, state, grid from curated YAML]
     CI --> V[Evidence verifier]
     RE --> V
-    V -->|retry, max 2| I
+    V -->|retry, max 2| CI
     V --> A[Adjudicator: applicability + draft verdict]
     A --> C[Critic]
     C -->|objections, round < 2| P
