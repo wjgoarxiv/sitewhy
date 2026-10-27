@@ -9,9 +9,8 @@ Connection settings come from the environment only (``ZETARIS_BASE_URL``,
 ``ZETARIS_ORG_ID``, ``ZETARIS_API_KEY``) -- source ``~/.hackathon-keys.env``
 in the same shell command before running. Values are never printed or saved.
 
-Local Zetaris note: the SQL-editor proxy rejects the ``X-Request-ID`` header
-(HTTP 400), so this script omits it. Writes go through ``CREATE LIGHTNING
-FILESTORE TABLE`` (persistent); plain Spark ``CREATE VIEW``/CTAS statements do
+Writes go through ``CREATE LIGHTNING FILESTORE TABLE`` (persistent);
+plain Spark ``CREATE VIEW``/CTAS statements do
 not survive across proxy requests, so the USL is a materialized join table and
 ``zetaris/usl.sql`` records the exact build query alongside the DDL.
 

@@ -6,11 +6,11 @@ Usage:
 With --sample the run replays the committed caches (geocode, sources, LLM) and
 needs no credentials, Zetaris or Nightshift. Without it, live credentials from
 the environment apply. The report JSON goes to stdout and to logs/<run_id>.json
-unless --output names a path. The agent trace goes to
-output_examples/traces/<input stem>.jsonl (one JSON object per line, committed
-as the reference trace) and is echoed to stderr so stdout stays
-machine-readable; --logs-dir writes the trace to <dir>/<run_id>.jsonl instead
-for local runs.
+unless --output names a path. The agent trace (one JSON object per line,
+echoed to stderr so stdout stays machine-readable) goes to
+logs/<run_id>.jsonl; --logs-dir writes it to <dir>/<run_id>.jsonl instead
+(point it at output_examples/traces to refresh the committed reference
+traces).
 """
 
 import argparse
@@ -39,7 +39,7 @@ def parse_args(argv=None):
                         help="report output path (default logs/<run_id>.json)")
     parser.add_argument("--logs-dir", default=None,
                         help="write the trace to <dir>/<run_id>.jsonl instead of "
-                             "output_examples/traces/")
+                             "logs/")
     return parser.parse_args(argv)
 
 
@@ -89,7 +89,7 @@ def main(argv=None) -> int:
     if args.logs_dir:
         trace_path = Path(args.logs_dir) / f"{report['run_id']}.jsonl"
     else:
-        trace_path = ROOT / "output_examples" / "traces" / (Path(args.input).stem + ".jsonl")
+        trace_path = ROOT / "logs" / f"{report['run_id']}.jsonl"
     trace_path.parent.mkdir(parents=True, exist_ok=True)
     with trace_path.open("w") as fh:
         for row in trace_events(report):

@@ -8,8 +8,7 @@ import { createRequire } from 'node:module';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 
 const require = createRequire(import.meta.url);
-const { chromium } = require(process.env.PLAYWRIGHT_MJS ||
-  '~/.npm/_npx/705bc6b22212b352/node_modules/playwright/index.mjs');
+const { chromium } = require(process.env.PLAYWRIGHT_MJS || 'playwright');
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 

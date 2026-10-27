@@ -65,6 +65,8 @@ def _choose_fact(evidence):
         decision = canonical_field(e.get("field", "")) in _decision_fields()
         verified = e.get("verification") == "verified"
         prov = e.get("provenance")
+        if prov == "primary":
+            prov = "county_source"
         if prov == "county_source" and verified and decision:
             tier = 0
         elif prov == "county_source" and verified:

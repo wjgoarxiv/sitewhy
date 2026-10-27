@@ -47,6 +47,17 @@ def test_washington_sample_structure():
             assert e["url"]
 
 
+def test_washington_decisive_fact_cites_county_source():
+    # samples/*.json still uses provenance "primary"; explain must treat it
+    # as an alias of "county_source" so the decisive county fact cites the
+    # county document, not the dataset mirror.
+    out = enrich(load("md-washington-county-unincorporated"))
+    decisive = [d for d in out["explanation"]["decisive"]
+                if d["rule_id"] == "md-washington-county-2026"]
+    assert decisive, "county finding must stay decisive"
+    assert "washco-md.net" in decisive[0]["fact"]["url"]
+
+
 def test_tucson_unincorporated_flip():
     out = enrich(load("az-tucson-pima"))
     flips = [

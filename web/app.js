@@ -526,7 +526,8 @@ function gradeChip(grade) {
 }
 
 function sourceLink(url, provenance) {
-  const label = `${provenance || "source"}`;
+  const kind = provenance === "primary" ? "county_source" : provenance;
+  const label = kind === "county_source" ? "county" : `${kind || "source"}`;
   if (url && String(url).startsWith("http")) {
     return `<a href="${esc(url)}" target="_blank" rel="noopener">${esc(label)} source</a>`;
   }
@@ -762,7 +763,7 @@ function humanizeEvent(e) {
     case "retry_requested":
       return String(d).slice(0, 160);
     case "conflict":
-      return `${d.rule} ${d.field}: ${d.value} vs ${d.other_primary ?? d.other_dataset}`;
+      return `${d.rule} ${d.field}: ${d.value} vs ${d.other_county_source ?? d.other_primary ?? d.other_dataset}`;
     case "computed":
       return Array.isArray(d) ? d.map((f) => `${f.rule_id}: ${f.applies}`).join(", ") : String(d).slice(0, 160);
     case "draft":
