@@ -12,6 +12,14 @@ layout: cover-typographic
 ---
 
 ---
+layout: statement
+
+## Blocked or not, and why
+
+SiteWhy tells a data center developer whether a US site is blocked — and proves why, with the verified rule, the math and what would change it. Track: The Agent That Can Explain Why. Solo team SiteWhy.
+---
+
+---
 layout: big-number
 
 ## Data center moratoria and the site-selection bottleneck
@@ -46,24 +54,25 @@ layout: image-split
 ---
 layout: process
 
-## Agent workflow from address to verdict
+## Agent workflow as a loop, not a chain
 
-- **1. Plan** the planner drafts investigation tasks per layer on Nemotron Ultra
-  (1) Input: address, MW, jurisdiction match
-  (2) Output: per-layer tasks for federal, state and county investigators
+- **1. Plan** the planner drafts targeted tasks per layer on Nemotron Ultra
+  (1) Input: site, MW, jurisdiction match, prior critic objections
+  (2) Output: federal, state and county investigator tasks
 - **2. Investigate** layer investigators gather candidate rules with quoted text
   (1) Lightning extraction; the county loop uses Markovian chunked reasoning
   (2) Output: candidate rules with quotes and source locators
 - **3. Verify** deterministic quote check plus Lightning verify_support, retry at most twice
   (1) Unverifiable claims become needs_confirmation, never fatal verdicts
   (2) Output: verified, not_found or unsupported per claim
-- **4. Decide** applicability in Python, draft verdict, critic re-investigates objections
-  (1) Adjudicator and critic run on Nemotron Ultra
-  (2) Output: verdict with the why-chain and the flips table
-- **5. Trace** every message is a typed event in the shared World Model log; one run at a time with a 5-minute cooperative deadline
-  (1) The log streams to the UI lanes with the model and receipt per request
-  (2) Output: model_trace, markovian_runs and events in every sample
-- Source: README architecture; app/orchestrator.py; app/llm.py
+- **4. Decide** Python applicability decides yes or no; the adjudicator drafts the verdict
+  (1) The adjudicator runs on Nemotron Ultra
+  (2) Output: draft verdict with the why-chain and the flips table
+- **5. Critic and trace** red-team objections loop back to the planner for round 2
+  (1) New investigator and verifier passes target the objections; every message is a typed event in the World Model log
+  (2) Unresolved objections become needs_confirmation; UI lanes show the model and receipt per request
+- Real loop in Washington County MD: the critic rejected the draft six-month expiry, round 2 re-investigated, and the expiry ships as needs_confirmation.
+- Source: md-washington-county-unincorporated.json (events, catches, needs_confirmation[0]); app/orchestrator.py
 ---
 
 ---
@@ -91,18 +100,18 @@ layout: kpi-row
 
 ## Zetaris and Meterless integration
 
-| Moratorium rows | Legislation rows | Traced model calls |
+| USL rows | Source tables | USL and quality queries |
 |---|---|---|
-| 1,291 | 440 | 30 |
-| Zetaris SITEWHY tables, Sep 2026 | Zetaris SITEWHY tables, Sep 2026 | model_trace across 5 samples |
+| 1,291 | 4 | 3 plus 1 PASS |
+| usl_site_screen, materialized join | moratoria 1,291; legislation 440; curated rules 3; county sources 3 | 12 exploratory plus 3 USL queries; null_join_keys 0 violations |
 
-> Zetaris seed tables and recorded model usage, October 2026
+> zetaris/usl.sql and zetaris/evidence/, committed f0f2b9b
 
-- Nightshift is the primary AI provider; model and compute receipt per request appear in the UI agent lanes.
-- World Model: a shared provenance-stamped rule graph with a per-run JSONL audit log.
-- Markovian: bounded-context chunked county investigation, conformance-tested; current single-chunk sources save 0 tokens.
+- Zetaris is the data layer: 4 seed tables registered from data/seed CSVs join jurisdiction to moratoria, bills and curated rules in usl_site_screen, materialized because plain views do not persist on this instance; DuckDB serves the same SQL when unreachable.
+- Meterless Nightshift is the primary AI provider; model and compute receipt per request appear in the UI agent lanes.
+- World Model shared provenance log with a per-run JSONL audit; Markovian chunked county loop, conformance-tested, with 0 tokens saved on current single-chunk sources.
 - Cursor: <to confirm>
-- Source: README sponsor tech; samples/*.json model_trace
+- Source: zetaris/usl.sql; zetaris/evidence/registration.json, run.json, dq_rule.json; zetaris/REFLECTION.md
 ---
 
 ---
@@ -136,7 +145,7 @@ layout: kpi-row
 
 | Ground truth sites | Seeded critic faults | Recorded samples | Test suite |
 |---|---|---|---|
-| 3 / 3 | 3 / 3 | 5 | 153 passed |
+| 3 / 3 | 3 / 3 | 5 | 169 passed |
 | Washington MD, Abilene TX, Tucson AZ | fatal-pima, title-v, washington-exemption | 4 at 300 MW plus Abilene at 50 MW | pytest, 27 Oct 2026 |
 
 > data/eval/results.json; samples/*.json; pytest run 2026-10-27
@@ -144,6 +153,7 @@ layout: kpi-row
 - Markovian saved 0 tokens on current sources; the engine and its accounting are implemented and tested.
 - Seed rules are curated with runtime-verified quotes; autonomous rule discovery is roadmap.
 - Coverage is modelled for Texas and ERCOT plus two counties; other states get a federal-only report with an explicit scope note.
+- The same pytest run shows 2 failures from in-progress sample-mode work in another lane, outside this deck.
 - Source: data/eval/results.json; README limitations
 ---
 
@@ -202,8 +212,9 @@ layout: table-insight
 > samples/*.json, recorded 25 Oct 2026
 
 - Four sites at 300 MW plus a 50 MW contrast at the same address; verdicts match the data/eval ground truth on the 3 checked sites.
+- Abilene 300 vs 50 MW: Title V yes both (1,067 to 185 tpy NOx); SB 6 yes to no; ERCOT audit yes to no; verdict conditional both.
 - Each sample carries model_trace with the model per request, plus markovian_runs and events.
-- Source: samples/*.json
+- Source: samples/*.json (Title V computed.nox_tpy; SB 6 and audit applies fields)
 ---
 
 ---
