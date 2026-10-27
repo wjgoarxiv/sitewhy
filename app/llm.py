@@ -108,6 +108,13 @@ class ModelRouter:
             "meterless-scope": "user",
         }
 
+    def _call_timeout(self) -> float:
+        if self.deadline is None:
+            return 180.0
+        start = self.deadline_start if self.deadline_start is not None else 0.0
+        remaining = self.deadline - (self.clock() - start)
+        return max(min(180.0, remaining), 0.0)
+
     def status(self) -> str:
         try:
             resp = self.client.get(
@@ -138,7 +145,10 @@ class ModelRouter:
             self._throttle()
             self._started = self.clock()
             try:
-                resp = self.client.post(url, json=payload, headers=self._headers())
+                resp = self.client.post(
+                    url, json=payload, headers=self._headers(),
+                    timeout=self._call_timeout(),
+                )
             except httpx.HTTPError as exc:
                 if attempt == MAX_ATTEMPTS - 1:
                     raise ProviderError(f"Nightshift unreachable: {exc}") from exc

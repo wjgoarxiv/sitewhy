@@ -47,24 +47,24 @@ SELECT
   COALESCE(b.state_bill_count, 0) AS state_bill_count,
   COALESCE(b.state_bills_enacted, 0) AS state_bills_enacted,
   (SELECT STRING_AGG(rule_id, '|' ORDER BY rule_id)
-     FROM read_csv_auto('~/Desktop/00_INBOX/2026-10_Open Agent Hackathon 2026 (GenAI Works)/data/seed/curated_rules.csv', all_varchar=true)
+     FROM read_csv_auto('data/seed/curated_rules.csv', all_varchar=true)
     WHERE layer = 'federal') AS federal_rules,
   COALESCE(r.state_rules, '') AS state_rules,
   COALESCE(s.county_source_count, 0) AS county_source_count,
   COALESCE(s.county_source_titles, '') AS county_source_titles
-FROM read_csv_auto('~/Desktop/00_INBOX/2026-10_Open Agent Hackathon 2026 (GenAI Works)/data/seed/moratorium_nation/moratorium_inventory.csv', all_varchar=true) m
+FROM read_csv_auto('data/seed/moratorium_nation/moratorium_inventory.csv', all_varchar=true) m
 LEFT JOIN (
   SELECT state_abbrev,
          COUNT(*) AS state_bill_count,
          SUM(CASE WHEN bill_status_category = 'enacted' THEN 1 ELSE 0 END)
            AS state_bills_enacted
-    FROM read_csv_auto('~/Desktop/00_INBOX/2026-10_Open Agent Hackathon 2026 (GenAI Works)/data/seed/moratorium_nation/state_legislation.csv', all_varchar=true)
+    FROM read_csv_auto('data/seed/moratorium_nation/state_legislation.csv', all_varchar=true)
    GROUP BY state_abbrev
 ) b ON b.state_abbrev = m.state_abbrev
 LEFT JOIN (
   SELECT CASE scope_iso WHEN 'ERCOT' THEN 'TX' ELSE scope_iso END AS state_abbrev,
          STRING_AGG(rule_id, '|' ORDER BY rule_id) AS state_rules
-    FROM read_csv_auto('~/Desktop/00_INBOX/2026-10_Open Agent Hackathon 2026 (GenAI Works)/data/seed/curated_rules.csv', all_varchar=true)
+    FROM read_csv_auto('data/seed/curated_rules.csv', all_varchar=true)
    WHERE scope_iso <> ''
    GROUP BY 1
 ) r ON r.state_abbrev = m.state_abbrev
@@ -72,7 +72,7 @@ LEFT JOIN (
   SELECT moratorium_id,
          COUNT(*) AS county_source_count,
          STRING_AGG(title, ' || ' ORDER BY title) AS county_source_titles
-    FROM read_csv_auto('~/Desktop/00_INBOX/2026-10_Open Agent Hackathon 2026 (GenAI Works)/data/seed/county_sources.csv', all_varchar=true)
+    FROM read_csv_auto('data/seed/county_sources.csv', all_varchar=true)
    GROUP BY moratorium_id
 ) s ON s.moratorium_id = m.moratorium_id
 ORDER BY m.state_abbrev, m.jurisdiction, m.moratorium_id;

@@ -1,5 +1,5 @@
 {
- "run_id": "20261027T043234Z-1de498",
+ "run_id": "20261027T063436Z-e30ec8",
  "project": {
   "address": "555 Walnut St, Abilene TX 79601",
   "mw": 300.0,
@@ -229,7 +229,7 @@
     "lat": 32.454063114005,
     "lon": -99.731199274255
    },
-   "at": "2026-10-27T04:32:34.274520+00:00"
+   "at": "2026-10-27T06:34:36.047867+00:00"
   },
   {
    "round": 0,
@@ -243,7 +243,7 @@
      "tx-ercot-data-center-audit-2026"
     ]
    },
-   "at": "2026-10-27T04:32:34.372771+00:00"
+   "at": "2026-10-27T06:34:36.130668+00:00"
   },
   {
    "round": 0,
@@ -254,14 +254,14 @@
     "tx-sb-6-89r-2025",
     "tx-sb-1929-88r-2023"
    ],
-   "at": "2026-10-27T04:32:34.448898+00:00"
+   "at": "2026-10-27T06:34:36.203466+00:00"
   },
   {
    "round": 1,
    "role": "planner",
    "action": "tasks",
    "detail": [],
-   "at": "2026-10-27T04:32:34.449028+00:00"
+   "at": "2026-10-27T06:34:36.203502+00:00"
   },
   {
    "round": 1,
@@ -284,7 +284,7 @@
      "reason": "300 MW meets the ERCOT large load threshold (> 75 MW)"
     }
    ],
-   "at": "2026-10-27T04:32:34.449090+00:00"
+   "at": "2026-10-27T06:34:36.203526+00:00"
   },
   {
    "round": 1,
@@ -298,7 +298,7 @@
      "tx-ercot-data-center-audit-2026": "major"
     }
    },
-   "at": "2026-10-27T04:32:34.449723+00:00"
+   "at": "2026-10-27T06:34:36.204095+00:00"
   },
   {
    "round": 1,
@@ -320,7 +320,7 @@
      "id": "objection:rule-tx-ercot-data-center-audit-2026-aad-761935af8796"
     }
    ],
-   "at": "2026-10-27T04:32:34.450679+00:00"
+   "at": "2026-10-27T06:34:36.204944+00:00"
   },
   {
    "round": 2,
@@ -330,7 +330,7 @@
     "federal-title-v-major-source: The why-chain link from 300 MW IT load to 1,067 tpy NOx potential to emit relies on unverified assumptions (N+1 diesel generators, 2,500 kW each, 500 h/yr, 6.4 g/kWh NOx Tier 2). These assumptions are not supported by a verified quote; only the 100 tpy threshold is verified. A plausible alternative (e.g., natural gas generators with ~0.5 g/kWh NOx) would reduce NOx to ~83 tpy, below the major-source threshold, flipping the finding.",
     "tx-ercot-data-center-audit-2026: The finding states the audit applies because '300 MW meets the ERCOT large load threshold (> 75 MW)'. However, the evidence quote only states 'The PUCT and ERCOT must complete this audit before any data center project moves forward,' with no mention of a 75 MW threshold. The audit may apply to all data centers regardless of size, making the 75 MW threshold a misreading."
    ],
-   "at": "2026-10-27T04:32:34.450970+00:00"
+   "at": "2026-10-27T06:34:36.205206+00:00"
   }
  ],
  "model_trace": [
@@ -370,7 +370,7 @@
   }
  ],
  "markovian_runs": [],
- "worldmodel_log": "~/Desktop/00_INBOX/2026-10_Open Agent Hackathon 2026 (GenAI Works)/runs/20261027T043234Z-1de498/worldmodel.jsonl",
+ "worldmodel_log": "runs/20261027T063436Z-e30ec8/worldmodel.jsonl",
  "disclaimer": "Screening aid, not legal advice. Confirm every finding with the cited source.",
  "explanation": {
   "site": {

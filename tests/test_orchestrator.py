@@ -134,7 +134,7 @@ def test_happy_path_no_go_with_verified_primary_quotes(orchestrator_factory):
         "duration_days": 365,
         "scope": "countywide",
     }
-    assert {e["provenance"] for e in wash["evidence"]} == {"primary", "dataset"}
+    assert {e["provenance"] for e in wash["evidence"]} == {"county_source", "dataset"}
     tv = next(f for f in report["findings"] if f["rule_id"] == "federal-title-v-major-source")
     assert tv["applies"] == "yes" and tv["evidence"][0]["verification"] == "verified"
     roles = [e["role"] for e in report["events"]]
@@ -372,7 +372,7 @@ def test_two_primary_sources_that_disagree_create_a_conflict(orchestrator_factor
     )
     report = orchestrator_factory(router).run("addr", mw=300)
     conflict = [e for e in report["events"] if e["action"] == "conflict"]
-    assert any("other_primary" in e["detail"] for e in conflict)
+    assert any("other_county_source" in e["detail"] for e in conflict)
 
 
 def test_quote_attributed_to_wrong_source_is_verified_against_the_rule_sources(
@@ -388,7 +388,8 @@ def test_quote_attributed_to_wrong_source_is_verified_against_the_rule_sources(
     report = orchestrator_factory(router).run("addr", mw=300)
     wash = next(f for f in report["findings"] if f["rule_id"] == "md-washington-county-2026")
     eff = [
-        e for e in wash["evidence"] if e["field"] == "effective" and e["provenance"] == "primary"
+        e for e in wash["evidence"]
+        if e["field"] == "effective" and e["provenance"] == "county_source"
     ]
     assert eff and eff[0]["verification"] == "verified"
 
@@ -425,7 +426,7 @@ def test_real_duration_conflict_only(orchestrator_factory):
     assert len(conflicts) == 1
     detail = conflicts[0]["detail"]
     assert detail["field"] == "duration_days"
-    assert sorted([detail["value"], detail["other_primary"]]) == [182, 365]
+    assert sorted([detail["value"], detail["other_county_source"]]) == [182, 365]
     assert detail["quote"] and detail["url"] and detail["other_quote"] and detail["other_url"]
 
 

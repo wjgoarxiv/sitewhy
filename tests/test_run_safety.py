@@ -1,5 +1,6 @@
 """Run safety (Todo 3): deadline, single-run guard, Markovian reset. RED first."""
 
+import json
 import threading
 import time
 
@@ -7,6 +8,7 @@ import httpx
 import pytest
 from fastapi.testclient import TestClient
 
+import app.main as main_module
 from app.config import Settings
 from app.data import DuckDbHarness, FallbackHarness
 from app.evidence import EvidenceFetcher
@@ -129,3 +131,123 @@ def test_llm_deadline_blocks_network_call(tmp_path):
     with pytest.raises(DeadlineExceeded):
         router.generate("extract", [{"role": "user", "content": "q"}])
     assert calls == []
+
+
+def test_httpx_timeout_is_min_180_remaining(tmp_path):
+    seen = []
+
+    def handler(request):
+        seen.append(request.extensions.get("timeout"))
+        return reply(LIGHTNING, "ok")
+
+    client = httpx.Client(transport=httpx.MockTransport(handler))
+    router = ModelRouter(
+        SETTINGS, client=client, cache_dir=tmp_path,
+        sleep=lambda s: None, deadline=600, clock=lambda: 550.0,
+    )
+    router.deadline_start = 0.0
+    router.generate("extract", [{"role": "user", "content": "q"}])
+    assert seen and all(v == 50.0 for v in seen[-1].values())
+    plain = ModelRouter(
+        SETTINGS, client=client, cache_dir=tmp_path, sleep=lambda s: None,
+    )
+    plain.generate("extract", [{"role": "user", "content": "q"}])
+    assert seen and all(v == 180.0 for v in seen[-1].values())
+
+
+class TripOnPlanRouter(ScriptedRouter):
+    """Raises DeadlineExceeded on the Nth planner call (F2 P1-1)."""
+
+    def __init__(self, trip_on_call=1, **queues):
+        super().__init__(**queues)
+        self.trip_on_call = trip_on_call
+        self.plan_calls = 0
+
+    def generate(self, step, messages, role=None, **kw):
+        if role == "planner":
+            self.plan_calls += 1
+            if self.plan_calls >= self.trip_on_call:
+                raise DeadlineExceeded("model call exceeded the 300s limit")
+        return super().generate(step, messages, role=role, **kw)
+
+
+def test_initial_plan_deadline_trip_yields_partial_report(tmp_path):
+    orch = make_orchestrator(TripOnPlanRouter(trip_on_call=1), tmp_path, deadline=300)
+    report = orch.run("addr", mw=300)
+    assert report["verdict"] == "needs_confirmation"
+    assert any(
+        "before planning" in o["text"] for o in report["needs_confirmation"]
+    )
+    assert any(e["action"] == "timeout" for e in report["events"])
+    assert "model_trace" in report and "markovian_runs" in report
+
+
+def test_replan_deadline_trip_yields_partial_report(tmp_path):
+    objection = json.dumps(
+        [
+            {
+                "rule_id": "md-washington-county-2026",
+                "type": "missed_exemption",
+                "text": "Does it exempt pending applications?",
+                "question": "Check for exemptions",
+            }
+        ]
+    )
+    router = TripOnPlanRouter(
+        trip_on_call=2,
+        planner=[PLAN, PLAN],
+        county_investigator=[facts_reply(GOOD_FACTS), facts_reply(GOOD_FACTS)],
+        adjudicator=[DRAFT_NO_GO],
+        critic=[objection],
+    )
+    orch = make_orchestrator(router, tmp_path, deadline=300)
+    report = orch.run("addr", mw=300)
+    assert report["verdict"] == "needs_confirmation"
+    assert any(
+        "before targeted planning" in o["text"] for o in report["needs_confirmation"]
+    )
+    assert any(e["action"] == "timeout" for e in report["events"])
+
+
+class BoomThread:
+    """Thread whose start() raises (F2 P2 lock-release test)."""
+
+    def __init__(self, *args, **kwargs):
+        pass
+
+    def start(self):
+        raise RuntimeError("cannot start thread")
+
+
+def _ready_client(tmp_path):
+    factory = BlockingOrchestrator()
+    factory.release.set()
+    app = create_app(
+        Settings(), resolver=FakeResolver(WASHINGTON),
+        orchestrator_factory=lambda: factory, samples_dir=tmp_path,
+    )
+    c = TestClient(app)
+    assert c.get("/samples").status_code == 200  # warm up TestClient machinery
+    return c
+
+
+def test_run_lock_released_when_thread_start_raises(tmp_path, monkeypatch):
+    c = _ready_client(tmp_path)
+    monkeypatch.setattr(threading, "Thread", BoomThread)
+    with pytest.raises(RuntimeError, match="cannot start thread"):
+        c.post("/runs", json={"address": "x", "mw": 300})
+    monkeypatch.undo()
+    assert c.post("/runs", json={"address": "x", "mw": 300}).status_code == 202
+
+
+def test_run_lock_released_when_run_id_raises(tmp_path, monkeypatch):
+    c = _ready_client(tmp_path)
+
+    def _no_id():
+        raise RuntimeError("no run id")
+
+    monkeypatch.setattr(main_module, "new_run_id", _no_id)
+    with pytest.raises(RuntimeError, match="no run id"):
+        c.post("/runs", json={"address": "x", "mw": 300})
+    monkeypatch.undo()
+    assert c.post("/runs", json={"address": "x", "mw": 300}).status_code == 202

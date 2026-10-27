@@ -4,8 +4,12 @@
 // shots replay that run's actual trace bytes (waiting cut, output unedited).
 // Writes OUT_DIR/take.webm + OUT_DIR/shots.json (per-shot video timestamps).
 import { spawnSync } from 'node:child_process';
-import { chromium } from '~/.npm/_npx/705bc6b22212b352/node_modules/playwright/index.mjs';
+import { createRequire } from 'node:module';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+
+const require = createRequire(import.meta.url);
+const { chromium } = require(process.env.PLAYWRIGHT_MJS ||
+  '~/.npm/_npx/705bc6b22212b352/node_modules/playwright/index.mjs');
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 

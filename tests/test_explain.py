@@ -96,7 +96,7 @@ def _synthetic_conflict_report(as_of):
                 "field": "duration_days",
                 "quote": "twelve months",
                 "verification": "verified",
-                "provenance": "primary",
+                "provenance": "county_source",
                 "url": "https://example.com/a",
             }
         ],
@@ -109,7 +109,7 @@ def _synthetic_conflict_report(as_of):
             "rule": "test-moratorium",
             "field": "duration_days",
             "value": 365,
-            "other_primary": 182,
+            "other_county_source": 182,
             "quote": "twelve months",
             "url": "https://example.com/a",
             "other_quote": "six months",

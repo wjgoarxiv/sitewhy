@@ -71,7 +71,7 @@ async function api(path, opts) {
   return res.json();
 }
 
-const state = { rows: [], reports: {}, contexts: {}, selected: null, dots: {}, map: null, layers: null, sampleMode: false, popupAt: 0, currentCtx: null };
+const state = { rows: [], reports: {}, contexts: {}, selected: null, dots: {}, map: null, layers: null, sampleMode: false, deadlineS: 600, popupAt: 0, currentCtx: null };
 
 function shortAddress(address) {
   return String(address || "").split(",")[0].trim();
@@ -907,7 +907,7 @@ function runningRow(addressLabel, mw) {
 
 async function pollRun(runId, request) {
   const started = Date.now();
-  const limitMs = (300 + 60) * 1000;
+  const limitMs = ((state.deadlineS || 600) + 60) * 1000;
   let seen = 0, flown = false;
   for (;;) {
     const s = await api(`/runs/${runId}`);
@@ -923,7 +923,7 @@ async function pollRun(runId, request) {
         }
       }
       const ago = Math.round((Date.now() - started) / 1000);
-      $("run-status").innerHTML = `Screening… ${ago} s · about 5–8 minutes${feedHtml(events, started)}`;
+      $("run-status").innerHTML = `Screening… ${ago} s · about 5–10 minutes${feedHtml(events, started)}`;
     }
     if (s.status === "done") return s.report;
     if (s.status === "error") throw new Error(s.error || "run failed");
@@ -961,7 +961,7 @@ async function submitRun(body, addressLabel) {
     $("running-row")?.remove();
     let msg;
     if (err.message.includes("503") || err.message.includes("SAMPLE_MODE")) {
-      msg = "Live runs are off in sample mode — pick a site from the portfolio.";
+      msg = "Sample mode: runs replay recorded model answers for the showcase addresses.";
     } else if (err.message.includes("409")) {
       msg = "Another screening is running. Wait for it to finish and try again.";
     } else if (err.message.includes("did not finish in time")) {
@@ -1021,10 +1021,11 @@ async function boot() {
   try {
     const status = await api("/status");
     state.sampleMode = !!status.sample_mode;
+    if (Number.isFinite(status.run_deadline_s)) state.deadlineS = status.run_deadline_s;
     if (status.sample_mode) {
       $("run-btn").disabled = true;
       $("screen-details").removeAttribute("open");
-      $("form-status").textContent = "Live runs are off in sample mode — pick a site from the portfolio.";
+      $("form-status").textContent = "Sample mode: runs replay recorded model answers for the showcase addresses.";
     }
   } catch { /* status optional; submit surfaces errors */ }
   await bootPortfolio();

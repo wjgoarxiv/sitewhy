@@ -9,7 +9,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field, model_validator
 
-from app.config import Settings, load_settings
+from app.config import RUN_DEADLINE_S, Settings, load_settings
 from app.explain import enrich
 from app.geo import Resolver, UnresolvedAddressError
 from app.orchestrator import RUNS_DIR, Orchestrator, new_run_id
@@ -92,6 +92,7 @@ def create_app(
             "nightshift": state(settings.nightshift_configured),
             "zetaris": state(settings.zetaris_configured),
             "sample_mode": settings.sample_mode,
+            "run_deadline_s": RUN_DEADLINE_S,
         }
 
     @app.get("/resolve")
@@ -147,10 +148,18 @@ def create_app(
     def start_run(req: RunRequest) -> dict:
         if not run_lock.acquire(blocking=False):
             raise HTTPException(409, "A screening is already running")
-        run_id = new_run_id()
-        with state_lock:
-            runs[run_id] = {"status": "running", "events": [], "request": req.model_dump()}
-        threading.Thread(target=execute, args=(run_id, req), daemon=True).start()
+        run_id = None
+        try:
+            run_id = new_run_id()
+            with state_lock:
+                runs[run_id] = {"status": "running", "events": [], "request": req.model_dump()}
+            threading.Thread(target=execute, args=(run_id, req), daemon=True).start()
+        except Exception:
+            if run_id is not None:
+                with state_lock:
+                    runs.pop(run_id, None)
+            run_lock.release()
+            raise
         return {"run_id": run_id}
 
     @app.get("/runs/{run_id}")

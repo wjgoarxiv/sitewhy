@@ -365,8 +365,10 @@ def render_usl_sql() -> str:
         )
     ddl.append("-- USL build query (materialized to data/seed/usl_site_screen.csv):\n")
     ddl.append(usl_build_sql(
-        MORATORIA_CSV.as_posix(), LEGISLATION_CSV.as_posix(),
-        RULES_CSV.as_posix(), SOURCES_CSV.as_posix(),
+        MORATORIA_CSV.relative_to(ROOT).as_posix(),
+        LEGISLATION_CSV.relative_to(ROOT).as_posix(),
+        RULES_CSV.relative_to(ROOT).as_posix(),
+        SOURCES_CSV.relative_to(ROOT).as_posix(),
     ) + ";\n")
     ddl.append("-- Data-quality rule (passes when zero rows come back):\n" + DQ_RULE[1] + ";\n")
     return "\n".join(ddl)

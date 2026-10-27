@@ -65,9 +65,9 @@ def _choose_fact(evidence):
         decision = canonical_field(e.get("field", "")) in _decision_fields()
         verified = e.get("verification") == "verified"
         prov = e.get("provenance")
-        if prov == "primary" and verified and decision:
+        if prov == "county_source" and verified and decision:
             tier = 0
-        elif prov == "primary" and verified:
+        elif prov == "county_source" and verified:
             tier = 1
         elif prov == "curated" and verified:
             tier = 2
@@ -287,7 +287,7 @@ def _sensitivity(report, findings, project: Project):
         if finding is None:
             continue
         pairs = [(d.get("value"), d.get("quote"), d.get("url"))]
-        for other in ("other_primary", "other_dataset"):
+        for other in ("other_county_source", "other_dataset"):
             if other in d:
                 pairs.append((
                     d.get(other), d.get("other_quote"), d.get("other_url"),
@@ -470,10 +470,12 @@ def _layer_status(findings, state_watch):
                 "info",
             )
             lamp = worst if worst in {"fatal", "major", "minor"} else "clear"
-            first = next(f for f in yes if f.get("grade") == worst)
+            matched = [f for f in yes if f.get("grade") == worst]
+            first = matched[0] if matched else yes[0]
+            grade_note = f" ({first.get('grade')})" if first.get("grade") else ""
             status[layer] = {
                 "lamp": lamp,
-                "summary": f"{first.get('title')} applies ({first.get('grade')})",
+                "summary": f"{first.get('title')} applies{grade_note}",
             }
         elif any(f.get("applies") == "unknown" for f in fs):
             first = next(f for f in fs if f.get("applies") == "unknown")

@@ -25,6 +25,13 @@ from app.worldmodel import WorldModel
 
 ROOT = Path(__file__).resolve().parent.parent
 RUNS_DIR = ROOT / "runs"
+
+
+def _repo_relative(path: Path) -> str:
+    try:
+        return path.relative_to(ROOT).as_posix()
+    except ValueError:
+        return str(path)
 GRADES = {"fatal", "major", "minor", "info"}
 DECISION_FIELDS = ("effective", "duration_days", "scope", "exempt_if_permits_submitted")
 NULL_VALUES = {"", "none", "null", "n/a", "unknown", "not stated"}
@@ -266,6 +273,12 @@ class Orchestrator:
                 self._event(round_, "evidence_verifier", "retry_requested", feedback[:300])
         return True
 
+    def _source_kind(self, rule_id: str, url: str) -> str:
+        for src in self.county_sources.get(rule_id, []):
+            if src.get("url") == url:
+                return src.get("type") or "county_source"
+        return "county_source"
+
     def _record_fact(self, rule: dict, fact: dict, check: dict, round_: int) -> None:
         wm, src = self.world, self._src("county_investigator", round_)
         doc = wm.upsert_entity(
@@ -285,6 +298,7 @@ class Orchestrator:
         corrected = quote_value is not None and quote_value != value
         if corrected:
             value = quote_value
+        kind = self._source_kind(rule["id"], fact["url"])
         claim = wm.add_claim(
             layer=rule["layer"],
             text=f"{field} = {value}",
@@ -296,7 +310,7 @@ class Orchestrator:
                 "field": field,
                 "value": value,
                 "verification": check["status"],
-                "provenance": "primary",
+                "provenance": kind,
                 "rule": rule["id"],
                 **({"model_value": model_value} if corrected else {}),
             },
@@ -318,21 +332,21 @@ class Orchestrator:
         if check["status"] != "verified" or value is None:
             return
         prior = rule["facts"].setdefault(field, [])
-        others = [("primary", p) for p in prior if p["claim"] != claim]
+        others = [(p.get("kind", kind), p) for p in prior if p["claim"] != claim]
         if field in rule["seed"]:
             others.append(("dataset", rule["seed"][field]))
         if field in DECISION_FIELDS:
-            for kind, other in others:
+            for other_kind, other in others:
                 if other["value"] == value:
                     continue
                 wm.relate(claim, "contradicts", other["claim"], source=src, exclusive=False)
                 detail = {"rule": rule["id"], "field": field, "value": value,
-                          f"other_{kind}": other["value"], "quote": fact["quote"],
+                          f"other_{other_kind}": other["value"], "quote": fact["quote"],
                           "url": fact["url"], "other_quote": other.get("quote"),
                           "other_url": other.get("url")}
                 self._event(round_, "evidence_verifier", "conflict", detail)
         if all(p["claim"] != claim for p in prior):
-            prior.append({"value": value, "claim": claim,
+            prior.append({"value": value, "claim": claim, "kind": kind,
                           "quote": fact["quote"], "url": fact["url"]})  # fmt: skip
 
     # -- assessment ------------------------------------------------------
@@ -516,7 +530,7 @@ class Orchestrator:
             "model_trace": self.router.trace[ctx["model_start"]:],
             "data_trace": self.harness.trace[ctx["data_start"]:],
             "markovian_runs": self._markovian_summary(),
-            "worldmodel_log": str(ctx["run_dir"] / "worldmodel.jsonl"),
+            "worldmodel_log": _repo_relative(ctx["run_dir"] / "worldmodel.jsonl"),
             "disclaimer": DISCLAIMER,
         }
         from app.explain import enrich
@@ -679,10 +693,6 @@ class Orchestrator:
         ]
         self._event(0, "system", "state_watch", [r["policy_action_id"] for r in state_watch])
 
-        rule_briefs = [{"id": r["id"], "title": r["title"], "layer": r["layer"]} for r in local]
-        tasks = self.planner.plan(site, rule_briefs) if local else []
-        self._event(1, "planner", "tasks", tasks)
-        by_id = {r["id"]: r for r in local}
         ctx = {
             "run_id": run_id,
             "project_p": {"address": address, "mw": mw,
@@ -693,8 +703,15 @@ class Orchestrator:
             "data_start": data_start,
             "run_dir": run_dir,
         }
+        rule_briefs = [{"id": r["id"], "title": r["title"], "layer": r["layer"]} for r in local]
         objections: list[dict] = []
         draft, findings = {}, []
+        try:
+            tasks = self.planner.plan(site, rule_briefs) if local else []
+        except DeadlineExceeded:
+            return self._timeout_report("planning", ctx, findings)
+        self._event(1, "planner", "tasks", tasks)
+        by_id = {r["id"]: r for r in local}
         for round_ in range(1, self.max_rounds + 1):
             if self._expired():
                 return self._timeout_report(f"round {round_}", ctx, findings)
@@ -752,7 +769,14 @@ class Orchestrator:
             ]
             if not focus:
                 break
-            tasks = self.planner.plan(site, rule_briefs, focus=focus)
+            if self._expired():
+                return self._timeout_report(f"targeted planning in round {round_}", ctx, findings)
+            try:
+                tasks = self.planner.plan(site, rule_briefs, focus=focus)
+            except DeadlineExceeded:
+                return self._timeout_report(
+                    f"targeted planning in round {round_}", ctx, findings
+                )
             tasks = [t for t in tasks if any(t["rule_id"] in f for f in focus)]
             self._event(round_ + 1, "planner", "targeted_tasks", tasks)
 
@@ -791,7 +815,7 @@ class Orchestrator:
             "model_trace": self.router.trace[model_start:],
             "data_trace": self.harness.trace[data_start:],
             "markovian_runs": self._markovian_summary(),
-            "worldmodel_log": str(run_dir / "worldmodel.jsonl"),
+            "worldmodel_log": _repo_relative(run_dir / "worldmodel.jsonl"),
             "disclaimer": DISCLAIMER,
         }
         from app.explain import enrich

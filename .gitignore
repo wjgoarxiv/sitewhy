@@ -26,10 +26,60 @@ logs/
 # demo video deliverable (stays local; upload separately)
 submission/video/*.mp4
 
-# fetched source documents (re-fetchable cache)
-data/sources/
-data/llm_cache/
-data/geo/cache/
+# fetched source documents (re-fetchable cache; the sample-mode replay set
+# below is re-included file by file, so plain `git add` picks up exactly it)
+data/sources/*
+data/llm_cache/*
+data/geo/cache/*
 
 # per-run traces (selected runs are copied to samples/)
 runs/
+
+# sample-mode replay set (P1-3): exactly the caches the 4 showcase runs read.
+# Everything else under these dirs stays ignored (local and live runs).
+!data/llm_cache/0d4116f287a1016dba274312dc255f695887401e75a9c6f57c47d85e1a60c0ba.json
+!data/llm_cache/0d4619c9ea20876e105d2d3d0f99d548531aeab5a2b352555128bab1c8f2a5cc.json
+!data/llm_cache/162cae5529ad67b5c92fb1046fac38d9e9b7fa2b04a438891683e67e6007d204.json
+!data/llm_cache/189746262663effbd71658a055bbc823e573e72140c7b4e2a32711bc7c90964f.json
+!data/llm_cache/1ec77eb807e7e8630061f42df15dcb1a51601693c4ec14b54784f40444adb04a.json
+!data/llm_cache/29b10d7bc5e0dc1b0268e4130609e93bee8517d62409c94950d4b6d467c8484c.json
+!data/llm_cache/2e41d901d8e94de502995d52d1abe2b89a4c2f4fd564366e1f5bc988ac5f9f5f.json
+!data/llm_cache/3a66e56face8d221cf38808c0d48e0cf9ded803bacbc9aeb304cb6f337b7bdc9.json
+!data/llm_cache/3fb242079b794a6ab28ef064c2c230976d0d4da7bb158c6797f9e6d6228c1e14.json
+!data/llm_cache/44e42b5ce1c681a6c20571ac2e1e3a6ff813c2034d83ea5d51210c450d0b3a0a.json
+!data/llm_cache/4b75e24f2b4179c3e6c68c7ecf0f6cf2422d460f0721d8f3ad4bc4aefd191a07.json
+!data/llm_cache/4f4eb44b3bcb27b2339c27c70e54ae6cda6ffab450f39614e3525fcaea2106e8.json
+!data/llm_cache/5cabcdd13a9b7612cfac0cc040f336dc84a9046694ac864949daa18eb6dc022c.json
+!data/llm_cache/635eb34cada7095c812764bba6ced5173caf98d004aa478b3ebb870f31a644cc.json
+!data/llm_cache/64724e59abdad7e553e8a3e5af21d984829e036230a1627b11fe4a688d30a0c8.json
+!data/llm_cache/655861ba9d20b2a22f634c41066338edba27c8755e91d9daa1cca658fae1599b.json
+!data/llm_cache/6f353d5bebd8e4bf770a30160c49b61b57e76c9dfc1838252fbb95d29c506715.json
+!data/llm_cache/758d367c40eff400dca0c6b27423a6754da94707e273fef8b914c9ee6c8f1728.json
+!data/llm_cache/760ec035ec7c8a762b2cb6118aed2aee45cb357a51d345fb596aa828408b9021.json
+!data/llm_cache/7ba67de6a24389a75b18315be5d9e5fee6d12b76239f8cf78b63dafaf3609b4c.json
+!data/llm_cache/7db166cc95c26632f2803bc3251da531ebe82b047d22de9ccdad628ebec68273.json
+!data/llm_cache/8431db6d720b4044c75323504d680b688a65b7912fa4435290d50a4b791bd64a.json
+!data/llm_cache/8869287c2bdb6a757c25f78ef20c87d9f7ef9296066019fb5d952e942db3338e.json
+!data/llm_cache/89816a767faf6f8c798b455d9650916f35cc78400403a2933856149853aafc91.json
+!data/llm_cache/939db897b7dd460c7ef211d69276d1d90c291b02030c0382eab10e09b5c9daac.json
+!data/llm_cache/a0f074d7cd3ab6d9de483092d05a2a115be0cc35e85ca0ea8e7185bc2bee6079.json
+!data/llm_cache/a23e0996f14cd114e0d7527082de734eaebe05465b68b75cc4a9886f3bd542f8.json
+!data/llm_cache/aa51247ea01e5bd6325c8e767fc997bc247acff99a0035c1748499e12e9e2280.json
+!data/llm_cache/b0b309df3f0fa1336aec3ac05dc9a352299093013230d09dacb85a725a0f5be6.json
+!data/llm_cache/b0ff3913d62a12661047255f968629a0a46482d6fa8fda92eaf6af55f7e3d3cb.json
+!data/llm_cache/b22dfc5e9ede69ebc4254472401a6587ccd95724aa8739143aa295a83a2b13d7.json
+!data/llm_cache/d52b65f0216f0f632badd484d581da3299f7c93a4359cea91a151a02f5890b75.json
+!data/llm_cache/db0bc2ccd869d571197eba4869aa086fed82f582ad66307e20c786bc6a2efaa0.json
+!data/llm_cache/e4b33f8317382041d51cbc637083f80280fabf146e7193eb800e0b1362a96a3e.json
+!data/llm_cache/e8c861a9717d224fe91c106dd65fd6b1a3a03ff1f6cddef5eae3f06e88e2e872.json
+!data/llm_cache/fcadcf128e42d47c639cb663a48191eb98c1c68dd4b18aeb413446a14b96d246.json
+!data/geo/cache/census-1f89862371d4c4cc66c996cb.json
+!data/geo/cache/census-404c8e6b8aec3d9b8f80dec5.json
+!data/geo/cache/census-45aef6c449adb98734f9132f.json
+!data/geo/cache/census-ea9a0e35f32722b9909f5a09.json
+!data/sources/02211f03d876d065590e70f1.json
+!data/sources/0ea8c6b616242c0cd1bc7269.json
+!data/sources/169092766a885d325b3d9515.json
+!data/sources/aa626ef3a185fc8323a82dc7.json
+!data/sources/e326443444ead3fc77f97644.json
+!data/sources/e454d1acece95cce2c1c1342.json

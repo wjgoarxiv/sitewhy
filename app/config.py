@@ -16,7 +16,7 @@ DEFAULT_NIGHTSHIFT_TOKEN_FILE = (
     Path.home() / "Library/Application Support/ai.meterless.nightshift.m1m4/runtime-token"
 )
 
-RUN_DEADLINE_S = 300
+RUN_DEADLINE_S = 600
 
 # Date the committed sample-mode caches were recorded. Sample-mode runs pin
 # `as_of` to this date so LLM cache keys (which embed the site) match.

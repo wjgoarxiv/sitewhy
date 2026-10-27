@@ -67,7 +67,7 @@ def _summarize(action: str, detail) -> tuple[str, str]:
     if action == "retry_requested":
         return _short(detail), "retrying with verifier feedback"
     if action == "conflict" and isinstance(detail, dict):
-        other = detail.get("other_primary", detail.get("other_dataset"))
+        other = detail.get("other_county_source", detail.get("other_dataset"))
         return f"{detail.get('field')}: {detail.get('value')} vs {other}", "kept for adjudication"
     if action == "escalated":
         items = detail if isinstance(detail, list) else [detail]
