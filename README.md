@@ -37,11 +37,11 @@ Every screening hands back four things: the verdict, the rule that decides it qu
 
 ## 🎬 Demo video
 
-The 3:27 narrated demo plays right here:
+The 3:02 narrated demo plays right here:
 
-https://github.com/user-attachments/assets/cef82d69-4834-4f73-8ea2-21d3640ec152
+https://github.com/user-attachments/assets/be00c388-8424-462f-ad70-bf472b78f5d2
 
-The full-quality 1080p file is in the repository: [`submission/video/OAH2026-SiteWhy-ExplainWhy-Demo.mp4`](submission/video/OAH2026-SiteWhy-ExplainWhy-Demo.mp4) (14 MB, download). The clip below is the in-app guided tour.
+The full-quality 1080p file is in the repository: [`submission/video/OAH2026-SiteWhy-ExplainWhy-Demo.mp4`](submission/video/OAH2026-SiteWhy-ExplainWhy-Demo.mp4) (27 MB, download). The clip below is the in-app guided tour.
 
 <p align="center">
   <img src="docs/img/demo.gif" alt="SiteWhy guided tour: a no-go verdict for unincorporated Washington County, the verified moratorium quote, the why chain and the agent lanes" width="90%">

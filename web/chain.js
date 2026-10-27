@@ -115,6 +115,7 @@
     }
     var host = hostname(ev.url) || clip(ev.url, 40);
     var prov = ev.provenance ? String(ev.provenance) : "";
+    if (prov === "primary" || prov === "county_source") prov = "county source";
     return '<div class="chain-card" tabindex="0" data-chain="source">'
       + '<p class="chain-label">Source</p>'
       + '<p class="chain-src"><a href="' + esc(ev.url) + '" target="_blank" rel="noopener">'

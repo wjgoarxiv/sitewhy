@@ -30,7 +30,7 @@ https://github.com/wjgoarxiv/sitewhy
 
 ## 5. Demo video (1–4 minutes)
 
-https://github.com/wjgoarxiv/sitewhy#-demo-video (3:27, with narration; the video plays inline on the public README, no login needed; the full-quality 1080p MP4 is committed at `submission/video/OAH2026-SiteWhy-ExplainWhy-Demo.mp4`). Test the link in a private browser window before submitting.
+https://github.com/wjgoarxiv/sitewhy#-demo-video (3:02, with narration; the video plays inline on the public README, no login needed; the full-quality 1080p MP4 is committed at `submission/video/OAH2026-SiteWhy-ExplainWhy-Demo.mp4`). Test the link in a private browser window before submitting.
 
 ## 6. Slide deck
 
