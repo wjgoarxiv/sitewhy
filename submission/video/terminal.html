@@ -16,6 +16,11 @@
   .hot { color:#f5b942; }
   .dim { color:#8a99ab; }
   .verdict { color:#f5b942; font-weight:bold; }
+  .caret { display:inline-block; width:18px; height:34px; margin-left:4px; vertical-align:-6px; background:#57c785;
+           animation:blink .9s steps(1) infinite; }
+  @keyframes blink { 50% { opacity:0; } }
+  #term div.new { animation:rise .35s ease-out; }
+  @keyframes rise { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
 </style>
 </head>
 <body>
@@ -34,15 +39,31 @@
       div.innerHTML = '<span class="verdict">' + esc(line) + "</span>";
     else if (/^\[/.test(line)) div.innerHTML = '<span class="agent">' + esc(line) + "</span>";
     else div.innerHTML = '<span class="dim">' + esc(line) + "</span>";
+    div.classList.add("new");
     el.appendChild(div);
+    return div;
   }
-  window.termRun = async (mode, title, lines) => {
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+  // modes: "play" fast replay, "type" types the command char by char then reveals lines one by one.
+  window.termRun = async (mode, title, lines, lineMs = 260) => {
     window.__termDone = false;
     document.getElementById("title").textContent = title;
-    document.getElementById("term").innerHTML = "";
-    for (const line of lines) {
+    const el = document.getElementById("term");
+    el.innerHTML = "";
+    for (const [i, line] of lines.entries()) {
+      if (mode === "type" && i === 0) {
+        const div = paint("");
+        for (let n = 1; n <= line.length; n++) {
+          div.innerHTML = '<span class="cmd">' + esc(line.slice(0, n)) + '</span><span class="caret"></span>';
+          await wait(22);
+        }
+        div.innerHTML = '<span class="cmd">' + esc(line) + "</span>";
+        await wait(350);
+        continue;
+      }
       paint(line);
-      if (mode === "play") await new Promise((r) => setTimeout(r, 45));
+      if (mode === "play") await wait(45);
+      if (mode === "type") await wait(lineMs);
     }
     window.__termDone = true;
   };

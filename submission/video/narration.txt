@@ -1,20 +1,29 @@
-title|L01|Three hundred twenty-one moratoria block data centers across thirty-two states.
-title|L02|Developers need one answer: is this site blocked, and why?
-arch|L03|SiteWhy screens a site and proves why, rule by rule.
-arch|L04|Planner, investigators, verifier, adjudicator, and critic check each other.
-washington-decisive|L05|Outside Hagerstown, the county moratorium applies. Verdict: No-go.
-washington-decisive|L06|One verified quote decides it, with the math on screen.
-hagerstown-flip|L07|Two miles away, inside city limits, the same rule falls silent.
-hagerstown-flip|L08|Same county, different answer. That is the scope flip.
-tour|L09|The verifier caught the duration: one-eighty days became one-eighty-two.
-critic-trace|L10|The critic rejected six months: the dataset says twelve.
-critic-trace|L11|The planner sent round two. That is agents changing work.
-live-run|L12|A real run, from an input file. Watch the agents hand off.
-live-run|L13|Thirty-two trace lines, seven roles, verdict: No-go.
-lanes|L14|Every call names its model and receipt; Zetaris rows back the data.
-abilene50|L15|At fifty megawatts, two Texas findings flip to no.
-abilene50|L16|Same engine, new answer. That is input changing output.
-usl|L17|One semantic layer joins moratoria, bills, and curated rules.
-usl|L18|Data-quality rule: passed, zero violations.
-flips|L19|What would change it, the evidence chain, and a recorded-run badge.
-outro|L20|SiteWhy: not which rules exist, but which apply to your site.
+intro|L01|SiteWhy. Check a data center site, and see why.
+intro|L02|Three hundred twenty-one moratoria and restrictions across thirty-two states can block a site.
+get|L03|Here is what you get for any address: a verdict, the deciding rule, the math, and what would change it.
+verdict|L04|Take a site outside Hagerstown. The verdict is No-go.
+rule|L05|The rule that decides it is quoted word for word from the county's own ordinance.
+math|L06|The math is on screen: in effect June thirtieth to December twenty-ninth, and the as-of date, October twenty-sixth, falls inside.
+flips|L07|And the flips table shows what would change the answer.
+prov|L08|Each fact is tagged: Nemotron read it from the source, and plain code verified it word for word.
+where|L09|Now, where is AI used? Six steps: four use a model, two are plain code.
+live|L10|Let's screen a new address and watch. Hagerstown city, three hundred megawatts, no permits submitted yet.
+run|L11|Nemotron Ultra plans the checks.
+run|L12|Nemotron Lightning reads the county sources and pulls out quotes.
+run|L13|Then plain code checks every quote word for word.
+run|L14|Meterless Markovian feeds long county documents through in small chunks.
+run|L15|A quote that fails goes back for a retry, and Ultra steps in if Lightning comes back empty.
+run|L16|Every call goes through Meterless Nightshift, with a receipt. Reference data comes from Zetaris.
+run|L17|Now Ultra writes the verdict, and the critic tries to knock it down.
+result|L18|This replays recorded model answers, so it finishes in under a minute. A live run takes minutes.
+result|L18b|The answer says plainly what is still unconfirmed, instead of guessing.
+replay|L19|Back on the Washington report, replay how the verdict was built.
+critic|L20|The critic saw a conflict: six months, or twelve? It sent the planner back for round two.
+critic|L21|Code then showed the moratorium applies under either reading.
+flip|L22a|On the map, the county pause covers this unincorporated site.
+flip|L22|Inside the Hagerstown city limits, it does not reach the site. Same county, different answer. That is the scope flip.
+abilene|L23|Drop the load to fifty megawatts, and two Texas rules stop applying. Change the input, and the answer changes.
+trace|L23b|The verifier also recomputed a duration from the quote: one hundred eighty days became one hundred eighty-two.
+trace|L24|Every model call lists its model and its Nightshift receipt.
+usl|L25|Zetaris holds moratoria, bills and curated rules as one semantic layer. Its data-quality rule passes with zero violations.
+outro|L26|SiteWhy: not which rules exist, but which apply to your site. Built with Nemotron on Nightshift.
