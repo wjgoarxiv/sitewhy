@@ -39,6 +39,23 @@ RETRYABLE = {429, 500, 502, 503, 504}
 MAX_ATTEMPTS = 3
 DEFAULT_CACHE_DIR = Path(__file__).resolve().parent.parent / "data" / "llm_cache"
 
+# Receipt fields tied to the Nightshift account session (memory ids, job, prompt text, egress).
+PRIVATE_RECEIPT_KEYS = ("hmem", "job", "egress", "prompt_preview", "receipt_envelope", "mcp")
+
+
+def scrub_receipt(data: dict) -> dict:
+    """Copy of a completion without account-session metadata, for the replay cache."""
+    out = json.loads(json.dumps(data))
+    meterless = out.get("meterless")
+    if isinstance(meterless, dict):
+        for key in PRIVATE_RECEIPT_KEYS:
+            meterless.pop(key, None)
+        receipt = meterless.get("receipt")
+        if isinstance(receipt, dict):
+            for key in PRIVATE_RECEIPT_KEYS:
+                receipt.pop(key, None)
+    return out
+
 
 class NotConfiguredError(RuntimeError):
     pass
@@ -204,8 +221,10 @@ class ModelRouter:
                 escalated_from = LIGHTNING
             data, cached = data, False
             start = self._started
-            self.cache_dir.mkdir(parents=True, exist_ok=True)
-            cache_file.write_text(json.dumps(data))
+            # First recording wins: a later live run must not rewrite the committed replay set.
+            if not cache_file.exists():
+                self.cache_dir.mkdir(parents=True, exist_ok=True)
+                cache_file.write_text(json.dumps(scrub_receipt(data)))
         end = self.clock()
 
         receipt = data.get("meterless") or {}

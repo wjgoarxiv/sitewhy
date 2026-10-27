@@ -214,11 +214,11 @@ For Docker in live mode, pass the keys with `--env-file` and point Nightshift an
 
 ```bash
 curl -s -X POST localhost:8000/runs -H 'content-type: application/json' \
-  -d '{"address":"100 W Washington St, Hagerstown MD 21740","mw":300}'
-curl -s localhost:8000/portfolio | python3 -c "import json,sys; print(len(json.load(sys.stdin)), 'showcase reports')"
+  -d @input_examples/md-hagerstown-city.json
+curl -s localhost:8000/portfolio | python3 -c "import json,sys; print(sum(r.get('kind') == 'showcase' for r in json.load(sys.stdin)), 'showcase reports')"
 ```
 
-`run.py` takes `--input`, `--sample`, `--output` and `--logs-dir` (`--help` for details). In sample mode, POST a body from `input_examples/` (for example `-d @input_examples/md-hagerstown-city.json`); an unknown address fails at once and names `input_examples/`. Errors come back as a JSON message. A second concurrent POST gets a 409 while a screening holds the run lock.
+`run.py` takes `--input`, `--sample`, `--output` and `--logs-dir` (`--help` for details). Sample mode replays only the recorded inputs in `input_examples/`, field for field; any other body fails at once and names `input_examples/`. In live mode, any body with `address` and `mw` works, for example `{"address":"100 W Washington St, Hagerstown MD 21740","mw":300}`. Errors come back as a JSON message. A second concurrent POST gets a 409 while a screening holds the run lock.
 
 In the browser, sample mode says: "Sample mode: runs replay recorded model answers for the showcase addresses." Dates pin to `SAMPLE_MODE_AS_OF` (2026-10-26, `app/config.py`), the day the committed caches were recorded.
 

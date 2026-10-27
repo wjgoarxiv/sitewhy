@@ -87,6 +87,35 @@ def test_live_mode_always_calls_network_and_records_for_replay(tmp_path):
     assert replay.generate("extract", msgs).cached is True and len(calls) == 2
 
 
+def test_live_mode_keeps_the_recorded_replay_and_drops_account_metadata(tmp_path):
+    msgs = [{"role": "user", "content": "q"}]
+
+    def first(request):
+        resp = reply(LIGHTNING, "recorded")
+        body = json.loads(resp.content)
+        body["meterless"]["job"] = {"id": "job_x"}
+        body["meterless"]["egress"] = {"destination": "nvidia"}
+        body["meterless"]["receipt"] = {
+            "receipt_id": "rcpt_1",
+            "prompt_preview": "page text",
+            "hmem": {"ids": ["mem_a"]},
+            "egress": {"destination": "nvidia"},
+        }
+        return httpx.Response(200, json=body)
+
+    make_router(first, tmp_path).generate("extract", msgs)
+    (stored,) = tmp_path.glob("*.json")
+    saved = json.loads(stored.read_text())
+    assert "job" not in saved["meterless"] and "egress" not in saved["meterless"]
+    assert set(saved["meterless"]["receipt"]) == {"receipt_id"}
+    assert saved["meterless"]["receipt_id"] == "rcpt_1"
+
+    make_router(lambda r: reply(LIGHTNING, "newer"), tmp_path).generate("extract", msgs)
+    sample = Settings(sample_mode=True)
+    replay = make_router(lambda r: reply(LIGHTNING, "x"), tmp_path, settings=sample)
+    assert replay.generate("extract", msgs).text == "recorded"
+
+
 def test_retries_on_429_then_succeeds(tmp_path):
     responses = iter([httpx.Response(429), httpx.Response(503), reply(LIGHTNING, "ok")])
     router = make_router(lambda r: next(responses), tmp_path)

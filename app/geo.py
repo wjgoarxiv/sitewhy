@@ -97,6 +97,10 @@ def _load_utilities() -> dict[tuple[str, str], list[dict]]:
     return by_county
 
 
+def _short(address: str, limit: int = 100) -> str:
+    return address if len(address) <= limit else address[:limit] + "…"
+
+
 def _county_key(name: str) -> str:
     for suffix in (" County", " Parish", " Borough"):
         name = name.removesuffix(suffix)
@@ -122,7 +126,7 @@ class Resolver:
             return json.loads(cache.read_text())
         if self.sample_mode:
             raise UnresolvedAddressError(
-                f"Address {address!r} is not in the sample-mode geocode cache "
+                f"Address {_short(address)!r} is not in the sample-mode geocode cache "
                 "(SAMPLE_MODE serves only cached inputs; see input_examples/)."
             )
         resp = self.client.get(CENSUS_URL, params={**CENSUS_PARAMS, "address": address})
@@ -175,7 +179,7 @@ class Resolver:
         matches = self._geocode(address).get("result", {}).get("addressMatches") or []
         if not matches:
             raise UnresolvedAddressError(
-                f"Could not match address {address!r} to a US location (Census Geocoder)."
+                f"Could not match address {_short(address)!r} to a US location (Census Geocoder)."
             )
         m = matches[0]
         return self._jurisdiction(
