@@ -37,9 +37,12 @@ flip yes → no; Title V still decides, verdict stays Conditional).
 | 12 | 3:14–3:21 | End card `architecture.html#outro` (+ ~6 s static linger) | "SiteWhy: not which rules exist, but which apply to your site." | closing summary |
 
 Sponsor-tech callouts (shots 2, 8, 10): Nightshift is the primary LLM route;
-Nemotron Lightning extracts and classifies, Nemotron Ultra plans, synthesizes, and critiques;
-Zetaris serves the moratoria/legislation lookups and the `SITEWHY.usl_site_screen` layer
+Nemotron Lightning extracts, Nemotron Ultra plans, synthesizes, and critiques;
+verification itself is deterministic quote matching (`app/evidence.py:100`), not a model call.
+Zetaris serves the moratoria + state_legislation lookups the agent loop queries
+(`app/seed.py:15-16`); the `SITEWHY.usl_site_screen` layer
 (3 USL queries: active_with_context 10 rows, washington_scope_flip 9 rows,
-texas_ercot_rules 10 rows; DQ null_join_keys PASS, 0 violations); Meterless engines —
+texas_ercot_rules 10 rows; DQ null_join_keys PASS, 0 violations)
+is a separately demonstrated artifact, not queried by the loop. Meterless engines —
 Markovian chunking and the World Model provenance graph — run inside the agent loop.
 NVIDIA line: "Built with Nemotron on Nightshift."
