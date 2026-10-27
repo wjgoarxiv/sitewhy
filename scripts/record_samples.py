@@ -1,7 +1,7 @@
 """Re-record the four showcase runs live (Todo 9).
 
-Usage: uv run python scripts/record_samples.py [name]
-Runs each site (or one named site) at 300 MW, then writes
+Usage: uv run python scripts/record_samples.py [name] [--mw N --as OUT_NAME]
+Runs each site (or one named site) at 300 MW (or --mw N, saved as --as OUT_NAME), then writes
 samples/<name>.json with a relative worldmodel_log plus
 samples/<name>/worldmodel.jsonl, and warms data/geo/context.
 """
@@ -46,8 +46,9 @@ def preflight(settings) -> None:
         sys.exit(2)
 
 
-def record(name: str, address: str) -> dict:
-    report = build_orchestrator().run(address, 300.0, permits_submitted=PERMITS.get(name))
+def record(name: str, address: str, mw: float = 300.0, out_name: str | None = None) -> dict:
+    report = build_orchestrator().run(address, mw, permits_submitted=PERMITS.get(name))
+    name = out_name or name
     sample_dir = SAMPLES_DIR / name
     sample_dir.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(ROOT / report["worldmodel_log"], sample_dir / "worldmodel.jsonl")
@@ -68,15 +69,28 @@ def record(name: str, address: str) -> dict:
 def main() -> None:
     settings = load_settings()
     preflight(settings)
-    names = sys.argv[1:]
+    args = sys.argv[1:]
+    mw, out_name = 300.0, None
+    if "--mw" in args:
+        i = args.index("--mw")
+        mw = float(args[i + 1])
+        del args[i : i + 2]
+    if "--as" in args:
+        i = args.index("--as")
+        out_name = args[i + 1]
+        del args[i : i + 2]
+    names = args
+    if out_name and len(names) != 1:
+        print("--as needs exactly one sample name")
+        sys.exit(2)
     for name in names:
         if name not in SITES:
             print(f"unknown sample {name!r}; expected one of {sorted(SITES)}")
             sys.exit(2)
     for name in names or SITES:
         address = SITES[name]
-        print(f"recording {name}: {address}", flush=True)
-        report = record(name, address)
+        print(f"recording {name}: {address} at {mw:g} MW", flush=True)
+        report = record(name, address, mw, out_name)
         print(f"  verdict={report['verdict']} findings={len(report['findings'])}")
 
 

@@ -93,6 +93,15 @@ def test_title_v_major_source_from_emergency_generator_pte():
     assert title_v_major_source(Project(mw=None))["applies"] == "unknown"
 
 
+@pytest.mark.parametrize(
+    ("mw", "applies", "nox"), [(25, "no", 97.0), (26, "yes", 105.8), (50, "yes", 185.2)]
+)
+def test_title_v_threshold_edges_match_the_recorded_flips(mw, applies, nox):
+    r = title_v_major_source(Project(mw=mw))
+    assert r["applies"] == applies
+    assert r["computed"]["nox_tpy"] == pytest.approx(nox, abs=0.1)
+
+
 def test_missing_scope_is_unknown_not_assumed_countywide():
     m = {"effective": "2026-06-30", "duration_days": 365}
     assert moratorium_applies(Project(as_of=date(2026, 10, 25)), m)["applies"] == "unknown"
