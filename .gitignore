@@ -23,8 +23,9 @@ __pycache__/
 data/cache/
 logs/
 
-# demo video deliverable (stays local; upload separately)
+# demo video: only the final cut is tracked (linked from the README)
 submission/video/*.mp4
+!submission/video/OAH2026-SiteWhy-ExplainWhy-Demo.mp4
 
 # fetched source documents (re-fetchable cache; the sample-mode replay set
 # below is re-included file by file, so plain `git add` picks up exactly it)

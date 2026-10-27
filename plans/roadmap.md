@@ -47,8 +47,9 @@ Deadline: **10/28 08:45 KST** (hard). Internal submit target: **10/27 22:00 KST*
 - Done when: a clean clone runs in `SAMPLE_MODE=true` with no keys, and the UI shows the full report for all 3 sites
 
 ### M4. Submitted (10/27 by 22:00)
-- [ ] Todo 15: README (HackOS template), `metadata.json`, `.env.example`, ≥3 sample I/O, deck, 1–4 min demo video, sponsor write-up
-- [ ] Public GitHub repo (approval needed) and HackOS submission
+- [x] Todo 15: README, `metadata.json`, `.env.example`, 4 sample I/O + traces, sample mode on real agent logic, Zetaris USL, Dockerfile (Cursor), deck, 3:27 demo video, sponsor write-up (`plans/m4-submission.md`)
+- [x] Public GitHub repo: https://github.com/wjgoarxiv/sitewhy (10/27, user-approved push)
+- [ ] HackOS submission (user: unlisted video link, team fields, submit)
 - Buffer until 10/28 08:45 for fixes only. No new features after 22:00.
 
 ## Stretch (only if a milestone finishes early)
