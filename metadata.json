@@ -9,7 +9,7 @@
       "nvidia/nemotron-3.5-lightning-30b-a3b",
       "nvidia/nemotron-3-ultra-550b-a55b"
     ],
-    "nvidia_usage": "Lightning handles extraction, classification and quote-support verification; Ultra handles planning, synthesis and critique (app/llm.py STEP_MODELS). Every call goes through Nightshift with per-request model and receipt in model_trace.",
+    "nvidia_usage": "Lightning handles extraction for the county investigator; Ultra handles planning, synthesis (adjudication) and critique. Quote verification is deterministic code, not a model call. Every call goes through Nightshift with per-request model and receipt in model_trace.",
     "meterless_engines": [
       "World Model",
       "Markovian"

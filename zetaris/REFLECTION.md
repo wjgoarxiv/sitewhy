@@ -9,24 +9,25 @@ instrument) joins four registered sources — `moratoria`, `state_legislation`,
 
 ## 1. Time saved vs a hand-coded approach
 
-Without the USL, every SiteWhy question re-implements the same joins by hand:
+Without the USL, every SiteWhy question would re-implement the same joins by hand:
 load two CSVs plus two YAML files, normalize keys (`moratorium_id`,
 `state_abbrev`), aggregate bills per state, map ERCOT scope to Texas, and check
-county-source coverage. That is roughly 60 lines of throwaway pandas/DuckDB in
-each of the three consumers (screener, portfolio table, eval script), and every
-copy drifts — one forgets the `enacted` vs `active` distinction, another
-drops the federal rule that applies everywhere.
+county-source coverage. That would be roughly 60 lines of throwaway pandas/DuckDB in
+each future consumer (screener, portfolio table, eval script), and every
+copy would drift — one forgets the `enacted` vs `active` distinction, another
+drops the federal rule that applies everywhere. (Forecast: the agent loop does
+not query the USL yet, so no duplicated join code has been removed today.)
 
-The USL replaces that with one registered table and one build query. Adding a
-source is now a YAML edit plus a CSV export instead of a code change in three
+The USL offers one registered table and one build query instead. Adding a
+source becomes a YAML edit plus a CSV export instead of a code change in three
 places. Concretely, the hand-coded equivalent of the USL build is the
 `usl_build_sql()` function in `scripts/zetaris_usl.py` (~45 lines of SQL);
-before the USL, answering "which active moratoria in Texas carry ERCOT rules
-and how many state bills back them?" required joining all four sources inline.
+without the USL, answering "which active moratoria in Texas carry ERCOT rules
+and how many state bills back them?" would require joining all four sources inline.
 With the USL it is one `SELECT ... WHERE state_abbrev = 'TX'` (see
-`zetaris/evidence/usl_queries.json`, `texas_ercot_rules`). Estimated saving on
-this project: half a day of join debugging and parity checks between the app
-path and the eval path.
+`zetaris/evidence/usl_queries.json`, `texas_ercot_rules`). Forecast saving:
+half a day of join debugging and parity checks between the app
+path and the eval path, once consumers are pointed at the layer.
 
 ## 2. Would the USL help in my work, and where else
 

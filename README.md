@@ -10,7 +10,7 @@ TODO(media lane): link the 1–4 min demo (`OAH2026-SiteWhy-ExplainWhy-Demo.mp4`
 
 ## Problem
 
-Data-center moratoria are spreading faster than any developer can track: 321 moratoria or restrictions across 32 states as of September 2026 (Electric Choice, 9/2026), plus a New York statewide moratorium under Executive Order 62 (7/2026). Listing tools (Acres.com, Cherre DataCenter Intel, LightBox, Transect, C&W Athena) list rules and scores but do not reason about whether a rule applies to your site. SiteWhy answers the harder question: which rules apply to *this* site at *this* MW, with the quote, the threshold math, and the flips that would change the verdict.
+Data-center moratoria are spreading faster than any developer can track: 321 moratoria or restrictions across 32 states as of September 2026 (Electric Choice tracker, https://www.electricchoice.com/datacenters/moratoriums/), plus a New York statewide moratorium under Executive Order 62 (7/2026). Listing tools (Acres.com, Cherre DataCenter Intel, LightBox, Transect, C&W Athena) list rules and scores but do not reason about whether a rule applies to your site. SiteWhy answers the harder question: which rules apply to *this* site at *this* MW, with the quote, the threshold math, and the flips that would change the verdict.
 
 ## Users
 
@@ -18,7 +18,7 @@ Site selectors and developers triaging US greenfield sites before spending on le
 
 ## What SiteWhy does that listing tools do not
 
-- Deterministic applicability: every rule is evaluated in Python against project facts (e.g. "300 MW > 75 MW Title V threshold → applies"), never by model vibes.
+- Deterministic applicability: every rule is evaluated in Python against project facts (e.g. Title V applies when the estimated NOx potential to emit clears 100 tpy; Texas SB 6 applies above 75 MW), never by model vibes.
 - Verified quotes: each claim carries the verbatim rule text, source URL and as-of date; an unverified claim becomes `needs_confirmation`, never fatal.
 - Computed flips: each decisive finding shows what would change it (permit timing, MW threshold, moratorium expiry, incorporated vs unincorporated scope).
 - Critic loop: a red-team critic objects to the draft verdict and the planner re-investigates targeted questions before the final report.
@@ -39,21 +39,21 @@ flowchart LR
 | role | model / implementation | reads | writes |
 |---|---|---|---|
 | Planner | Nemotron Ultra | jurisdiction, project facts, critic objections | investigation tasks per layer |
-| Layer investigators (federal, state, county) | Lightning for extraction; county uses the Markovian chunked loop | tasks, seed layers, fetched sources | candidate rules + claims with quotes |
-| Evidence verifier | deterministic quote check + Lightning `verify_support` | claims | verified / not_found / unsupported per claim |
+| County investigator | Lightning for extraction through the Markovian chunked loop | tasks, seed layers, fetched sources | candidate rules + claims with quotes |
+| Evidence verifier | deterministic code: verbatim quote substring match against the fetched source | claims | verified / not_found / unverifiable per claim |
 | Applicability tool | deterministic Python | rules, project facts | applies yes/no + computed values |
 | Adjudicator | Nemotron Ultra | verified claims, applicability results | draft verdict + why-chain |
 | Critic | Nemotron Ultra, red-team prompt | draft verdict + World Model graph | objections → planner re-investigates |
 
-Roles share one state store (the World Model log, per-run JSONL). Every message between roles is a typed event streamed to the UI trace. Live screenings run one at a time; a cooperative 5-minute deadline returns a partial `needs_confirmation` report, and a second concurrent POST is refused with 409.
+Roles share one state store (the World Model log, per-run JSONL). Every message between roles is a typed event shown in the UI trace (the client polls every 1.5 s). Federal, state and grid rules come from curated YAML evaluated by code; only the county investigator calls a model. Live screenings run one at a time; a cooperative 5-minute deadline returns a partial `needs_confirmation` report, and a second concurrent POST is refused with 409.
 
 ## Sponsor tech
 
 - **Meterless Nightshift (primary AI provider).** Every model call goes through Nightshift (`app/llm.py`); no bypass. Per-request model and compute receipt are recorded in `model_trace` and shown in the UI agent lanes. Each sponsor call has a timeout with retry handling.
-- **NVIDIA Nemotron.** `nvidia/nemotron-3.5-lightning-30b-a3b` handles extraction, classification and quote-support verification; `nvidia/nemotron-3-ultra-550b-a55b` handles planning, synthesis and critique (`app/llm.py` `STEP_MODELS`).
-- **Zetaris (data layer).** Moratoria (1,291 rows), state legislation (440 rows), curated rules and county sources are registered as `SITEWHY.*` tables; DuckDB serves the same SQL when Zetaris is unreachable (`app/data.py`). The Unified Semantic Layer is described below.
+- **NVIDIA Nemotron.** `nvidia/nemotron-3.5-lightning-30b-a3b` handles extraction for the county investigator; `nvidia/nemotron-3-ultra-550b-a55b` handles planning, synthesis (adjudication) and critique. Quote verification is deterministic code (verbatim match in `app/evidence.py`), not a model call; the `classify`/`verify_support` entries in `STEP_MODELS` are unused.
+- **Zetaris (data layer).** The agents query Zetaris moratoria + state_legislation tables at run time (every recorded live run shows `data_trace` Zetaris ok, including the 50 MW run); DuckDB serves the same SQL when Zetaris is unreachable (`app/data.py`). The `X-Request-ID` remark in `scripts/zetaris_usl.py` applies to the SQL-editor proxy only, not the run-time path. The Unified Semantic Layer below is a separate, demonstrated artifact not yet queried by the agent loop.
 - **Meterless World Model.** The shared, provenance-stamped rule/evidence graph every agent reads and writes (`app/worldmodel.py`, Apache-2.0 spec); each run appends a JSONL audit log.
-- **Meterless Markovian.** Bounded-context chunked reasoning drives the county investigation (`app/markovian.py`, conformance + behavior tests). On current sources each investigation fits in one chunk, so recorded runs show 0 tokens saved; the engine and its accounting are implemented and tested.
+- **Meterless Markovian.** Bounded-context chunked reasoning drives the county investigation (`app/markovian.py`, conformance + behavior tests). Recorded runs include up to 2 chunks with 0 tokens saved at current source sizes; the engine and its accounting are implemented and tested.
 - What was unique: the applicability engine and critic loop sit between model calls. Models propose and deterministic code disposes, so every verdict traces to a quote plus arithmetic rather than to a completion.
 - TODO(Todo 12): Cursor sponsor line lands here once the Dockerfile lane commits.
 
@@ -66,7 +66,7 @@ Honest note: plain Spark views do not persist across SQL-editor proxy requests o
 ## Evaluation
 
 - Ground truth: 3/3 sites (Washington County MD unincorporated, Abilene TX/ERCOT, Tucson/Pima AZ) — `data/eval/results.json`.
-- Seeded critic faults caught: 3/3 (`fatal-pima`, `title-v-below-threshold`, `washington-missed-exemption`) — `data/eval/results.json`.
+- Seeded critic faults caught: 3/3 (`fatal-pima`, `title-v-below-threshold`, `washington-missed-exemption`) — `data/eval/results.json`. This eval is a regression check on the development sites, not a held-out accuracy number.
 - Test suite: 171 passed (`uv run pytest -q`, 2026-10-27).
 - Recorded model usage across the 5 samples in `samples/*.json` (computed by `.litclaude/evidence/m4-submission/task-5/model_stats.py`):
 
@@ -95,7 +95,7 @@ uv sync
 
 ### Quick start in SAMPLE_MODE with no keys
 
-Sample mode runs the whole app with no Zetaris, no Nightshift and no credentials. The real agents run on committed cached data, so outputs are computed rather than replayed. Programmatic entry:
+Sample mode runs the whole app with no Zetaris, no Nightshift and no credentials. The real orchestration, verification and applicability code runs; model answers are replayed from recorded Nightshift responses, so verdicts (and call counts) can differ from the recorded showcase reports. Dates pin to `SAMPLE_MODE_AS_OF` (2026-10-26, `app/config.py`), the day the committed caches were recorded. Programmatic entry:
 
 ```bash
 SAMPLE_MODE=true uv run python run.py --input input_examples/md-washington-county-unincorporated.json --sample --output /tmp/report.json --logs-dir /tmp/traces
@@ -163,9 +163,14 @@ TODO(media lane): showcase report screenshots from the fixed UI under `docs/img/
 ## Limitations
 
 - Borderline cases can change verdict between runs: md-hagerstown-city was recorded as conditional (round 2), while the cached replay used by sample mode reaches needs_confirmation; both are real runs.
-- Markovian saved 0 tokens on current sources (single-chunk investigations); the engine is implemented and tested, the efficiency story is not yet demonstrated on real runs.
+- Sample mode replays recorded model answers: the orchestration, verification and applicability code runs for real, but the LLM text comes from cache, so a sample-mode verdict can differ from the showcase report for the same input.
+- Live showcase runs take 3–7 minutes of model time against the 5-minute cooperative deadline; a run that exceeds it stops with a partial `needs_confirmation` report.
+- Title V applicability is an assumption-based estimate: potential to emit from assumed backup generators (N+1 units of 2.5 MW diesel, 500 h/yr, 6.4 g/kWh NOx) against the 100 tpy threshold, flipping between 25 and 26 MW. The 75 MW figure is the Texas SB 6 / ERCOT large-load threshold, not Title V.
+- The Zetaris USL is a separate, demonstrated artifact (`scripts/zetaris_usl.py`); the agents do not query it yet.
+- County sources are a draft ordinance, a press release and news articles — not adopted-ordinance text — with quotes verbatim-verified against them.
+- Markovian saved 0 tokens on current sources (recorded runs include up to 2 chunks); the engine is implemented and tested, the efficiency story is not yet demonstrated on real runs.
 - Seed rules are curated with runtime-verified quotes; autonomous agent rule discovery is roadmap.
-- Coverage: any US address is resolved and screened against the federal Title V rule and the 1,291-entry moratorium dataset; state and grid rules are modelled for Texas/ERCOT; verified county ordinances cover Washington County MD and Pima County AZ. Other states get a federal-only report with an explicit scope note (UI: "AI agents check federal, state, grid and county rules where modelled").
+- Coverage: any US address is resolved and screened against the federal Title V rule and the 1,291-entry moratorium dataset; state and grid rules are modelled for Texas/ERCOT; county sources (draft ordinance, press release, news article) cover Washington County MD and Pima County AZ, with quotes verbatim-verified against them. Other states get a federal-only report with an explicit scope note (UI: "AI agents check federal, state, grid and county rules where modelled").
 - Live screenings run one at a time with a 5-minute cooperative deadline; a run that exceeds it stops with a partial `needs_confirmation` report, and the client poll loop gives up with "The run did not finish in time — try again".
 - Nothing here is production-ready: no auth, no multi-user, US only.
 
