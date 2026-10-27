@@ -45,7 +45,7 @@ flowchart LR
 | Adjudicator | Nemotron Ultra | verified claims, applicability results | draft verdict + why-chain |
 | Critic | Nemotron Ultra, red-team prompt | draft verdict + World Model graph | objections → planner re-investigates |
 
-Roles share one state store (the World Model log, per-run JSONL). Every message between roles is a typed event shown in the UI trace (the client polls every 1.5 s). Federal, state and grid rules come from curated YAML evaluated by code; only the county investigator calls a model. Live screenings run one at a time; a cooperative 5-minute deadline returns a partial `needs_confirmation` report, and a second concurrent POST is refused with 409.
+Roles share one state store (the World Model log, per-run JSONL). Every message between roles is a typed event shown in the UI trace (the client polls every 1.5 s). Federal, state and grid rules come from curated YAML evaluated by code; only the county investigator calls a model. Live screenings run one at a time; a cooperative 10-minute (600 s) deadline returns a partial `needs_confirmation` report, and a second concurrent POST is refused with 409.
 
 ## Sponsor tech
 
@@ -101,7 +101,7 @@ Sample mode runs the whole app with no Zetaris, no Nightshift and no credentials
 SAMPLE_MODE=true uv run python run.py --input input_examples/md-washington-county-unincorporated.json --sample --output /tmp/report.json --logs-dir /tmp/traces
 ```
 
-This prints the report JSON to stdout (verified 2026-10-27: exit 0, verdict `no-go`), writes it to the output path, and saves the agent trace JSONL to the logs dir. Four inputs ship under `input_examples/`; matching generated outputs under `output_examples/`; committed traces under `logs/*.jsonl`.
+This prints the report JSON to stdout (verified 2026-10-27: exit 0, verdict `no-go`), writes it to the output path (default `logs/<run_id>.json`, local only), and saves the agent trace JSONL to the logs dir. Four inputs ship under `input_examples/`; matching generated outputs under `output_examples/`; committed reference trace snapshots under `output_examples/traces/`.
 
 With the server up (`SAMPLE_MODE=true uv run uvicorn app.main:app --port 8000`), open `http://localhost:8000` and pick a showcase site (live runs stay off in sample mode: "Live runs are off in sample mode — pick a site from the portfolio"), or drive it programmatically:
 
@@ -142,17 +142,19 @@ Failures return a useful JSON message, not a stack trace; a second concurrent PO
 
 ### Input / output examples and traces
 
-`input_examples/` holds the 4 showcase inputs (addresses + MW + permits exactly as recorded). `output_examples/` holds the reports produced by `run.py --sample` — generated, not copied. `logs/*.jsonl` holds one JSON object per line per agent event with `timestamp, agent_name, action, input_summary, output_summary, target_agent, model, retry_count, status`; the target agent is the next event's role (real handoffs) and the model is that role's model from `model_trace`. Each `samples/*.json` showcase report likewise carries `model_trace` (model per request), `markovian_runs` and `events`.
+`input_examples/` holds the 4 showcase inputs (addresses + MW + permits exactly as recorded). `output_examples/` holds the reports produced by `run.py --sample` — generated, not copied. `output_examples/traces/*.jsonl` holds the committed reference traces: one JSON object per line per agent event with `timestamp, agent_name, action, input_summary, output_summary, target_agent, model, retry_count, status`; the target agent is the next event's role (real handoffs) and the model is that role's model from `model_trace`. Local runs write fresh traces to `logs/` (git-ignored). Each `samples/*.json` showcase report likewise carries `model_trace` (model per request), `markovian_runs` and `events`.
 
 ### Sample input / output
 
-| sample | input | verdict |
-|---|---|---|
-| `md-washington-county-unincorporated` | 13820 Pennsylvania Ave, Hagerstown MD 21742 · 300 MW · permits not submitted (recorded 2026-10-25) | no-go |
-| `md-hagerstown-city` | 100 W Washington St, Hagerstown MD 21740 · 300 MW (recorded 2026-10-25) | conditional |
-| `tx-abilene-ercot` | 555 Walnut St, Abilene TX 79601 · 300 MW (recorded 2026-10-25) | conditional |
-| `tx-abilene-ercot-50mw` | same site · 50 MW (recorded live 2026-10-27, 2 Nemotron calls) | conditional |
-| `az-tucson-pima` | 255 W Alameda St, Tucson AZ 85701 · 300 MW (recorded 2026-10-25) | conditional |
+Recorded showcase reports (`samples/`, live Nightshift runs) versus sample-mode replays (`output_examples/`, cached replay pinned to 2026-10-26):
+
+| sample | input | recorded verdict | replay verdict |
+|---|---|---|---|
+| `md-washington-county-unincorporated` | 13820 Pennsylvania Ave, Hagerstown MD 21742 · 300 MW · permits not submitted (recorded 2026-10-25) | no-go | no-go |
+| `md-hagerstown-city` | 100 W Washington St, Hagerstown MD 21740 · 300 MW (recorded 2026-10-25) | conditional | needs_confirmation |
+| `tx-abilene-ercot` | 555 Walnut St, Abilene TX 79601 · 300 MW (recorded 2026-10-25) | conditional | conditional |
+| `tx-abilene-ercot-50mw` | same site · 50 MW (recorded live 2026-10-27, 2 Nemotron calls; no cached replay) | conditional | — |
+| `az-tucson-pima` | 255 W Alameda St, Tucson AZ 85701 · 300 MW (recorded 2026-10-25) | conditional | conditional |
 
 The 50 MW contrast: the same Abilene site at 50 MW stays conditional with a different rule mix (SB 6 and the ERCOT audit flip while Title V still applies). The scope flip is the headline demo: the same county, two answers — unincorporated Washington County is no-go under county moratorium ORD-2026-12, while incorporated Hagerstown is conditional because the county ordinance does not cover the city. Showcase reports carry a "Recorded run" badge with the run date.
 
@@ -164,14 +166,14 @@ TODO(media lane): showcase report screenshots from the fixed UI under `docs/img/
 
 - Borderline cases can change verdict between runs: md-hagerstown-city was recorded as conditional (round 2), while the cached replay used by sample mode reaches needs_confirmation; both are real runs.
 - Sample mode replays recorded model answers: the orchestration, verification and applicability code runs for real, but the LLM text comes from cache, so a sample-mode verdict can differ from the showcase report for the same input.
-- Live showcase runs take 3–7 minutes of model time against the 5-minute cooperative deadline; a run that exceeds it stops with a partial `needs_confirmation` report.
+- Live showcase runs take 3–7 minutes of model time against the 10-minute (600 s) cooperative deadline; a run that exceeds it stops with a partial `needs_confirmation` report.
 - Title V applicability is an assumption-based estimate: potential to emit from assumed backup generators (N+1 units of 2.5 MW diesel, 500 h/yr, 6.4 g/kWh NOx) against the 100 tpy threshold, flipping between 25 and 26 MW. The 75 MW figure is the Texas SB 6 / ERCOT large-load threshold, not Title V.
 - The Zetaris USL is a separate, demonstrated artifact (`scripts/zetaris_usl.py`); the agents do not query it yet.
 - County sources are a draft ordinance, a press release and news articles — not adopted-ordinance text — with quotes verbatim-verified against them.
 - Markovian saved 0 tokens on current sources (recorded runs include up to 2 chunks); the engine is implemented and tested, the efficiency story is not yet demonstrated on real runs.
 - Seed rules are curated with runtime-verified quotes; autonomous agent rule discovery is roadmap.
 - Coverage: any US address is resolved and screened against the federal Title V rule and the 1,291-entry moratorium dataset; state and grid rules are modelled for Texas/ERCOT; county sources (draft ordinance, press release, news article) cover Washington County MD and Pima County AZ, with quotes verbatim-verified against them. Other states get a federal-only report with an explicit scope note (UI: "AI agents check federal, state, grid and county rules where modelled").
-- Live screenings run one at a time with a 5-minute cooperative deadline; a run that exceeds it stops with a partial `needs_confirmation` report, and the client poll loop gives up with "The run did not finish in time — try again".
+- Live screenings run one at a time with a 10-minute (600 s) cooperative deadline; a run that exceeds it stops with a partial `needs_confirmation` report, and the client poll loop gives up 60 s later with "The run did not finish in time — try again".
 - Nothing here is production-ready: no auth, no multi-user, US only.
 
 ## Data licenses
