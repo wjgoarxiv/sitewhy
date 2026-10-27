@@ -43,6 +43,7 @@ Deadline: **10/28 08:45 KST** (hard). Internal submit target: **10/27 22:00 KST*
 - [x] Todo 14 replay / `SAMPLE_MODE` (clean clone with no keys passes)
 - [x] Todo 13 eval (showcase ground truth 3/3, critic seeded faults 3/3)
 - [x] HQ demo roll (8-step guided tour, `#/demo`), Midnight Ops theme and answer-first layout (`plans/hq-demo-roll.md`)
+- [x] HQ clarity pass: light neo-brutalism theme, framing strip, highlighted key phrase, tour step rail with speed control, why chain, agent lanes, section nav, Ctrl+K palette, settings (`plans/hq-clarity-pass.md`)
 - Done when: a clean clone runs in `SAMPLE_MODE=true` with no keys, and the UI shows the full report for all 3 sites
 
 ### M4. Submitted (10/27 by 22:00)
