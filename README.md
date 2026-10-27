@@ -6,7 +6,7 @@ Track: **The Agent That Can Explain Why**. SiteWhy screens a US address + IT loa
 
 ## Demo video
 
-TODO(media lane): link the 1–4 min demo (`OAH2026-SiteWhy-ExplainWhy-Demo.mp4`) here under this heading once uploaded.
+![SiteWhy demo tour](docs/img/demo.gif)
 
 ## Problem
 
@@ -18,8 +18,8 @@ Site selectors and developers triaging US greenfield sites before spending on le
 
 ## What SiteWhy does that listing tools do not
 
-- Deterministic applicability: every rule is evaluated in Python against project facts (e.g. Title V applies when the estimated NOx potential to emit clears 100 tpy; Texas SB 6 applies above 75 MW), never by model vibes.
-- Verified quotes: each claim carries the verbatim rule text, source URL and as-of date; an unverified claim becomes `needs_confirmation`, never fatal.
+- Deterministic applicability: every rule is evaluated in Python against project facts (e.g. Title V applies when the estimated NOx potential to emit clears 100 tpy; Texas SB 6 applies at 75 MW or more), never by model vibes.
+- Verified quotes: each claim carries the verbatim rule text, source URL and as-of date; an unverified claim is downgraded instead of trusted: a fatal finding without a verified quote becomes major (`app/orchestrator.py:479-481`).
 - Computed flips: each decisive finding shows what would change it (permit timing, MW threshold, moratorium expiry, incorporated vs unincorporated scope).
 - Critic loop: a red-team critic objects to the draft verdict and the planner re-investigates targeted questions before the final report.
 
@@ -27,8 +27,10 @@ Site selectors and developers triaging US greenfield sites before spending on le
 
 ```mermaid
 flowchart LR
-    P[Planner] --> I[Investigators: federal, state, county]
-    I --> V[Evidence verifier]
+    P[Planner] --> CI[County investigator: Lightning extraction]
+    P --> RE[Rule evaluators: federal, state, grid from curated YAML]
+    CI --> V[Evidence verifier]
+    RE --> V
     V -->|retry, max 2| I
     V --> A[Adjudicator: applicability + draft verdict]
     A --> C[Critic]
@@ -39,7 +41,7 @@ flowchart LR
 | role | model / implementation | reads | writes |
 |---|---|---|---|
 | Planner | Nemotron Ultra | jurisdiction, project facts, critic objections | investigation tasks per layer |
-| County investigator | Lightning for extraction through the Markovian chunked loop | tasks, seed layers, fetched sources | candidate rules + claims with quotes |
+| County investigator | Lightning for extraction through the Markovian chunked loop; Ultra re-extracts when Lightning returns no facts | tasks, seed layers, fetched sources | candidate rules + claims with quotes |
 | Evidence verifier | deterministic code: verbatim quote substring match against the fetched source | claims | verified / not_found / unverifiable per claim |
 | Applicability tool | deterministic Python | rules, project facts | applies yes/no + computed values |
 | Adjudicator | Nemotron Ultra | verified claims, applicability results | draft verdict + why-chain |
@@ -51,11 +53,11 @@ Roles share one state store (the World Model log, per-run JSONL). Every message 
 
 - **Meterless Nightshift (primary AI provider).** Every model call goes through Nightshift (`app/llm.py`); no bypass. Per-request model and compute receipt are recorded in `model_trace` and shown in the UI agent lanes. Each sponsor call has a timeout with retry handling.
 - **NVIDIA Nemotron.** `nvidia/nemotron-3.5-lightning-30b-a3b` handles extraction for the county investigator; `nvidia/nemotron-3-ultra-550b-a55b` handles planning, synthesis (adjudication) and critique. Quote verification is deterministic code (verbatim match in `app/evidence.py`), not a model call; the `classify`/`verify_support` entries in `STEP_MODELS` are unused.
-- **Zetaris (data layer).** The agents query Zetaris moratoria + state_legislation tables at run time (every recorded live run shows `data_trace` Zetaris ok, including the 50 MW run); DuckDB serves the same SQL when Zetaris is unreachable (`app/data.py`). The `X-Request-ID` remark in `scripts/zetaris_usl.py` applies to the SQL-editor proxy only, not the run-time path. The Unified Semantic Layer below is a separate, demonstrated artifact not yet queried by the agent loop.
+- **Zetaris (data layer).** The agents query Zetaris moratoria + state_legislation tables at run time; every recorded live run succeeded with the request headers the app sends (see `data_trace` in `samples/*.json`, including the 50 MW run). DuckDB serves the same SQL when Zetaris is unreachable (`app/data.py`). The Unified Semantic Layer below is a separate, demonstrated artifact not yet queried by the agent loop.
 - **Meterless World Model.** The shared, provenance-stamped rule/evidence graph every agent reads and writes (`app/worldmodel.py`, Apache-2.0 spec); each run appends a JSONL audit log.
-- **Meterless Markovian.** Bounded-context chunked reasoning drives the county investigation (`app/markovian.py`, conformance + behavior tests). Recorded runs include up to 2 chunks with 0 tokens saved at current source sizes; the engine and its accounting are implemented and tested.
+- **Meterless Markovian.** Bounded-context chunked reasoning drives the county investigation (`app/markovian.py`, conformance + behavior tests). Recorded runs span up to 4 Markovian chunks in the sample-mode replays (2 in the live showcase samples), with 0 tokens saved at current source sizes; the engine and its accounting are implemented and tested.
 - What was unique: the applicability engine and critic loop sit between model calls. Models propose and deterministic code disposes, so every verdict traces to a quote plus arithmetic rather than to a completion.
-- TODO(Todo 12): Cursor sponsor line lands here once the Dockerfile lane commits.
+- Cursor: the `Dockerfile` and `.dockerignore` were written in a Cursor Agent CLI session (commit `30d5b90`); the rest was built with Claude Code.
 
 ## Zetaris Unified Semantic Layer
 
@@ -67,8 +69,8 @@ Honest note: plain Spark views do not persist across SQL-editor proxy requests o
 
 - Ground truth: 3/3 sites (Washington County MD unincorporated, Abilene TX/ERCOT, Tucson/Pima AZ) — `data/eval/results.json`.
 - Seeded critic faults caught: 3/3 (`fatal-pima`, `title-v-below-threshold`, `washington-missed-exemption`) — `data/eval/results.json`. This eval is a regression check on the development sites, not a held-out accuracy number.
-- Test suite: 171 passed (`uv run pytest -q`, 2026-10-27).
-- Recorded model usage across the 5 samples in `samples/*.json` (computed by `.litclaude/evidence/m4-submission/task-5/model_stats.py`):
+- Test suite: 177 passed (`uv run pytest -q`, 2026-10-27).
+- Recorded model usage across the 5 samples in `samples/*.json` (counts from `model_trace` in those files):
 
 | model | calls | total_tokens | latency_ms_total |
 |---|---|---|---|
@@ -82,9 +84,14 @@ Latency totals are wall-clock sums across recorded runs, not a benchmark.
 
 Python 3.12+, `uv`. Runtime: fastapi, uvicorn, httpx, duckdb, pypdf, beautifulsoup4, pyyaml (see `pyproject.toml`). Dev: pytest, pytest-asyncio, ruff. No local GPU needed.
 
-## Docker
+## Run with Docker
 
-TODO(Todo 12): Dockerfile (built in Cursor) lands here as the recommended judge path once committed.
+```bash
+docker build -t sitewhy .
+docker run -p 8000:8000 sitewhy
+```
+
+The image runs in sample mode by default (no credentials needed). For live mode, pass keys with `--env-file` and point Nightshift/Zetaris at `host.docker.internal`.
 
 ## Setup
 
@@ -103,7 +110,7 @@ SAMPLE_MODE=true uv run python run.py --input input_examples/md-washington-count
 
 This prints the report JSON to stdout (verified 2026-10-27: exit 0, verdict `no-go`), writes it to the output path (default `logs/<run_id>.json`, local only), and saves the agent trace JSONL to the logs dir. Four inputs ship under `input_examples/`; matching generated outputs under `output_examples/`; committed reference trace snapshots under `output_examples/traces/`.
 
-With the server up (`SAMPLE_MODE=true uv run uvicorn app.main:app --port 8000`), open `http://localhost:8000` and pick a showcase site (live runs stay off in sample mode: "Live runs are off in sample mode — pick a site from the portfolio"), or drive it programmatically:
+With the server up (`SAMPLE_MODE=true uv run uvicorn app.main:app --port 8000`), open `http://localhost:8000` and pick a showcase site ("Sample mode: runs replay recorded model answers for the showcase addresses."), or drive it programmatically:
 
 ```bash
 curl -s -X POST localhost:8000/runs -H 'content-type: application/json' \
@@ -160,17 +167,17 @@ The 50 MW contrast: the same Abilene site at 50 MW stays conditional with a diff
 
 ## Screenshots
 
-TODO(media lane): showcase report screenshots from the fixed UI under `docs/img/` (≤300 KB each), referenced here once committed.
+![SiteWhy demo tour](docs/img/demo.gif)
 
 ## Limitations
 
 - Borderline cases can change verdict between runs: md-hagerstown-city was recorded as conditional (round 2), while the cached replay used by sample mode reaches needs_confirmation; both are real runs.
 - Sample mode replays recorded model answers: the orchestration, verification and applicability code runs for real, but the LLM text comes from cache, so a sample-mode verdict can differ from the showcase report for the same input.
-- Live showcase runs take 3–7 minutes of model time against the 10-minute (600 s) cooperative deadline; a run that exceeds it stops with a partial `needs_confirmation` report.
+- Recorded model time is about 1.5–3 minutes for most sites (about 6 minutes for Hagerstown), against the 10-minute (600 s) cooperative deadline; a run that exceeds it stops with a partial `needs_confirmation` report.
 - Title V applicability is an assumption-based estimate: potential to emit from assumed backup generators (N+1 units of 2.5 MW diesel, 500 h/yr, 6.4 g/kWh NOx) against the 100 tpy threshold, flipping between 25 and 26 MW. The 75 MW figure is the Texas SB 6 / ERCOT large-load threshold, not Title V.
 - The Zetaris USL is a separate, demonstrated artifact (`scripts/zetaris_usl.py`); the agents do not query it yet.
-- County sources are a draft ordinance, a press release and news articles — not adopted-ordinance text — with quotes verbatim-verified against them.
-- Markovian saved 0 tokens on current sources (recorded runs include up to 2 chunks); the engine is implemented and tested, the efficiency story is not yet demonstrated on real runs.
+- County sources are a draft ordinance, a press release and a news article — not adopted-ordinance text — with quotes verbatim-verified against them.
+- Markovian saved 0 tokens on current sources (recorded runs span up to 4 chunks in the replays, 2 in the live samples); the engine is implemented and tested, the efficiency story is not yet demonstrated on real runs.
 - Seed rules are curated with runtime-verified quotes; autonomous agent rule discovery is roadmap.
 - Coverage: any US address is resolved and screened against the federal Title V rule and the 1,291-entry moratorium dataset; state and grid rules are modelled for Texas/ERCOT; county sources (draft ordinance, press release, news article) cover Washington County MD and Pima County AZ, with quotes verbatim-verified against them. Other states get a federal-only report with an explicit scope note (UI: "AI agents check federal, state, grid and county rules where modelled").
 - Live screenings run one at a time with a 10-minute (600 s) cooperative deadline; a run that exceeds it stops with a partial `needs_confirmation` report, and the client poll loop gives up 60 s later with "The run did not finish in time — try again".
@@ -186,6 +193,7 @@ TODO(media lane): showcase report screenshots from the fixed UI under `docs/img/
 | County/place context | U.S. Census TIGERweb | Public domain |
 | Transmission lines | HIFLD Electric Power Transmission Lines | Public domain |
 | Map tiles | Esri Dark Gray Canvas / World Imagery | Esri proprietary, attribution shown on map |
+| Cached source texts (6 files), `data/sources/` | fetched public pages (governor press releases, county notices), cached at record time for sample-mode replay | same terms as the underlying public pages |
 
 World Model and Markovian engine specs: Meterless, Apache-2.0. Pre-existing third-party material (pre-window datasets + Meterless specs) is declared in the submission; no pre-existing product code.
 
